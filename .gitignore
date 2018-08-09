@@ -1,0 +1,16 @@
+/*
+
+!.gitignore
+
+!PNapp/
+PNapp/*
+!PNapp/admin.py
+!PNapp/apps.py
+!PNapp/models.py
+!PNapp/tests.py
+!PNapp/views.py
+
+!PNsite/
+PNsite/*
+!PNsite/settings.py
+!PNsite/urls.py
