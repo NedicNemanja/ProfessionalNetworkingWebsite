@@ -1,6 +1,9 @@
 /*
 
 !.gitignore
+!db.sqlite3
+!manage.py
+!README.md
 
 !PNapp/
 PNapp/*
