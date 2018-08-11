@@ -9,6 +9,9 @@ PNapp/*
 !PNapp/models.py
 !PNapp/tests.py
 !PNapp/views.py
+!PNapp/urls.py
+!PNapp/templates/
+!PNapp/templates/*.html
 
 !PNsite/
 PNsite/*
