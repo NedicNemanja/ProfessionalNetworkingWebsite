@@ -17,3 +17,12 @@ PNapp/*
 PNsite/*
 !PNsite/settings.py
 !PNsite/urls.py
+
+!PNapp/static/
+!PNapp/static/css/*.css
+!PNapp/static/fonts/
+!PNapp/static/fonts/*
+!PNapp/static/img/
+!PNapp/static/img/*.png
+!PNapp/static/js/
+!PNapp/static/js/*.js
