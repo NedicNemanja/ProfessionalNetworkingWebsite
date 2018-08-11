@@ -5,13 +5,24 @@ from django.template import loader
 # Create your views here.
 
 def Welcome(request):
-    return HttpResponse("Welcome to Nsite");
+    return render(request, 'PNapp/Welcome.html')
 
 def SingIN(request):
-    return HttpResponse("SingIN");
+    email = request.POST['email']
+    password = request.POST['password']
+    '''
+    user = autheniticate(username=username,passoword=password)
+    if user is None:
+        return HttpResponse("Auth failed")
+    else
+        if user.is_active:
+            login(request,user)
+            return HttpResponse("Logged in")
+    '''
+    return HttpResponse(email+password)
 
 def SingUP(request):
-    return render(request, 'PNapp/templates/PNapp/SingUP.html')
+    return render(request, 'PNapp/SingUP.html')
 
 def Homepage(request):
-    return HttpResponse("Homepage");
+    return HttpResponse("Homepage")

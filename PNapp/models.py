@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+import datetime
 
 class User(models.Model):
 	"""docstring for User"""
@@ -33,15 +34,15 @@ class Connection(models.Model):
 		return self.connection_creator#Here maybe return also receiver?
 
 class Advertisment(models.Model):
-	creator = models.ForeignKey(User, on_delete=CASCADE)
+	creator = models.ForeignKey(User, on_delete=models.CASCADE)
 	description = models.TextField()
 
 	def __str__(self):
 		return self.creator#Again maybe also the descript?
 
 class Applicant(models.Model):
-	user = models.ForeignKey(User, on_delete=CASCADE)
-	advertisment = models.ForeignKey(Advertisment, on_delete=CASCADE)
+	user = models.ForeignKey(User, on_delete=models.CASCADE)
+	advertisment = models.ForeignKey(Advertisment, on_delete=models.CASCADE)
 	ACCEPTED = 'ACCEPTED'
 	PENDING = 'PENDING'
 	REJECTED = 'REJECTED'
@@ -54,12 +55,13 @@ class Applicant(models.Model):
         default=PENDING
     )
 
-    def __str__(self):
-    	return self.user#Again ..
+	def __str__(self):
+		return self.user
 
 class Message(models.Model):
-	sender = models.ForeignKey(User)
-	receiver = models.ForeignKey(User)
+	#this could be SET_DEFAULT as well
+	sender = models.ForeignKey(User, on_delete=models.SET_NULL)
+	receiver = models.ForeignKey(User, on_delete=models.SET_NULL)
 	text = models.CharField()
 	creation_date = models.DateTimeField(auto_now=True)
 
@@ -67,17 +69,17 @@ class Message(models.Model):
 		return self.text
 
 class Post(models.Model):
-	creator = models.ForeignKey(User, on_delete=CASCADE)
+	creator = models.ForeignKey(User, on_delete=models.CASCADE)
 	creation_date = models.DateTimeField(auto_now=True)
 	text = models.CharField()
 
 class Comment(models.Model):
-	creator = models.ForeignKey(User, on_delete=CASCADE)
-	post_id = models.ForeignKey(Post, on_delete=CASCADE)
+	creator = models.ForeignKey(User, on_delete=models.CASCADE)
+	post_id = models.ForeignKey(Post, on_delete=models.CASCADE)
 	text = models.CharField()
 	creation_date = models.DateTimeField(auto_now=True)
 
 class Interest(models.Model):
-	creator = models.ForeignKey(User, on_delete=CASCADE)
-	post_id = models.ForeignKey(Post, on_delete=CASCADE)
+	creator = models.ForeignKey(User, on_delete=models.CASCADE)
+	post_id = models.ForeignKey(Post, on_delete=models.CASCADE)
 	creation_date = models.DateTimeField(auto_now=True)
