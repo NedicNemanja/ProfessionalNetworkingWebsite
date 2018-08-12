@@ -1,9 +1,8 @@
 from django.urls import path
 from . import views
+from PNapp.views import welcome,Homepage
 
 urlpatterns = [
-    path('', views.welcome, name='welcome'),
-    path('SingIN/', views.SingIN, name='SingIN'),
-    path('SingUP/', views.SingUP, name='SingUP'),
-    path('Homepage/', views.Homepage, name='Homepage'),
+    path('', welcome.as_view()),
+    path('Homepage/', Homepage.as_view()),
 ]
