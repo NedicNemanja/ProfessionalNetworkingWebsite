@@ -4,8 +4,8 @@ from django.template import loader
 
 # Create your views here.
 
-def Welcome(request):
-    return render(request, 'PNapp/Welcome.html')
+def welcome(request):
+    return render(request, 'PNapp/welcome.html')
 
 def SingIN(request):
     email = request.POST['email']

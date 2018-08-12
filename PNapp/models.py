@@ -26,8 +26,8 @@ class User(models.Model):
 		return self.email
 
 class Connection(models.Model):
-	creator = models.ForeignKey(User, on_delete=models.CASCADE)
-	receiver = models.ForeignKey(User, on_delete=models.CASCADE)
+	active = models.ForeignKey(User, on_delete=models.CASCADE)
+	passive = models.ForeignKey(User, on_delete=models.CASCADE)
 	accepted = models.BooleanField(default=False)
 
 	def __str__(self):
@@ -51,6 +51,7 @@ class Applicant(models.Model):
 		(PENDING, 'Pending'),
 		(REJECTED, 'Rejected'))
 	status = models.CharField(
+		max_length=512,
         choices=ADVERTISMENT_STATUS_CHOICES,
         default=PENDING
     )
@@ -60,9 +61,9 @@ class Applicant(models.Model):
 
 class Message(models.Model):
 	#this could be SET_DEFAULT as well
-	sender = models.ForeignKey(User, on_delete=models.SET_NULL)
-	receiver = models.ForeignKey(User, on_delete=models.SET_NULL)
-	text = models.CharField()
+	active = models.ForeignKey(User, on_delete=models.CASCADE)
+	passive = models.ForeignKey(User, on_delete=models.CASCADE)
+	text = models.CharField(max_length=512)
 	creation_date = models.DateTimeField(auto_now=True)
 
 	def __str__(self):
@@ -71,12 +72,12 @@ class Message(models.Model):
 class Post(models.Model):
 	creator = models.ForeignKey(User, on_delete=models.CASCADE)
 	creation_date = models.DateTimeField(auto_now=True)
-	text = models.CharField()
+	text = models.CharField(max_length=512)
 
 class Comment(models.Model):
 	creator = models.ForeignKey(User, on_delete=models.CASCADE)
 	post_id = models.ForeignKey(Post, on_delete=models.CASCADE)
-	text = models.CharField()
+	text = models.CharField(max_length=512)
 	creation_date = models.DateTimeField(auto_now=True)
 
 class Interest(models.Model):
