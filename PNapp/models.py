@@ -25,6 +25,9 @@ class User(models.Model):
 	def __str__(self):
 		return self.email
 
+	def autheniticate(self,password):
+		return (self.password == password)
+
 class Connection(models.Model):
 	creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="CActive")
 	#https://stackoverflow.com/questions/26955319/django-reverse-accessor-clashes

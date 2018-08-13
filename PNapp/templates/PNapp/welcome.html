@@ -19,7 +19,7 @@
       <div class="container">
         <!-- <img src="img/logo.png" class="logo">-->
         <h3>Professional Networking Website</h3>
-        <form class="form-inline" method="post">
+        <form class="form-inline" method="post">{% csrf_token %}
           <div class="form-group">
             <label class="sr-only" for="logInEmail">Email address</label>
             <input type="email" name ="email" class="form-control" id="logInEmail" placeholder="Enter email">
@@ -143,7 +143,7 @@
                   </div>
                   <button type="submit" class="btn btn-default">Submit</button>
                 </form>-->
-                <form class="form" method="post" action="#">
+                <form class="form" method="post" action="#">{% csrf_token %}
 
                   <div class="form-group">
                     <label for="name" class="cols-sm-2 control-label">Your Name</label>
