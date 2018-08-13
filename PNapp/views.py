@@ -13,20 +13,31 @@ class welcome(View):
         return render(request, self.template_name)
 
     def post(self,request):
-        #process post request
-        email = request.POST['email']
-        password = request.POST['password']
-        #querry for user by email
-        try:
-            user = User.objects.get(email=email)
-        except User.DoesNotExist:
-            return HttpResponse("No user with email:"+email)
-        #autheniticate password
-        if user is not None:
+        if request.POST['button'] == "SingIN":
+            #process post request
+            email = request.POST['email']
+            password = request.POST['password']
+            #querry for user by email
+            try:
+                user = User.objects.get(email=email)
+            except User.DoesNotExist:
+                return HttpResponse("No user with email:"+email)
+            #autheniticate password
             if User.autheniticate(user,password):
                 return render(request, 'PNapp/index.html')
             else:
                 return HttpResponse("Auth failed")
+        elif request.POST['button'] == "Register":
+            name = request.POST['name']
+            surname = request.POST['surname']
+            email = request.POST['email']
+            password = request.POST['password']
+            confirm = request.POST['confirm']
+            if password == confirm:
+                #u = User.objects.create()
+                return HttpResponse(name+" "+surname)
+            else:
+                return HttpResponse("Passwords don't match")
 
 class Homepage(View):
     def get(self, request):

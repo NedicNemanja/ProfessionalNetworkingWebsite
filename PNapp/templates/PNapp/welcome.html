@@ -28,7 +28,7 @@
             <label class="sr-only" for="LogInPassword">Password</label>
             <input type="password" name="password" class="form-control" id="LogInPassword" placeholder="Password">
           </div>
-          <button type="submit" class="btn btn-default">Sign in</button><br>
+          <button type="submit" class="btn btn-default" name="button" value="SingIN">Sign in</button><br>
           <div class="checkbox">
             <label>
               <input type="checkbox"> Remember me
@@ -143,7 +143,7 @@
                   </div>
                   <button type="submit" class="btn btn-default">Submit</button>
                 </form>-->
-                <form class="form" method="post" action="#">{% csrf_token %}
+                <form class="form" method="post">{% csrf_token %}
 
                   <div class="form-group">
                     <label for="name" class="cols-sm-2 control-label">Your Name</label>
@@ -196,7 +196,7 @@
                   </div>
 
                   <div class="form-group ">
-                    <button type="button" class="btn btn-primary btn-lg btn-block login-button">Register</button>
+                    <button type="submit" class="btn btn-primary btn-lg btn-block login-button" name="button" value="Register">Register</button>
                   </div>
                   <!--<div class="login-register">
                           <a href="index.php">Login</a>
@@ -222,6 +222,6 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="js/bootstrap.js"></script>
+    <script src="{% static 'PNapp/js/bootstrap.js' %}"></script>
   </body>
 </html>
