@@ -26,9 +26,9 @@ class User(models.Model):
 		return self.email
 
 class Connection(models.Model):
-	active = models.ForeignKey(User, on_delete=models.CASCADE)
+	creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="CActive")
 	#https://stackoverflow.com/questions/26955319/django-reverse-accessor-clashes
-	#passive = models.ForeignKey(User, on_delete=models.CASCADE)
+	receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name="CPassive")
 	accepted = models.BooleanField(default=False)
 
 	def __str__(self):
@@ -62,9 +62,9 @@ class Applicant(models.Model):
 
 class Message(models.Model):
 	#this could be SET_DEFAULT as well
-	active = models.ForeignKey(User, on_delete=models.CASCADE)
+	creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="MActive")
 	#https://stackoverflow.com/questions/26955319/django-reverse-accessor-clashes
-	#passive = models.ForeignKey(User, on_delete=models.CASCADE)
+	receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name="MPassive")
 	text = models.CharField(max_length=512)
 	creation_date = models.DateTimeField(auto_now=True)
 
