@@ -12,8 +12,8 @@ class welcome(View):
         return render(request, self.template_name)
 
     def post(self,request):
-        email = request.POST['email']
-        password = request.POST['password']
+        #email = request.POST['email']
+        #password = request.POST['password']
         '''
         user = autheniticate(username=username,passoword=password)
         if user is None:
@@ -23,7 +23,7 @@ class welcome(View):
                 login(request,user)
                 return HttpResponse("Logged in")
         '''
-        return HttpResponse(email+password)
+        return HttpResponse("email+password")
 
 class Homepage(View):
     def get(self, request):
