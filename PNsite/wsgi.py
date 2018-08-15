@@ -1,5 +1,5 @@
 """
-WSGI config for PNsite project.
+WSGI(web Server Gateway Interface) config for PNsite project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 

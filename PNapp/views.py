@@ -5,6 +5,8 @@ from django.views import View
 from .models import User
 from django.core.exceptions import ValidationError
 from django.contrib import messages
+from django.views.decorators.csrf import csrf_protect
+from django.utils.decorators import method_decorator
 
 # Create your views here.
 class welcome(View):
@@ -13,6 +15,7 @@ class welcome(View):
     def get(self,request):
         return render(request, self.template_name)
 
+    @method_decorator(csrf_protect)
     def post(self,request):
         #post request for Login existing user
         if request.POST['button'] == "Login":
