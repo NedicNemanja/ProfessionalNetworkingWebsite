@@ -1,1 +1,6 @@
 letsencrypt/
+
+#dont share cache and .db
+PNapp/__pycache__
+PNapp/migrations
+db.sqlite3
