@@ -30,7 +30,7 @@ class welcome(View):
                 return render(request, self.template_name)
             #autheniticate password
             if User.autheniticate(user,password):
-                return redirect('Homepage/')
+                return redirect('index/')
             else:
                 messages.error(request, "Wrong Password")
                 return render(request, self.template_name)
@@ -53,12 +53,12 @@ class welcome(View):
                     return render(request, self.template_name)
                 #save and redirect
                 u.save()
-                return redirect('Homepage/')
+                return redirect('index/')
             else:
                 messages.error(request, "Passwords don't match")
                 return render(request, self.template_name)
 
-class Homepage(View):
+class index(View):
     template_name = 'PNapp/index.html'
 
     def get(self, request):
