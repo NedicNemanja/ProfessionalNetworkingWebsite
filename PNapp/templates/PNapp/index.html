@@ -57,7 +57,7 @@
             <li><a href="profile.html">Profile</a></li>
             <li><a href="#">Settings</a></li>
           </ul>
-          <form class="navbar-form navbar-right">
+          <form class="navbar-form navbar-right">{% csrf_token %}
 	        <div class="form-group">
 	          <input type="text" class="form-control" placeholder="Search">
 	        </div>
@@ -128,7 +128,7 @@
                 <h3 class="panel-title">Wall</h3>
               </div>
               <div class="panel-body">
-                <form>
+                <form>{% csrf_token %}
                   <div class="form-group">
                     <textarea class="form-control" placeholder="Write on the wall"></textarea>
                   </div>
@@ -161,7 +161,7 @@
                     </div><!-- bubble end -->
                     <p class="post-actions"><a href="#">Comment</a> - <a href="#">Interest</a></p>
                     <div class="comment-form">
-                      <form class="form-inline">
+                      <form class="form-inline">{% csrf_token %}
                         <div class="form-group">
                           <input type="text" class="form-control" id="exampleInputName2" placeholder="Enter Comment">
                         </div>
@@ -208,7 +208,7 @@
                     </div><!-- bubble end -->
                     <p class="post-actions"><a href="#">Comment</a> - <a href="#">Interest</a></p>
                     <div class="comment-form">
-                      <form class="form-inline">
+                      <form class="form-inline">{% csrf_token %}
                         <div class="form-group">
                           <input type="text" class="form-control" id="exampleInputName2" placeholder="Enter Comment">
                         </div>
@@ -247,7 +247,7 @@
                     </div><!-- bubble end -->
                     <p class="post-actions"><a href="#">Comment</a> - <a href="#">Interest</a></p>
                     <div class="comment-form">
-                      <form class="form-inline">
+                      <form class="form-inline">{% csrf_token %}
                         <div class="form-group">
                           <input type="text" class="form-control" id="exampleInputName2" placeholder="Enter Comment">
                         </div>
