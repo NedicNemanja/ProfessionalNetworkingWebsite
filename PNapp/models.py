@@ -16,7 +16,7 @@ class User(models.Model):
 	#Maybe requires upload_to arg to be set
 	#Maybe also add blank=True?
 	phone = models.CharField(max_length=17, blank=True)
-	profile_photo = models.ImageField(blank=True)
+	profile_photo = models.ImageField(default='PNapp/profpics/user.png')
 	university = models.CharField(max_length=128, blank=True)
 	degree_subject = models.CharField(max_length=128, blank=True)
 	company = models.CharField(max_length=128, blank=True)
