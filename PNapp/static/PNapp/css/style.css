@@ -93,17 +93,36 @@ header .logo{
 	width:55px;
 }
 
-.groups img{
+/*.groups img{
 	width:80px;
 	float:left;
 	margin-right:15px;
+}*/
+
+.personal-details {
+	text-align: center;
 }
 
-.group-item{
+/*.group-item{
 	padding-bottom:10px;
 	margin-bottom:20px;
 	border-bottom:1px solid #ccc;
 	overflow:auto;
+}*/
+
+
+
+.panel-body {
+	/*text-align: center;*/
+	/*list-style: inside;
+	list-style-position: inside*/
+}
+
+.personal-details-avatar {
+	vertical-align: middle;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
 }
 
 .members .member-row{
@@ -218,9 +237,15 @@ input::-webkit-input-placeholder {
 
 .login-button{
 	margin-top: 5px;
+	background-image: linear-gradient(#04519b, #044687 60%, #033769);
+
 }
 
 .login-register{
 	font-size: 11px;
+	text-align: center;
+}
+
+.asd {
 	text-align: center;
 }

@@ -66,8 +66,13 @@ class index(View):
     template_name = 'PNapp/index.html'
 
     def get(self, request):
-        user_pk = request.session['user_pk']
-        context = {'user_pk':user_pk,}
+        user_email = request.session['user_pk']
+        try:
+            user = User.objects.get(email=user_email)
+        except User.DoesNotExist:
+            messages.error(request, "User with email: "+user_email+" does not exist")
+            return render(request, self.template_name)
+        context = {'user':user,}
         return render(request, self.template_name, context=context)
 
     def post(self, request):
@@ -90,25 +95,7 @@ class profile(View):
         except User.DoesNotExist:
             messages.error(request, "User with email: "+user_email+" does not exist")
             return render(request, self.template_name)
-        user_name = user.name
-        user_surname = user.surname
-        user_phone = user.phone
-        user_photo = user.profile_photo
-        user_university = user.university
-        user_degree = user.degree_subject
-        user_company = user.company
-        user_position = user.position
-
-        context = {
-        'user_email':user_email,
-        'user_name':user_name,
-        'user_surname':user_surname,
-        'user_phone':user_phone,
-        'user_photo':user_photo,
-        'user_university':user_university,
-        'user_degree':user_degree,
-        'user_company':user_company,
-        'user_position':user_position,}
+        context = {'user':user,}
         return render(request, self.template_name, context=context)
 
     def post(self, request):

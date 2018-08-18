@@ -49,7 +49,7 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li><a href="index.html">Home Page</a></li>
+            <li><a href="/index/">Home Page</a></li>
             <li><a href="members.html">Network</a></li>
             <li><a href="groups.html">Ads</a></li>
             <li><a href="photos.html">Messages</a></li>
@@ -75,25 +75,85 @@
         <div class="row">
           <div class="col-md-8">
             <div class="profile">
-              <h1 class="page-header">{{ user_name }}</h1>
+              <h1 class="page-header">{{ user.name }} {{ user.surname }}</h1>
               <div class="row">
                 <div class="col-md-4">
-                  <img src="{{ user_photo.url }}" class="img-thumbnail">
+                  <img src="{{ user.profile_photo.url }}" class="img-thumbnail">
                 </div>
                 <div class="col-md-8">
-                  <ul>
-                    <li><strong>Name: </strong>{{ user_name }}</li>
-                    <li><strong>Surname: </strong>{{ user_surname }}</li>
-                    <li><strong>Email Address: </strong>{{ user_email }}</li>
-                    <li><strong>Phone Number: </strong>{{ user_phone }}</li>
-                    <li><strong>Education: </strong>{{ user_university }}</li>
-                    <li><strong>Degree's Subject: </strong>{{ user_degree }}</li>
-                    <li><strong>Current Company: </strong>{{ user_company }}</li>
-                    <li><strong>Current Position: </strong>{{ user_position }}</li>
-                  </ul>
+                  <form class="form-horizontal" method="post">
+                    <div class="form-group">
+                      <label class="col-lg-4 control-label">First name:</label>
+                      <div class="col-lg-8">
+                        <input type="text" name="name" value="{{ user.name }}" required>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-lg-4 control-label">Last name:</label>
+                      <div class="col-lg-8">
+                        <input type="text" name="surname" value="{{ user.surname }}" required>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-lg-4 control-label">Email:</label>
+                      <div class="col-lg-8">
+                        <input type="email" name="email" value="{{ user.email }}" required>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-lg-4 control-label">Phone Number:</label>
+                      <div class="col-lg-8">
+                        <input type="text" name="phone" value="{{ user.phone }}">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-lg-4 control-label">Education:</label>
+                      <div class="col-lg-8">
+                        <input type="text" name="university" value="{{ user.university }}">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-lg-4 control-label">Degree's Subject:</label>
+                      <div class="col-lg-8">
+                        <input type="text" name="degree_subject" value="{{ user.degree_subject }}">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-lg-4 control-label">Current Company:</label>
+                      <div class="col-lg-8">
+                        <input type="text" name="company" value="{{ user.company }}">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-lg-4 control-label">Current Position:</label>
+                      <div class="col-lg-8">
+                        <input type="text" name="position" value="{{ user.position }}">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-md-4 control-label"></label>
+                      <div class="col-md-8">
+                        <input class="btn btn-primary" value="Save Changes" type="button">
+                        <span></span>
+                        <input class="btn btn-default" value="Cancel" type="reset">
+                      </div>
+                    </div>
+                  </form>
+                  <!-- <ul>
+                    <li><strong>Name: </strong>{{ user.name }}</li>
+                    <li><strong>Surname: </strong>{{ user.surname }}</li>
+                    <li><strong>Email Address: </strong>{{ user.email }}</li>
+                    <li><strong>Phone Number: </strong>{{ user.phone }}</li>
+                    <li><strong>Education: </strong>{{ user.university }}</li>
+                    <li><strong>Degree's Subject: </strong>{{ user.degree_subject }}</li>
+                    <li><strong>Current Company: </strong>{{ user.company }}</li>
+                    <li><strong>Current Position: </strong>{{ user.position }}</li>
+                  </ul> -->
 
                 </div>
               </div>
+            </div>
+          </div>
               <!--<br></br>
               <div class="row">
                 <div class="col-md-12">
@@ -177,6 +237,10 @@
           </div>
         </div>
       </div>-->
+          <div class="col-md-4">
+          </div>
+        </div>
+      </div>
 
     </section>
 
