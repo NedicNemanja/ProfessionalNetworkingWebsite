@@ -117,18 +117,9 @@
               </div>
               <div class="panel-body">
                 <ul>
-                  <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
-                  <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
-                  <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
-                  <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
-                  <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
-                  <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
-                  <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
-                  <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
-                  <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
-                  <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
-                  <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
-                  <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
+                  {% for friend in friends%}
+                    <li><a class="thumbnail" href="profile.html"><img src={{friend.profile_photo.url}}></a></li>
+                  {% endfor %}
                 </ul>
                 <div class="clearfix"></div>
                 <a class="btn btn-primary" href="#">View All Friends</a>

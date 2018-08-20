@@ -7,6 +7,7 @@ class User(models.Model):
 	"""def __init__(self, arg):
 					super(User, self).__init__()
 					self.arg = arg"""
+	id = models.AutoField(primary_key=True)
 	email = models.EmailField(unique=True)
 	password = models.CharField(max_length=128)
 	name = models.CharField(max_length=64)
@@ -29,20 +30,21 @@ class User(models.Model):
 		return (self.password == password)
 
 class Connection(models.Model):
-	creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="CActive")
+	#on deletion of a creator or a receiver the said field will be set to null
+	creator = models.ForeignKey('User', on_delete=models.SET_NULL, null=True, related_name="CActive")
 	#https://stackoverflow.com/questions/26955319/django-reverse-accessor-clashes
-	receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name="CPassive")
+	receiver = models.ForeignKey('User', on_delete=models.SET_NULL, null=True, related_name="CPassive")
 	accepted = models.BooleanField(default=False)
 
 	def __str__(self):
-		return self.connection_creator#Here maybe return also receiver?
+		return str(self.creator)+" "+str(self.receiver)
 
 class Advertisment(models.Model):
 	creator = models.ForeignKey(User, on_delete=models.CASCADE)
 	description = models.TextField()
 
 	def __str__(self):
-		return self.creator#Again maybe also the descript?
+		return self.description#Again maybe also the descript?
 
 class Applicant(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE)

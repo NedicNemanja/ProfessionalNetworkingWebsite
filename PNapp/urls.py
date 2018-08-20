@@ -9,7 +9,7 @@ urlpatterns = [
     path('index/', index.as_view()),
     path('logout/',views.logout, name='logout'),
     path('profile/', profile.as_view()),
-    path('network', network.as_view()),
+    path('network/', network.as_view()),
 ]
 #urlpatterns += staticfiles_urlpatterns()
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
