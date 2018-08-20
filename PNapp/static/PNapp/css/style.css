@@ -2,7 +2,7 @@ header{
 	background-image: linear-gradient(#04519b, #044687 60%, #033769);
 	color:#fff;
 	min-height:100px;
-	padding-top:25px;
+	padding-top:20px;
 }
 
 header form{
@@ -93,17 +93,36 @@ header .logo{
 	width:55px;
 }
 
-.groups img{
+/*.groups img{
 	width:80px;
 	float:left;
 	margin-right:15px;
+}*/
+
+.personal-details {
+	text-align: center;
 }
 
-.group-item{
+/*.group-item{
 	padding-bottom:10px;
 	margin-bottom:20px;
 	border-bottom:1px solid #ccc;
 	overflow:auto;
+}*/
+
+
+
+.panel-body {
+	/*text-align: center;*/
+	/*list-style: inside;
+	list-style-position: inside*/
+}
+
+.personal-details-avatar {
+	vertical-align: middle;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
 }
 
 .members .member-row{
@@ -139,17 +158,6 @@ header .logo{
 
 .photos img{
 	width:100%;
-}
-
-footer{
-	background:#f4f4f4;
-	height:90px;
-	color:#04519b;
-	font-weight: bold;
-	text-align: center;
-	padding-top:40px;
-	margin-top:30px;
-	border-top:7px solid #04519b;
 }
 
 
@@ -218,9 +226,24 @@ input::-webkit-input-placeholder {
 
 .login-button{
 	margin-top: 5px;
+	background-image: linear-gradient(#04519b, #044687 60%, #033769);
+
 }
 
 .login-register{
 	font-size: 11px;
 	text-align: center;
+}
+
+/* Make sure footer stays on the bottom*/
+
+footer{
+	background:#f4f4f4;
+	height:90px;
+	color:#04519b;
+	font-weight: bold;
+	text-align: center;
+	padding-top:40px;
+	margin-top:30px;
+	border-top:7px solid #04519b;
 }

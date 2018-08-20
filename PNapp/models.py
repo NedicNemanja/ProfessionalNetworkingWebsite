@@ -7,7 +7,7 @@ class User(models.Model):
 	"""def __init__(self, arg):
 					super(User, self).__init__()
 					self.arg = arg"""
-	email = models.EmailField(primary_key=True)
+	email = models.EmailField(unique=True)
 	password = models.CharField(max_length=128)
 	name = models.CharField(max_length=64)
 	surname = models.CharField(max_length=64)
@@ -16,7 +16,7 @@ class User(models.Model):
 	#Maybe requires upload_to arg to be set
 	#Maybe also add blank=True?
 	phone = models.CharField(max_length=17, blank=True)
-	profile_photo = models.ImageField(blank=True)
+	profile_photo = models.ImageField(default='/profpics/user.png', upload_to='profpics/%Y/%m/%d/')
 	university = models.CharField(max_length=128, blank=True)
 	degree_subject = models.CharField(max_length=128, blank=True)
 	company = models.CharField(max_length=128, blank=True)
