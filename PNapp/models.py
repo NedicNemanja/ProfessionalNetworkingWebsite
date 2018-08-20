@@ -7,7 +7,7 @@ class User(models.Model):
 	"""def __init__(self, arg):
 					super(User, self).__init__()
 					self.arg = arg"""
-	email = models.EmailField(primary_key=True)
+	email = models.EmailField(unique=True)
 	password = models.CharField(max_length=128)
 	name = models.CharField(max_length=64)
 	surname = models.CharField(max_length=64)
