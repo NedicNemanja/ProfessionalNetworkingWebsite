@@ -160,17 +160,6 @@ header .logo{
 	width:100%;
 }
 
-footer{
-	background:#f4f4f4;
-	height:90px;
-	color:#04519b;
-	font-weight: bold;
-	text-align: center;
-	padding-top:40px;
-	margin-top:30px;
-	border-top:7px solid #04519b;
-}
-
 
 @media(min-width: 991px){
 	.members p{
@@ -244,4 +233,17 @@ input::-webkit-input-placeholder {
 .login-register{
 	font-size: 11px;
 	text-align: center;
+}
+
+/* Make sure footer stays on the bottom*/
+
+footer{
+	background:#f4f4f4;
+	height:90px;
+	color:#04519b;
+	font-weight: bold;
+	text-align: center;
+	padding-top:40px;
+	margin-top:30px;
+	border-top:7px solid #04519b;
 }

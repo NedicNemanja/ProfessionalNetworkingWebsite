@@ -140,3 +140,17 @@ class profile(View):
             messages.success(request, "Changes made successfully.")
             return redirect('/profile/')
         return render(request, self.template_name)
+
+class network(View):
+    template_name = 'PNapp/network.html'
+    def get(self, request):
+        #get current user's details
+        user = User.objects.get(id=request.session['user_pk'])
+        context = {'user':user,}
+        return render(request, self.template_name, context=context)
+
+    def post(self, request):
+        #get current user's details
+        user = User.objects.get(id=request.session['user_pk'])
+        context = {'user':user,}
+        return render(request, self.template_name, context=context)
