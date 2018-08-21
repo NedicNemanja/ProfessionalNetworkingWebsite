@@ -88,7 +88,7 @@
                 <div>{{ user.company }}</div>
                 <div>{{ user.position }}</div>
                 <div>{{ user.phone }}</div>
-                <div><button class="btn btn-default" onclick="location.href='/profile/'"" type="button">Edit details</button></div>
+                <div><button class="btn btn-default" onclick="location.href='/profile/'" type="button">Edit details</button></div>
                 <!-- <div class="group-item">
                   <img src="img/group.png">
                   <h4><a href="#">Sample Group One</a></h4>
@@ -142,12 +142,12 @@
                 <h3 class="panel-title">Wall</h3>
               </div>
               <div class="panel-body">
-                <form>{% csrf_token %}
+                <form method="post">{% csrf_token %}
                   <div class="form-group">
-                    <textarea class="form-control" placeholder="Write on the wall"></textarea>
+                    <textarea class="form-control" name="status" placeholder="Write on the wall"></textarea>
                   </div>
 
-                  <button type="submit" class="btn btn-default">Submit</button>
+                  <button type="submit" value="Submit status" name="button" class="btn btn-default">Submit</button>
                   <div class="pull-right">
                     <div class="btn-group">
                     <button type="button" class="btn btn-default"><i class="fa fa-pencil"></i> Text</button>
@@ -159,138 +159,55 @@
               </div>
             </div>
 
-            <div class="panel panel-default post">
-              <div class="panel-body">
-                <div class="row">
-                  <div class="col-sm-2">
-                    <a class="post-avatar thumbnail" href="profile.html"><img src="img/user.png"><div class="text-center">DevUser1</div></a>
-                    <div class="likes text-center">7 Likes</div>
-                  </div><!-- col-sm-2 end -->
-                  <div class="col-sm-10">
-                    <div class="bubble">
-                      <div class="pointer">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In tincidunt eget ante eget feugiat. Praesent adipiscing tortor eu tincidunt tempus. Sed convallis est in ante sodales, sit amet consectetur leo commodo. </p>
+            {% if posts %}
+              {% for post in posts %}
+                <div class="panel panel-default post">
+                  <div class="panel-body">
+                    <div class="row">
+                      <div class="col-sm-2">
+                        <a class="post-avatar thumbnail" href="profile.html">
+                          <img src="{{ post.creator.profile_photo.url }}" class="img-thumbnail">
+                          <div class="text-center">{{ post.creator.name }} {{ post.creator.surname }}</div>
+                        </a>
+                        <div class="likes text-center">{{ post.creation_date }}</div>
+                      </div><!-- col-sm-2 end -->
+                      <div class="col-sm-10">
+                        <div class="bubble">
+                          <div class="pointer">
+                            <p>{{ post.text }}</p>
+                          </div>
+                          <div class="pointer-border"></div>
+                        </div><!-- bubble end -->
+                        <p class="post-actions"><a href="#">Interest</a> - <a href="#">Comment</a> - 7 Interested</p>
+                        <div class="comment-form">
+                          <form class="form-inline" method="post">{% csrf_token %}
+                            <div class="form-group">
+                              <input type="text" class="form-control" name="comment" placeholder="Enter Comment">
+                            </div>
+                            <button type="submit" value="Submit comment" name="button" class="btn btn-default">Add</button>
+                          </form>
+                        </div><!-- comment form end -->
+                        <div class="clearfix"></div>
+                        {% if comments_list %}
+                          {% for comment in comments_list %}
+                            {% if comment.post_id == post.id%}
+                              <div class="comments">
+                                <div class="comment">
+                                  <a class="comment-avatar pull-left" href="#"><img src="img/user.png"></a>
+                                  <div class="comment-text">
+                                    <p>{{ comment.text }}</p>
+                                  </div>
+                                </div>
+                              <div class="clearfix"></div>
+                            {% endif %}
+                          {% endfor %}
+                        {% endif %}
                       </div>
-                      <div class="pointer-border"></div>
-                    </div><!-- bubble end -->
-                    <p class="post-actions"><a href="#">Comment</a> - <a href="#">Interest</a></p>
-                    <div class="comment-form">
-                      <form class="form-inline">{% csrf_token %}
-                        <div class="form-group">
-                          <input type="text" class="form-control" id="exampleInputName2" placeholder="Enter Comment">
-                        </div>
-                        <button type="submit" class="btn btn-default">Add</button>
-                      </form>
-                    </div><!-- comment form end -->
-                    <div class="clearfix"></div>
-
-                    <div class="comments">
-                      <div class="comment">
-                        <a class="comment-avatar pull-left" href="#"><img src="img/user.png"></a>
-                        <div class="comment-text">
-                          <p>Sed convallis est in ante sodales, sit amet consectetur leo commodo.</p>
-                        </div>
-                      </div>
-                      <div class="clearfix"></div>
-
-                      <div class="comment">
-                        <a class="comment-avatar pull-left" href="#"><img src="img/user.png"></a>
-                        <div class="comment-text">
-                          <p>Sed convallis est in ante sodales, sit amet consectetur leo commodo.</p>
-                        </div>
-                      </div>
-                      <div class="clearfix"></div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
-
-            <div class="panel panel-default post">
-              <div class="panel-body">
-                <div class="row">
-                  <div class="col-sm-2">
-                    <a class="post-avatar thumbnail" href="profile.html"><img src="img/user.png"><div class="text-center">DevUser2</div></a>
-                    <div class="likes text-center">7 Likes</div>
-                  </div><!-- col-sm-2 end -->
-                  <div class="col-sm-10">
-                    <div class="bubble">
-                      <div class="pointer">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In tincidunt eget ante eget feugiat. Praesent adipiscing tortor eu. </p>
-                      </div>
-                      <div class="pointer-border"></div>
-                    </div><!-- bubble end -->
-                    <p class="post-actions"><a href="#">Comment</a> - <a href="#">Interest</a></p>
-                    <div class="comment-form">
-                      <form class="form-inline">{% csrf_token %}
-                        <div class="form-group">
-                          <input type="text" class="form-control" id="exampleInputName2" placeholder="Enter Comment">
-                        </div>
-                        <button type="submit" class="btn btn-default">Add</button>
-                      </form>
-                    </div><!-- comment form end -->
-                    <div class="clearfix"></div>
-
-                    <div class="comments">
-                      <div class="comment">
-                        <a class="comment-avatar pull-left" href="#"><img src="img/user.png"></a>
-                        <div class="comment-text">
-                          <p>Sed convallis est in ante sodales, sit amet consectetur leo commodo.</p>
-                        </div>
-                      </div>
-                      <div class="clearfix"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="panel panel-default post">
-              <div class="panel-body">
-                <div class="row">
-                  <div class="col-sm-2">
-                    <a class="post-avatar thumbnail" href="profile.html"><img src="img/user.png"><div class="text-center">DevUser3</div></a>
-                    <div class="likes text-center">2 Likes</div>
-                  </div><!-- col-sm-2 end -->
-                  <div class="col-sm-10">
-                    <div class="bubble">
-                      <div class="pointer">
-                        <p>Adipiscing elit. In tincidunt eget ante eget feugiat. Praesent adipiscing tortor eu tincidunt tempus. Sed convallis est in ante sodales, sit amet consectetur leo commodo. </p>
-                      </div>
-                      <div class="pointer-border"></div>
-                    </div><!-- bubble end -->
-                    <p class="post-actions"><a href="#">Comment</a> - <a href="#">Interest</a></p>
-                    <div class="comment-form">
-                      <form class="form-inline">{% csrf_token %}
-                        <div class="form-group">
-                          <input type="text" class="form-control" id="exampleInputName2" placeholder="Enter Comment">
-                        </div>
-                        <button type="submit" class="btn btn-default">Add</button>
-                      </form>
-                    </div><!-- comment form end -->
-                    <div class="clearfix"></div>
-
-                    <div class="comments">
-                      <div class="comment">
-                        <a class="comment-avatar pull-left" href="#"><img src="img/user.png"></a>
-                        <div class="comment-text">
-                          <p>Sed convallis est in ante sodales, sit amet consectetur leo commodo.</p>
-                        </div>
-                      </div>
-                      <div class="clearfix"></div>
-
-                      <div class="comment">
-                        <a class="comment-avatar pull-left" href="#"><img src="img/user.png"></a>
-                        <div class="comment-text">
-                          <p>Sed convallis est in ante sodales, sit amet consectetur leo commodo.</p>
-                        </div>
-                      </div>
-                      <div class="clearfix"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+              {% endfor %}
+            {% endif %}
           </div><!-- col-md-8 end -->
 
 
