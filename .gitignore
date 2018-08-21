@@ -1,6 +1,17 @@
 letsencrypt/
 
 #dont share cache and .db
-PNapp/__pycache__
+PNapp/__pycache__/
 PNapp/migrations
 db.sqlite3
+
+#server
+/bin/
+/lib/
+/local/
+pip-selfcheck.json
+/share/
+/static/
+uwsgi_params
+/PNapp/__pycache__/
+/PNsite/media/profpics/

@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.template import loader
 from django.views import View
-from .models import User, Post
+from .models import User, Post, Connection
 from django.core.exceptions import ValidationError
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_protect
@@ -78,7 +78,15 @@ class index(View):
         for post in posts:
             comments_list.append(Post.get_comments(post))
         #     return render(request, self.template_name)
-        context = {'user':user, 'posts':posts, 'comments_list':comments_list,}
+        #get 9-18 connections
+        connections = Connection.objects.filter(receiver=user,accepted=True) | Connection.objects.all().filter(creator=user,accepted=True)
+        friends = []
+        for conn in connections[:9]:
+            if conn.creator == user:
+                friends.append(conn.receiver)
+            else:
+                friends.append(conn.creator)
+        context = {'user':user,'friends':friends, 'posts':posts, 'comments_list':comments_list,}
         return render(request, self.template_name, context=context)
 
     def post(self, request):
@@ -166,7 +174,15 @@ class network(View):
     def get(self, request):
         #get current user's details
         user = User.objects.get(id=request.session['user_pk'])
-        context = {'user':user,}
+        #get all the connections
+        connections = Connection.objects.filter(receiver=user,accepted=True) | Connection.objects.all().filter(creator=user,accepted=True)
+        friends = []
+        for conn in connections:
+            if conn.creator == user:
+                friends.append(conn.receiver)
+            else:
+                friends.append(conn.creator)
+        context = {'user':user,'friends':friends,}
         return render(request, self.template_name, context=context)
 
     def post(self, request):
