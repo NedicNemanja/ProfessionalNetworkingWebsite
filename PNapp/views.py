@@ -49,7 +49,7 @@ class welcome(View):
             if password == confirm:
                 #create user
                 u = User(name=name, surname=surname, email=email, password=password)
-                #make sure the form is correct
+                #validate the model before saving
                 try:
                     u.full_clean()
                 except ValidationError as v:
@@ -68,16 +68,7 @@ class index(View):
 
     def get(self, request):
         user = User.objects.get(id=request.session['user_pk'])
-        # AXRIASTO AFTO AN VALOUME LOGIN REQUIRE TO LOAD INDEX?
-        # try:
-        #     user = User.objects.get(email=user.email)
-        # except User.DoesNotExist:
-        #     messages.error(request, "User with email: "+user.email+" does not exist")
         posts = User.get_posts(user)
-        #comments = Comment.objects.all()
-        # for post in post:
-        #     comments_list.append(Post.get_comments(post))
-        #     return render(request, self.template_name)
         #get 9-18 connections
         connections = Connection.objects.filter(receiver=user,accepted=True) | Connection.objects.all().filter(creator=user,accepted=True)
         friends = []
@@ -93,17 +84,31 @@ class index(View):
         #get current user's details
         user = User.objects.get(id=request.session['user_pk'])
         context = {'user':user,}
-        if request.POST["button"] == "Submit status":
-            status = request.POST['status']
-            p = Post(creator=user, creation_date=timezone.now(), text=status)
-            #make sure the form is correct
+        if request.POST.get("button", False):
+            if request.POST["button"] == "Submit status":
+                status = request.POST['status']
+                p = Post(creator=user, creation_date=timezone.now(), text=status)
+                #validate the model before saving
+                try:
+                    p.full_clean()
+                except ValidationError as v:
+                    messages.error(request, "ValidationError:"+str(v.message_dict))
+                    return render(request, self.template_name)
+                #save and redirect
+                p.save()
+                return redirect('/index/')
+        if request.POST.get("comment-button", False):
+            post_id = request.POST["comment-button"]
+            post = Post.objects.get(pk=post_id)
+            text = request.POST['comment']
+            c= Comment(creator=user, post_id=post, text=text, creation_date=timezone.now())
             try:
-                p.full_clean()
+                c.full_clean()
             except ValidationError as v:
                 messages.error(request, "ValidationError:"+str(v.message_dict))
                 return render(request, self.template_name)
             #save and redirect
-            p.save()
+            c.save()
             return redirect('/index/')
         return render(request, self.template_name)
 
