@@ -195,7 +195,7 @@ class search(View):
     template_name = 'PNapp/search.html'
 
     def get(self, request):
-        #query = request.GET['search_box']
+        query = request.GET.get('q')
         context = {}
-        #return HttpResponse(query)
-        return render(request, self.template_name, context=context)
+        return HttpResponse(query)
+        #return render(request, self.template_name, context=context)
