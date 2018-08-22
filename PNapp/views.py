@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.template import loader
 from django.views import View
-from .models import User, Post, Connection
+from .models import User, Post, Connection, Comment
 from django.core.exceptions import ValidationError
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_protect
@@ -74,9 +74,9 @@ class index(View):
         # except User.DoesNotExist:
         #     messages.error(request, "User with email: "+user.email+" does not exist")
         posts = User.get_posts(user)
-        comments_list = []
-        for post in posts:
-            comments_list.append(Post.get_comments(post))
+        #comments = Comment.objects.all()
+        # for post in post:
+        #     comments_list.append(Post.get_comments(post))
         #     return render(request, self.template_name)
         #get 9-18 connections
         connections = Connection.objects.filter(receiver=user,accepted=True) | Connection.objects.all().filter(creator=user,accepted=True)
@@ -86,7 +86,7 @@ class index(View):
                 friends.append(conn.receiver)
             else:
                 friends.append(conn.creator)
-        context = {'user':user,'friends':friends, 'posts':posts, 'comments_list':comments_list,}
+        context = {'user':user,'friends':friends, 'posts':posts,}
         return render(request, self.template_name, context=context)
 
     def post(self, request):
