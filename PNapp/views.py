@@ -249,22 +249,6 @@ class search(View):
         context = {'users':users,}
         return render(request, self.template_name, context=context)
 
-    def post(self, request):
-        userid = request.POST['add user']
-        receiver = User.objects.get(id=userid)
-        try:
-            creator = User.objects.get(id=request.session['user_pk'])
-        except KeyError:    #user not logged in
-            return redirect('/')
-        #check weather there is already a connection between creator-receiver
-        conn_exists = Connection.objects.filter(creator=creator,receiver=receiver) | Connection.objects.filter(creator=receiver,receiver=creator)
-        if conn_exists.count() == 0:
-            conn = Connection.objects.create(creator=creator,receiver=receiver,accepted=False)
-            return HttpResponse(conn)
-        else:
-            messages.info(request, "Connection already exists.")
-            return render(request, self.template_name, context=context)
-
 class overview(View):
     template_name = 'PNapp/overview.html'
 
@@ -288,3 +272,25 @@ class overview(View):
         request_exists = Connection.objects.filter(creator=user,receiver=target_user).exists() | Connection.objects.filter(creator=target_user,receiver=user).exists()
         context = {'target_user':target_user,'friends':friends, 'connected_users':connected_users,'request_exists':request_exists}
         return render(request, self.template_name, context)
+
+    def post(self, request, pk):
+        userid = request.POST['add user']
+        receiver = User.objects.get(id=userid)
+        try:
+            creator = User.objects.get(id=request.session['user_pk'])
+        except KeyError:    #user not logged in
+            return redirect('/')
+        print(creator)
+        print(receiver)
+        conn = Connection.objects.create(creator=creator,receiver=receiver,accepted=False)
+        #get all target_user's friends
+        friends = set()
+        connections = Connection.objects.filter(creator=creator)
+        for conn in connections:    #conns with user as creator
+            friends.add(conn.receiver)
+        connections = Connection.objects.filter(receiver=creator)
+        for conn in connections:    #conns with user as receiver
+            friends.add(conn.creator)
+        #get new context
+        context = {'target_user':receiver,'friends':friends, 'connected_users':False,'request_exists':True}
+        return render(request, self.template_name, context=context)
