@@ -221,6 +221,11 @@ class mymessages(View):
     template_name = 'PNapp/messages.html'
 
     def get(self, request):
+        #test if session active
+        try:
+            session_test_pk = request.session['user_pk']
+        except KeyError:    #user not logged in
+            return redirect('/')
         print("here-------------")
         return HttpResponse("Message")
 
