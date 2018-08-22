@@ -29,6 +29,11 @@ class User(models.Model):
 	def autheniticate(self,password):
 		return (self.password == password)
 
+	def get_posts(self):
+		group_of_interest = [self.email]
+		posts = Post.objects.filter(creator__email__in= group_of_interest)
+		return posts
+
 class Connection(models.Model):
 	#on deletion of a creator or a receiver the said field will be set to null
 	creator = models.ForeignKey('User', on_delete=models.SET_NULL, null=True, related_name="CActive")
@@ -71,23 +76,31 @@ class Message(models.Model):
 	#https://stackoverflow.com/questions/26955319/django-reverse-accessor-clashes
 	receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name="MPassive")
 	text = models.CharField(max_length=512)
-	creation_date = models.DateTimeField(auto_now=True)
+	creation_date = models.DateTimeField(editable=False)
 
 	def __str__(self):
 		return self.text
 
 class Post(models.Model):
 	creator = models.ForeignKey(User, on_delete=models.CASCADE)
-	creation_date = models.DateTimeField(auto_now=True)
+	#maybe add editable = False in production level
+	creation_date = models.DateTimeField()
 	text = models.CharField(max_length=512)
+
+	def __str__(self):
+		return self.text
+
+	def get_comments(self):
+		comments = Comment.objects.filter(post_id=self.id)
+		return comments
 
 class Comment(models.Model):
 	creator = models.ForeignKey(User, on_delete=models.CASCADE)
 	post_id = models.ForeignKey(Post, on_delete=models.CASCADE)
 	text = models.CharField(max_length=512)
-	creation_date = models.DateTimeField(auto_now=True)
+	creation_date = models.DateTimeField()
 
 class Interest(models.Model):
 	creator = models.ForeignKey(User, on_delete=models.CASCADE)
 	post_id = models.ForeignKey(Post, on_delete=models.CASCADE)
-	creation_date = models.DateTimeField(auto_now=True)
+	creation_date = models.DateTimeField(editable=False)

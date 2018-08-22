@@ -2,13 +2,13 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.template import loader
 from django.views import View
+from .models import User, Post, Connection
 from django.core.exceptions import ValidationError
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_protect
 from django.utils.decorators import method_decorator
 from django.contrib.auth import logout as site_logout
-
-from .models import User, Connection
+from django.utils import timezone
 
 # Create your views here.
 class welcome(View):
@@ -73,6 +73,10 @@ class index(View):
         #     user = User.objects.get(email=user.email)
         # except User.DoesNotExist:
         #     messages.error(request, "User with email: "+user.email+" does not exist")
+        posts = User.get_posts(user)
+        comments_list = []
+        for post in posts:
+            comments_list.append(Post.get_comments(post))
         #     return render(request, self.template_name)
         #get 9-18 connections
         connections = Connection.objects.filter(receiver=user,accepted=True) | Connection.objects.all().filter(creator=user,accepted=True)
@@ -82,12 +86,25 @@ class index(View):
                 friends.append(conn.receiver)
             else:
                 friends.append(conn.creator)
-        context = {'user':user,'friends':friends,}
-
-        context = {'user':user,'friends':friends}
+        context = {'user':user,'friends':friends, 'posts':posts, 'comments_list':comments_list,}
         return render(request, self.template_name, context=context)
 
     def post(self, request):
+        #get current user's details
+        user = User.objects.get(id=request.session['user_pk'])
+        context = {'user':user,}
+        if request.POST["button"] == "Submit status":
+            status = request.POST['status']
+            p = Post(creator=user, creation_date=timezone.now(), text=status)
+            #make sure the form is correct
+            try:
+                p.full_clean()
+            except ValidationError as v:
+                messages.error(request, "ValidationError:"+str(v.message_dict))
+                return render(request, self.template_name)
+            #save and redirect
+            p.save()
+            return redirect('/index/')
         return render(request, self.template_name)
 
 def logout(request):
