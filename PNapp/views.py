@@ -239,5 +239,13 @@ class overview(View):
     def get(self, request, pk):
         #return HttpResponse("overview"+str(pk))
         target_user = User.objects.get(id=pk)
-        context = {'target_user':target_user,}
+        #get all target_user's friends
+        friends = set()
+        connections = Connection.objects.filter(creator=target_user)
+        for conn in connections:    #conns with target as creator
+            friends.add(conn.receiver)
+        connections = Connection.objects.filter(receiver=target_user)
+        for conn in connections:    #conns with target as receiver
+            friends.add(conn.creator)
+        context = {'target_user':target_user,'friends':friends}
         return render(request, self.template_name, context)
