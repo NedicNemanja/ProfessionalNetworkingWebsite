@@ -2,13 +2,14 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.template import loader
 from django.views import View
-from .models import User, Post, Connection
+from .models import User, Post, Connection, Comment
 from django.core.exceptions import ValidationError
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_protect
 from django.utils.decorators import method_decorator
 from django.contrib.auth import logout as site_logout
 from django.utils import timezone
+from itertools import chain
 
 # Create your views here.
 class welcome(View):
@@ -74,9 +75,9 @@ class index(View):
         # except User.DoesNotExist:
         #     messages.error(request, "User with email: "+user.email+" does not exist")
         posts = User.get_posts(user)
-        comments_list = []
-        for post in posts:
-            comments_list.append(Post.get_comments(post))
+        #comments = Comment.objects.all()
+        # for post in post:
+        #     comments_list.append(Post.get_comments(post))
         #     return render(request, self.template_name)
         #get 9-18 connections
         connections = Connection.objects.filter(receiver=user,accepted=True) | Connection.objects.all().filter(creator=user,accepted=True)
@@ -86,7 +87,7 @@ class index(View):
                 friends.append(conn.receiver)
             else:
                 friends.append(conn.creator)
-        context = {'user':user,'friends':friends, 'posts':posts, 'comments_list':comments_list,}
+        context = {'user':user,'friends':friends, 'posts':posts,}
         return render(request, self.template_name, context=context)
 
     def post(self, request):
@@ -195,7 +196,11 @@ class search(View):
     template_name = 'PNapp/search.html'
 
     def get(self, request):
-        query = request.GET.get('q')
-        context = {}
-        return HttpResponse(query)
-        #return render(request, self.template_name, context=context)
+        query = request.GET["search_text"]
+        #if any word of the query is either a name or a surname then add user to results (not case-sensitive)
+        users = []
+        for str in query.split():
+            result = User.objects.filter(name__icontains=str) | User.objects.filter(surname__icontains=str)
+            users = users + list(result)
+        context = {'users':users,}
+        return render(request, self.template_name, context=context)

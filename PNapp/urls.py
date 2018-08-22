@@ -6,6 +6,7 @@ from PNapp.views import welcome, index, profile, network, search
 
 urlpatterns = [
     path('', welcome.as_view()),
+    #path('<int:>index/', index.as_view()),
     path('index/', index.as_view()),
     path('logout/',views.logout, name='logout'),
     path('profile/', profile.as_view()),

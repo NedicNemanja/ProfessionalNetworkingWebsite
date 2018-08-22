@@ -99,6 +99,9 @@ class Comment(models.Model):
 	post_id = models.ForeignKey(Post, on_delete=models.CASCADE)
 	text = models.CharField(max_length=512)
 	creation_date = models.DateTimeField()
+	
+	def __str__(self):
+		return self.text
 
 class Interest(models.Model):
 	creator = models.ForeignKey(User, on_delete=models.CASCADE)

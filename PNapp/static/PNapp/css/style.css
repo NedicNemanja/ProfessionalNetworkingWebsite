@@ -179,10 +179,10 @@ body, html{
  	margin-top: 70px;
 }
 
-/*h1.title { 
+/*h1.title {
 	font-size: 50px;
-	font-family: 'Passion One', cursive; 
-	font-weight: 400; 
+	font-family: 'Passion One', cursive;
+	font-weight: 400;
 }
 
 hr{
@@ -246,4 +246,8 @@ footer{
 	padding-top:40px;
 	margin-top:30px;
 	border-top:7px solid #04519b;
+}
+
+.search-name{
+	text-align: center;
 }

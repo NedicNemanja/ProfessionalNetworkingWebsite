@@ -59,11 +59,11 @@
           </ul>
           <form class="navbar-form navbar-left" action="/search" method="get">
             <!---NO CSRF TOKEN HERE. THEY GET LEAKED WITH GET REQUESTS -->
-            <div class="form-group">
-              <input type="text" class="form-control" placeholder="Search">
-            </div>
-            <button type="submit" class="btn btn-default">Submit</button>
-          </form>
+  	        <div class="form-group">
+  	          <input type="text" class="form-control" name="search_text" placeholder="Search">
+  	        </div>
+  	        <button type="submit" class="btn btn-default" name="button" value="search_button">Submit</button>
+	        </form>
           <ul class="nav navbar-nav navbar-right">
             <li><a href="/logout/">Log out</a></li>
           </ul>
@@ -75,25 +75,29 @@
       <div class="container">
         <div class="row">
           <div class="col-md-12">
-            <div class="panel panel-default friends">
-              <!-- <div class="panel-heading">
-                <h3 class="panel-title">My Friends</h3>
-              </div> -->
-              <div class="panel-body">
-                <ul>
-                  {% for friend in friends%}
-                    <li><a class="thumbnail" href="profile.html">
-                        <img src={{friend.profile_photo.url}}></a>
-                        <b>{{friend.name}}</b>
-                        <b>{{friend.surname}}</b>
-                    </li>
-                  {% endfor %}
-                </ul>
-                <div class="clearfix"></div>
-                <!-- <a class="btn btn-primary" href="#">View All Friends</a> -->
+           <div class="members">
+            <h1 class="page-header">PNsite Users</h1>
+            {% for user in users%}
+              <div class="row member-row">
+                <div class="col-md-3">
+                  <img src="{{user.profile_photo.url}}" class="img-thumbnail">
+                  <div class="search-name"><h3>{{user.name}} {{user.surname}}</h3></div>
+                </div>
+                <div class="col-md-3">
+                  <p><a href="#" class="btn btn-success btn-block"><i class="fa fa-users"></i> Add Friend</a></p>
+                </div>
+                <div class="col-md-3">
+                  <p><a href="#" class="btn btn-default btn-block"><i class="fa fa-envelope"></i> Send Message</a></p>
+
+                </div>
+                <div class="col-md-3">
+                  <p><a href="#" class="btn btn-primary btn-block"><i class="fa fa-edit"></i> View Profile</a></p>
+
+                </div>
               </div>
-            </div>
-          </div>
+            {% endfor %}
+           </div>
+          </div><!-- col-md-12 end -->
         </div>
       </div>
 

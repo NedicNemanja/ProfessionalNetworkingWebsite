@@ -60,9 +60,9 @@
           <form class="navbar-form navbar-left" action="/search" method="get">
             <!---NO CSRF TOKEN HERE. THEY GET LEAKED WITH GET REQUESTS -->
   	        <div class="form-group">
-  	          <input type="text" class="form-control" placeholder="Search">
+  	          <input type="text" class="form-control" name="search_text" placeholder="Search">
   	        </div>
-  	        <button type="submit" class="btn btn-default">Submit</button>
+  	        <button type="submit" class="btn btn-default" name="button" value="search_button">Submit</button>
 	        </form>
           <ul class="nav navbar-nav navbar-right">
             <li><a href="/logout/">Log out</a></li>
@@ -126,8 +126,8 @@
                 <a class="btn btn-primary" href="#">View All Friends</a>
               </div>
             </div>
-
           </div>
+
           <div class="col-md-8">
             <div class="panel panel-default">
               <div class="panel-heading">
@@ -173,25 +173,24 @@
                         <p class="post-actions"><a href="#">Interest</a> - <a href="#">Comment</a> - 7 Interested</p>
                         <div class="comment-form">
                           <form class="form-inline" method="post">{% csrf_token %}
-                            <div class="form-group">
+                            <div class="form-group" >
                               <input type="text" class="form-control" name="comment" placeholder="Enter Comment">
                             </div>
                             <button type="submit" value="Submit comment" name="button" class="btn btn-default">Add</button>
                           </form>
                         </div><!-- comment form end -->
                         <div class="clearfix"></div>
-                        {% if comments_list %}
-                          {% for comment in comments_list %}
-                            {% if comment.post_id == post.id%}
-                              <div class="comments">
-                                <div class="comment">
-                                  <a class="comment-avatar pull-left" href="#"><img src="img/user.png"></a>
-                                  <div class="comment-text">
-                                    <p>{{ comment.text }}</p>
-                                  </div>
-                                </div>
-                              <div class="clearfix"></div>
-                            {% endif %}
+                        {% if post.comment_set.all %}
+                          {% for comment in post.comment_set.all %}
+                          <div class="comments">
+                            <div class="comment">
+                              <a class="comment-avatar pull-left" href="#"><img src="{{ post.creator.profile_photo.url }}"></a>
+                              <div class="comment-text">
+                                {{ comment.text }}
+                              </div>
+                            </div>
+                            <div class="clearfix"></div>
+                          </div>
                           {% endfor %}
                         {% endif %}
                       </div>
