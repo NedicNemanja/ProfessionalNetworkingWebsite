@@ -81,14 +81,26 @@
                 <h3 class="panel-title">Personal Details</h3>
               </div>
               <div class="panel-body">
-                <div><img src="{{ target_user.profile_photo.url }}" alt="User Profile Picture" class="personal-details-avatar"></div>
-                <div>{{ target_user.name }} {{target_user.surname}}</div>
-                <div>{{ target_user.email }}</div>
-                <div>{{ target_user.university }}</div>
-                <div>{{ target_user.degree_subject }}</div>
-                <div>{{ target_user.company }}</div>
-                <div>{{ target_user.position }}</div>
-                <div>{{ target_user.phone }}</div>
+                <div><img src="{{ target_user.profile_photo.url }}" alt="User Profile Picture" class="img-thumbnail"></div>
+                <div><strong>Name: </strong>{{ target_user.name }} {{target_user.surname}}</div>
+                {% if target_user.email_public %}
+                  <div><strong>Email: </strong>{{ target_user.email }}</div>
+                {% endif %}
+                {% if target_user.university_public %}
+                  <div><strong>Education: </strong>{{ target_user.university }}</div>
+                {% endif %}
+                {% if target_user.degree_subject_public %}
+                  <div><strong>Degree's Subject: </strong>{{ target_user.degree_subject }}</div>
+                {% endif %}
+                {% if target_user.company_public %}
+                  <div><strong>Current Company: </strong>{{ target_user.company }}</div>
+                {% endif %}
+                {% if target_user.position_public %}
+                  <div><strong>Current Position: </strong>{{ target_user.position }}</div>
+                {% endif %}
+                {% if target_user.phone_public %}
+                  <div><strong>Phone Number: </strong>{{ target_user.phone }}</div>
+                {% endif %}
                 <!-- <div><button class="btn btn-default" onclick="location.href='/profile/'" type="button">Edit details</button></div> -->
                 <!-- <div class="group-item">
                   <img src="img/group.png">
@@ -138,7 +150,8 @@
               <ul>
                 {% for friend in friends%}
                   <li><a class="comment-avatar" href="profile.html">
-                      <img src={{friend.profile_photo.url}}></a>
+                        <img src={{friend.profile_photo.url}}>
+                      </a>
                       <div>{{friend.name}}</div>
                       <div>{{friend.surname}}</div>
                   </li>
