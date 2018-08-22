@@ -269,9 +269,9 @@ class overview(View):
     template_name = 'PNapp/overview.html'
 
     def get(self, request, pk):
-        #test session
+        #get current user's details
         try:
-            userpk = request.session['user_pk']
+            user = User.objects.get(id=request.session['user_pk'])
         except KeyError:    #user not logged in
             return redirect('/')
         target_user = User.objects.get(id=pk)
@@ -283,6 +283,8 @@ class overview(View):
         connections = Connection.objects.filter(receiver=target_user)
         for conn in connections:    #conns with target as receiver
             friends.add(conn.creator)
-        connected_users = False
-        context = {'target_user':target_user,'friends':friends, 'connected_users':connected_users,}
+        #get status of friendship in order to decide the context of add button
+        connected_users = Connection.objects.filter(creator=user,receiver=target_user,accepted=True).exists() | Connection.objects.filter(creator=target_user,receiver=user,accepted=True).exists()
+        request_exists = Connection.objects.filter(creator=user,receiver=target_user).exists() | Connection.objects.filter(creator=target_user,receiver=user).exists()
+        context = {'target_user':target_user,'friends':friends, 'connected_users':connected_users,'request_exists':request_exists}
         return render(request, self.template_name, context)
