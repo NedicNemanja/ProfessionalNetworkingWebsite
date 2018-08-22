@@ -118,8 +118,8 @@
               </div>
               <div class="panel-body">
                 <ul>
-                  {% for friend in friends%}
-                    <li><a class="thumbnail" href="profile.html"><img src={{friend.profile_photo.url}}></a></li>
+                  {% for friend in friends %}
+                    <li><a class="comment-avatar" href="profile.html"><img src={{friend.profile_photo.url}}></a></li>
                   {% endfor %}
                 </ul>
                 <div class="clearfix"></div>
@@ -176,7 +176,7 @@
                             <div class="form-group" >
                               <input type="text" class="form-control" name="comment" placeholder="Enter Comment">
                             </div>
-                            <button type="submit" value="Submit comment" name="button" class="btn btn-default">Add</button>
+                            <button type="submit" value="{{post.id}}" name="comment-button" class="btn btn-default">Add</button>
                           </form>
                         </div><!-- comment form end -->
                         <div class="clearfix"></div>
