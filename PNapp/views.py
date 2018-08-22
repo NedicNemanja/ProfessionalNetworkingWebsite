@@ -29,7 +29,7 @@ class welcome(View):
             try:
                 user = User.objects.get(email=email)
             except User.DoesNotExist:
-                messages.error(request, "User with email: "+email+" does not exist")
+                messages.info(request, "User with email: "+email+" does not exist")
                 return render(request, self.template_name)
             #autheniticate password
             if User.autheniticate(user,password):
@@ -37,7 +37,7 @@ class welcome(View):
                 request.session['user_pk'] = user.id
                 return redirect('index/')
             else:
-                messages.error(request, "Wrong Password")
+                messages.info(request, "Wrong Password")
                 return render(request, self.template_name)
         #post request for Registering a new user
         elif request.POST['button'] == "Register":
@@ -54,14 +54,14 @@ class welcome(View):
                 try:
                     u.full_clean()
                 except ValidationError as v:
-                    messages.error(request, "ValidationError:"+str(v.message_dict))
+                    messages.info(request, "ValidationError:"+str(v.message_dict))
                     return render(request, self.template_name)
                 #save and redirect
                 u.save()
                 request.session['user_pk'] = u.id
                 return redirect('index/')
             else:
-                messages.error(request, "Passwords don't match")
+                messages.info(request, "Passwords don't match")
                 return render(request, self.template_name)
 
 class index(View):
@@ -93,7 +93,7 @@ class index(View):
                 try:
                     p.full_clean()
                 except ValidationError as v:
-                    messages.error(request, "ValidationError:"+str(v.message_dict))
+                    messages.info(request, "ValidationError:"+str(v.message_dict))
                     return render(request, self.template_name)
                 #save and redirect
                 p.save()
@@ -106,7 +106,7 @@ class index(View):
             try:
                 c.full_clean()
             except ValidationError as v:
-                messages.error(request, "ValidationError:"+str(v.message_dict))
+                messages.info(request, "ValidationError:"+str(v.message_dict))
                 return render(request, self.template_name)
             #save and redirect
             c.save()
@@ -146,11 +146,11 @@ class profile(View):
                 # If the new email is already used
                 if User.objects.filter(email=new_email).exists():
                     # Then show message that user with that email already exists
-                    messages.error(request, "User with email: " + new_email + " already exists.")
+                    messages.info(request, "User with email: " + new_email + " already exists.")
                     return render(request, self.template_name)
             # If password is different from the password's confirmation
             if request.POST['password'] != request.POST['cpassword']:
-                messages.error(request, "Passwords should be the same.")
+                messages.info(request, "Passwords should be the same.")
                 return render(request, self.template_name)
 
             # Make the changes he did
@@ -167,7 +167,7 @@ class profile(View):
             try:
                 user.full_clean()
             except ValidationError as v:
-                messages.error(request, "ValidationError:"+str(v.message_dict))
+                messages.info(request, "ValidationError:"+str(v.message_dict))
                 return render(request, self.template_name)
 
             user.save()
@@ -197,15 +197,43 @@ class network(View):
         context = {'user':user,}
         return render(request, self.template_name, context=context)
 
+
+class mymessages(View):
+    template_name = 'PNapp/messages.html'
+
+    def get(self, request):
+        print("here-------------")
+        return HttpResponse("Message")
+
+
 class search(View):
     template_name = 'PNapp/search.html'
 
     def get(self, request):
         query = request.GET["search_text"]
-        #if any word of the query is either a name or a surname then add user to results (not case-sensitive)
-        users = []
+        #if any word of the query is either a name or a surname then add user to set (not case-sensitive)
+        users = set()
         for str in query.split():
             result = User.objects.filter(name__icontains=str) | User.objects.filter(surname__icontains=str)
-            users = users + list(result)
+            print(set(result))
+            users.update(set(result))
         context = {'users':users,}
         return render(request, self.template_name, context=context)
+
+    def post(self, request):
+        userid = request.POST['add user']
+        receiver = User.objects.get(id=userid)
+        creator = User.objects.get(id=request.session['user_pk'])
+        #check weather there is already a connection between creator-receiver
+        conn_exists = Connection.objects.filter(creator=creator,receiver=receiver) | Connection.objects.filter(creator=receiver,receiver=creator)
+        if conn_exists.count() == 0:
+            conn = Connection.objects.create(creator=creator,receiver=receiver,accepted=False)
+            return HttpResponse(conn)
+        else:
+            messages.info(request, "Connection already exists.")
+            return render(request, self.template_name, context=context)
+
+class overview(View):
+
+    def get(self, request, pk):
+        return HttpResponse("overview"+str(pk))
