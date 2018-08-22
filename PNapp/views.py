@@ -234,6 +234,10 @@ class search(View):
             return render(request, self.template_name, context=context)
 
 class overview(View):
+    template_name = 'PNapp/overview.html'
 
     def get(self, request, pk):
-        return HttpResponse("overview"+str(pk))
+        #return HttpResponse("overview"+str(pk))
+        target_user = User.objects.get(id=pk)
+        context = {'target_user':target_user,}
+        return render(request, self.template_name, context)
