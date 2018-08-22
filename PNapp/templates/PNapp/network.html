@@ -57,7 +57,8 @@
             <li><a href="/profile/">Profile</a></li>
             <li><a href="#">Settings</a></li>
           </ul>
-          <form class="navbar-form navbar-left">{% csrf_token %}
+          <form class="navbar-form navbar-left" action="/search" method="get">
+            <!---NO CSRF TOKEN HERE. THEY GET LEAKED WITH GET REQUESTS -->
             <div class="form-group">
               <input type="text" class="form-control" placeholder="Search">
             </div>
@@ -75,13 +76,17 @@
         <div class="row">
           <div class="col-md-12">
             <div class="panel panel-default friends">
-              <!-- <div class="panel-heading">
-                <h3 class="panel-title">My Friends</h3>
-              </div> -->
+              <div class="panel-heading">
+                <h3 class="panel-title">My Network</h3>
+              </div>
               <div class="panel-body">
                 <ul>
                   {% for friend in friends%}
-                    <li><a class="thumbnail" href="profile.html"><img src={{friend.profile_photo.url}}></a></li>                    
+                    <li><a class="thumbnail" href="profile.html">
+                        <img src={{friend.profile_photo.url}}></a>
+                        <b>{{friend.name}}</b>
+                        <b>{{friend.surname}}</b>
+                    </li>
                   {% endfor %}
                 </ul>
                 <div class="clearfix"></div>
