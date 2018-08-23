@@ -74,15 +74,27 @@
     <section>
       <div class="container">
         <div class="row">
-          <div class="col-md-8">
-            <div class="profile">
-              <h1 class="page-header">{{ user.name }} {{ user.surname }}</h1>
-              <div class="row">
-                <div class="col-md-4">
-                  <img src="{{ user.profile_photo.url }}" class="img-thumbnail">
-                </div>
-                <div class="col-md-8">
-                  <form class="form-horizontal" method="post">{% csrf_token %}
+          <form class="form-horizontal" method="post">{% csrf_token %}
+            <div class="col-md-8">
+              <div class="profile">
+                <h1 class="page-header">{{ user.name }} {{ user.surname }}</h1>
+                <div class="row">
+                  <div class="col-md-4">
+                    <img src="{{ user.profile_photo.url }}" class="img-thumbnail">
+                    <div class="panel-default profile-panel">
+                      <div class="panel-body">
+                        <div class="text-center">
+                          <strong>Pick new profile picture:</strong>
+                        </div>
+                        <label class="btn btn-default btn-file">
+                            <!-- The file is stored here. -->
+                            <input type="file" name="image-file">
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-8">
+                  
                     <div class="form-group">
                       <label class="col-lg-4 control-label">First name:</label>
                       <div class="col-lg-8">
@@ -147,7 +159,7 @@
                     <div class="messages">
                       <ul>
                         {% for message in messages %}
-                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                          <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
                         {% endfor %}
                       </ul>
                     </div>
@@ -160,105 +172,11 @@
                         <input class="btn btn-default" value="Cancel" type="reset">
                       </div>
                     </div>
-                  </form>
-                  <!-- <ul>
-                    <li><strong>Name: </strong>{{ user.name }}</li>
-                    <li><strong>Surname: </strong>{{ user.surname }}</li>
-                    <li><strong>Email Address: </strong>{{ user.email }}</li>
-                    <li><strong>Phone Number: </strong>{{ user.phone }}</li>
-                    <li><strong>Education: </strong>{{ user.university }}</li>
-                    <li><strong>Degree's Subject: </strong>{{ user.degree_subject }}</li>
-                    <li><strong>Current Company: </strong>{{ user.company }}</li>
-                    <li><strong>Current Position: </strong>{{ user.position }}</li>
-                  </ul> -->
-
-                </div>
-              </div>
-            </div>
-          </div>
-              <!--<br></br>
-              <div class="row">
-                <div class="col-md-12">
-                  <div class="panel panel-default">
-              <div class="panel-heading">
-                <h3 class="panel-title">Profile Wall</h3>
-              </div>
-              <div class="panel-body">
-                <form>
-                  <div class="form-group">
-                    <textarea class="form-control" placeholder="Write on the wall"></textarea>
-                  </div>
-
-                  <button type="submit" class="btn btn-default">Submit</button>
-                  <div class="pull-right">
-                    <div class="btn-group">
-                    <button type="button" class="btn btn-default"><i class="fa fa-pencil"></i> Text</button>
-                    <button type="button" class="btn btn-default"><i class="fa fa-file-image-o"></i> Image</button>
-                    <button type="button" class="btn btn-default"> <i class="fa fa-file-video-o"></i> Video</button>
-                  </div>
                   </div>
                 </form>
-              </div>
-            </div>
-                </div>
-              </div>
+              </div><!-- row's end -->
             </div>
           </div>
-
-          <div class="col-md-4">
-            <div class="panel panel-default friends">
-              <div class="panel-heading">
-                <h3 class="panel-title">My Friends</h3>
-              </div>
-              <div class="panel-body">
-                <ul>
-                  <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
-                  <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
-                  <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
-                  <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
-                  <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
-                  <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
-                  <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
-                  <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
-                  <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
-                  <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
-                  <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
-                  <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
-                </ul>
-                <div class="clearfix"></div>
-                <a class="btn btn-primary" href="#">View All Friends</a>
-              </div>
-            </div>
-
-            <div class="panel panel-default groups">
-              <div class="panel-heading">
-                <h3 class="panel-title">Latest Groups</h3>
-              </div>
-              <div class="panel-body">
-                <div class="group-item">
-                  <img src="img/group.png">
-                  <h4><a href="#">Sample Group One</a></h4>
-                  <p>This is a Dobble social network sample group</p>
-                </div>
-                <div class="clearfix"></div>
-                <div class="group-item">
-                  <img src="img/group.png">
-                  <h4><a href="#">Sample Group One</a></h4>
-                  <p>This is a Dobble social network sample group</p>
-                </div>
-                <div class="clearfix"></div>
-                <div class="group-item">
-                  <img src="img/group.png">
-                  <h4><a href="#">Sample Group One</a></h4>
-                  <p>This is a Dobble social network sample group</p>
-                </div>
-                <div class="clearfix"></div>
-                <a class="btn btn-primary" href="#">View All Groups</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>-->
           <div class="col-md-4">
           </div>
         </div>
