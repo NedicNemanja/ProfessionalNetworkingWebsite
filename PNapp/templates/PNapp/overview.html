@@ -74,96 +74,94 @@
     <section>
       <div class="container">
         <div class="row">
-        	<div class="col-md-6">
-
-            <div class="panel panel-default personal-details">
-              <div class="panel-heading">
-                <h3 class="panel-title">Personal Details</h3>
-              </div>
-              <div class="panel-body">
-                <div><img src="{{ target_user.profile_photo.url }}" alt="User Profile Picture" class="img-thumbnail"></div>
-                <div><strong>Name: </strong>{{ target_user.name }} {{target_user.surname}}</div>
-                {% if target_user.email_public %}
+          {% if connected_users %}
+            <div class="col-md-6">
+              <div class="panel panel-default personal-details">
+                <div class="panel-heading">
+                  <h3 class="panel-title">Personal Details</h3>
+                </div>
+                <div class="panel-body">
+                  <div><img src="{{ target_user.profile_photo.url }}" alt="User Profile Picture" class="img-thumbnail"></div>
+                  <div><strong>Name: </strong>{{ target_user.name }} {{target_user.surname}}</div>
                   <div><strong>Email: </strong>{{ target_user.email }}</div>
-                {% endif %}
-                {% if target_user.university_public %}
                   <div><strong>Education: </strong>{{ target_user.university }}</div>
-                {% endif %}
-                {% if target_user.degree_subject_public %}
                   <div><strong>Degree's Subject: </strong>{{ target_user.degree_subject }}</div>
-                {% endif %}
-                {% if target_user.company_public %}
                   <div><strong>Current Company: </strong>{{ target_user.company }}</div>
-                {% endif %}
-                {% if target_user.position_public %}
                   <div><strong>Current Position: </strong>{{ target_user.position }}</div>
-                {% endif %}
-                {% if target_user.phone_public %}
                   <div><strong>Phone Number: </strong>{{ target_user.phone }}</div>
-                {% endif %}
-                <!-- <div><button class="btn btn-default" onclick="location.href='/profile/'" type="button">Edit details</button></div> -->
-                <!-- <div class="group-item">
-                  <img src="img/group.png">
-                  <h4><a href="#">Sample Group One</a></h4>
-                  <p>This is a Dobble social network sample group</p>
+                  <div class="col-md-4"></div>
+                  <div class="col-md-4">
+                    <p><a href="/messages/" class="btn btn-default btn-block btn"><i class="fa fa-envelope"></i> Send Message</a></p>
+                  </div>
+                  <div class="col-md-4"></div>
                 </div>
-                <div class="clearfix"></div>
-                <div class="group-item">
-                  <img src="img/group.png">
-                  <h4><a href="#">Sample Group One</a></h4>
-                  <p>This is a Dobble social network sample group</p>
-                </div>
-                <div class="clearfix"></div>
-                <div class="group-item">
-                  <img src="img/group.png">
-                  <h4><a href="#">Sample Group One</a></h4>
-                  <p>This is a Dobble social network sample group</p>
-                </div>
-                <div class="clearfix"></div>
-                <a class="btn btn-primary" href="#">View All Groups</a>-->
               </div>
-            </div>
+            </div><!-- col-md-6 end -->
 
-            <!-- <div class="panel panel-default friends">
-              <div class="panel-heading">
-                <h3 class="panel-title">My Friends</h3>
+            <div class="col-md-6">
+              <div class="panel panel-default friends">
+                <div class="panel-heading">
+                  <h3 class="panel-title">{{ target_user.name }} {{target_user.surname}}'s Network</h3>
+                </div>
+                <div class="panel-body">
+                  <ul>
+                    {% for friend in friends%}
+                      <li><a class="comment-avatar" href="profile.html">
+                            <img src={{friend.profile_photo.url}}>
+                          </a>
+                          <div>{{friend.name}}</div>
+                          <div>{{friend.surname}}</div>
+                      </li>
+                    {% endfor %}
+                  </ul>
+                  <div class="clearfix"></div>
+                </div>
               </div>
-              <div class="panel-body">
-                <ul>
-                  {% for friend in friends %}
-                    <li><a class="comment-avatar" href="profile.html"><img src={{friend.profile_photo.url}}></a></li>
-                  {% endfor %}
-                </ul>
-                <div class="clearfix"></div>
-                <a class="btn btn-primary" href="#">View All Friends</a>
+            </div><!-- col-md-6 end -->
+          {% else %}<!-- end of the section of connected users  -->
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+              <div class="panel panel-default personal-details">
+                <div class="panel-heading">
+                  <h3 class="panel-title">Personal Details</h3>
+                </div>
+                <div class="panel-body">
+                  <div><img src="{{ target_user.profile_photo.url }}" alt="User Profile Picture" class="img-thumbnail"></div>
+                  <div><strong>Name: </strong>{{ target_user.name }} {{target_user.surname}}</div>
+                  {% if target_user.email_public %}
+                    <div><strong>Email: </strong>{{ target_user.email }}</div>
+                  {% endif %}
+                  {% if target_user.university_public %}
+                    <div><strong>Education: </strong>{{ target_user.university }}</div>
+                  {% endif %}
+                  {% if target_user.degree_subject_public %}
+                    <div><strong>Degree's Subject: </strong>{{ target_user.degree_subject }}</div>
+                  {% endif %}
+                  {% if target_user.company_public %}
+                    <div><strong>Current Company: </strong>{{ target_user.company }}</div>
+                  {% endif %}
+                  {% if target_user.position_public %}
+                    <div><strong>Current Position: </strong>{{ target_user.position }}</div>
+                  {% endif %}
+                  {% if target_user.phone_public %}
+                    <div><strong>Phone Number: </strong>{{ target_user.phone }}</div>
+                  {% endif %}
+                  <div class="col-md-5">
+                    <form method="post">{% csrf_token %}
+                      <button type="submit" value="{{user.id}}" class="btn btn-success btn-block" name="add user"><i class="fa fa-users"></i> Add Friend</button>
+                    </form>
+                  </div>
+                  <div class="col-md-2"></div>
+                  <div class="col-md-5">
+                    <p><a href="/messages/" class="btn btn-default btn-block btn"><i class="fa fa-envelope"></i> Send Message</a></p>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div> -->
-
+            </div><!-- col-md-6 end -->
+            <div class="col-md-3"></div>
+          {% endif %}<!-- end of the section of not connected users -->
         </div>
-        <div class="col-md-6">
-          <div class="panel panel-default friends">
-            <div class="panel-heading">
-              <h3 class="panel-title">{{ target_user.name }} {{target_user.surname}}'s Network</h3>
-            </div>
-            <div class="panel-body">
-              <ul>
-                {% for friend in friends%}
-                  <li><a class="comment-avatar" href="profile.html">
-                        <img src={{friend.profile_photo.url}}>
-                      </a>
-                      <div>{{friend.name}}</div>
-                      <div>{{friend.surname}}</div>
-                  </li>
-                {% endfor %}
-              </ul>
-              <div class="clearfix"></div>
-              <!-- <a class="btn btn-primary" href="#">View All Friends</a> -->
-            </div>
-          </div>
-        </div><!-- col-md-8 end -->
       </div>
-
     </section>
 
     <footer>

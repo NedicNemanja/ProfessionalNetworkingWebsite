@@ -247,5 +247,6 @@ class overview(View):
         connections = Connection.objects.filter(receiver=target_user)
         for conn in connections:    #conns with target as receiver
             friends.add(conn.creator)
-        context = {'target_user':target_user,'friends':friends}
+        connected_users = False
+        context = {'target_user':target_user,'friends':friends, 'connected_users':connected_users,}
         return render(request, self.template_name, context)

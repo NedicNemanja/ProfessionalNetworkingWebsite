@@ -255,3 +255,8 @@ footer{
 .search-name{
 	text-align: center;
 }
+
+.overview-panel {
+	height: 50%;
+	width: 50%
+}
