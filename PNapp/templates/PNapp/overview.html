@@ -83,12 +83,24 @@
                 <div class="panel-body">
                   <div><img src="{{ target_user.profile_photo.url }}" alt="User Profile Picture" class="img-thumbnail"></div>
                   <div><strong>Name: </strong>{{ target_user.name }} {{target_user.surname}}</div>
-                  <div><strong>Email: </strong>{{ target_user.email }}</div>
-                  <div><strong>Education: </strong>{{ target_user.university }}</div>
-                  <div><strong>Degree's Subject: </strong>{{ target_user.degree_subject }}</div>
-                  <div><strong>Current Company: </strong>{{ target_user.company }}</div>
-                  <div><strong>Current Position: </strong>{{ target_user.position }}</div>
-                  <div><strong>Phone Number: </strong>{{ target_user.phone }}</div>
+                  {% if target_user.email_public %}
+                    <div><strong>Email: </strong>{{ target_user.email }}</div>
+                  {% endif %}
+                  {% if target_user.university_public %}
+                    <div><strong>Education: </strong>{{ target_user.university }}</div>
+                  {% endif %}
+                  {% if target_user.degree_subject_public %}
+                    <div><strong>Degree's Subject: </strong>{{ target_user.degree_subject }}</div>
+                  {% endif %}
+                  {% if target_user.company_public %}
+                    <div><strong>Current Company: </strong>{{ target_user.company }}</div>
+                  {% endif %}
+                  {% if target_user.position_public %}
+                    <div><strong>Current Position: </strong>{{ target_user.position }}</div>
+                  {% endif %}
+                  {% if target_user.phone_public %}
+                    <div><strong>Phone Number: </strong>{{ target_user.phone }}</div>
+                  {% endif %}
                   <div class="col-md-4"></div>
                   <div class="col-md-4">
                     <p><a href="/messages/" class="btn btn-default btn-block btn"><i class="fa fa-envelope"></i> Send Message</a></p>
@@ -148,7 +160,11 @@
                   {% endif %}
                   <div class="col-md-5">
                     <form method="post">{% csrf_token %}
-                      <button type="submit" value="{{user.id}}" class="btn btn-success btn-block" name="add user"><i class="fa fa-users"></i> Add Friend</button>
+                      {% if request_exists %}
+                        <button type="button" class="btn btn-success btn-block" ><i class="fa fa-users"></i> Request Pending</button>
+                      {% else %}
+                        <button type="submit" value="{{user.id}}" class="btn btn-success btn-block" name="add user"><i class="fa fa-users"></i> Add Friend</button>
+                      {% endif %}
                     </form>
                   </div>
                   <div class="col-md-2"></div>
