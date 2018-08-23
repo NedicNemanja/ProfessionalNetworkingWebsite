@@ -68,7 +68,11 @@ class index(View):
     template_name = 'PNapp/index.html'
 
     def get(self, request):
-        user = User.objects.get(id=request.session['user_pk'])
+        try:
+            user = User.objects.get(id=request.session['user_pk'])
+        except KeyError:    #user not logged in
+            return redirect('/')
+
         posts = User.get_posts(user)
         #get 9-18 connections
         connections = Connection.objects.filter(receiver=user,accepted=True) | Connection.objects.all().filter(creator=user,accepted=True)
@@ -83,7 +87,10 @@ class index(View):
 
     def post(self, request):
         #get current user's details
-        user = User.objects.get(id=request.session['user_pk'])
+        try:
+            user = User.objects.get(id=request.session['user_pk'])
+        except KeyError:    #user not logged in
+            return redirect('/')
         context = {'user':user,}
         if request.POST.get("button", False):
             if request.POST["button"] == "Submit status":
@@ -124,7 +131,10 @@ class profile(View):
 
     def get(self, request):
         #get current user's details
-        user = User.objects.get(id=request.session['user_pk'])
+        try:
+            user = User.objects.get(id=request.session['user_pk'])
+        except KeyError:    #user not logged in
+            return redirect('/')
         # LOGIKA KAI AFT AXRIASTO AN REQUIRE LOGIN?
         # user_id = request.session['user_pk']
         # try:
@@ -137,7 +147,10 @@ class profile(View):
 
     def post(self, request):
         #get current user's details
-        user = User.objects.get(id=request.session['user_pk'])
+        try:
+            user = User.objects.get(id=request.session['user_pk'])
+        except KeyError:    #user not logged in
+            return redirect('/')
         # If user pressed save his new details
         new_email = request.POST['email']
         if request.POST["button"] == "Save Changes":
@@ -179,7 +192,10 @@ class network(View):
     template_name = 'PNapp/network.html'
     def get(self, request):
         #get current user's details
-        user = User.objects.get(id=request.session['user_pk'])
+        try:
+            user = User.objects.get(id=request.session['user_pk'])
+        except KeyError:    #user not logged in
+            return redirect('/')
         #get all the connections
         connections = Connection.objects.filter(receiver=user,accepted=True) | Connection.objects.all().filter(creator=user,accepted=True)
         friends = []
@@ -193,7 +209,10 @@ class network(View):
 
     def post(self, request):
         #get current user's details
-        user = User.objects.get(id=request.session['user_pk'])
+        try:
+            user = User.objects.get(id=request.session['user_pk'])
+        except KeyError:    #user not logged in
+            return redirect('/')
         context = {'user':user,}
         return render(request, self.template_name, context=context)
 
@@ -202,6 +221,11 @@ class mymessages(View):
     template_name = 'PNapp/messages.html'
 
     def get(self, request):
+        #test if session active
+        try:
+            session_test_pk = request.session['user_pk']
+        except KeyError:    #user not logged in
+            return redirect('/')
         print("here-------------")
         return HttpResponse("Message")
 
@@ -210,6 +234,11 @@ class search(View):
     template_name = 'PNapp/search.html'
 
     def get(self, request):
+        #test if session active
+        try:
+            session_test_pk = request.session['user_pk']
+        except KeyError:    #user not logged in
+            return redirect('/')
         query = request.GET["search_text"]
         #if any word of the query is either a name or a surname then add user to set (not case-sensitive)
         users = set()
@@ -223,7 +252,10 @@ class search(View):
     def post(self, request):
         userid = request.POST['add user']
         receiver = User.objects.get(id=userid)
-        creator = User.objects.get(id=request.session['user_pk'])
+        try:
+            creator = User.objects.get(id=request.session['user_pk'])
+        except KeyError:    #user not logged in
+            return redirect('/')
         #check weather there is already a connection between creator-receiver
         conn_exists = Connection.objects.filter(creator=creator,receiver=receiver) | Connection.objects.filter(creator=receiver,receiver=creator)
         if conn_exists.count() == 0:
@@ -237,7 +269,11 @@ class overview(View):
     template_name = 'PNapp/overview.html'
 
     def get(self, request, pk):
-        #return HttpResponse("overview"+str(pk))
+        #test session
+        try:
+            userpk = request.session['user_pk']
+        except KeyError:    #user not logged in
+            return redirect('/')
         target_user = User.objects.get(id=pk)
         #get all target_user's friends
         friends = set()
