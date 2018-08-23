@@ -111,30 +111,35 @@
                       <label class="col-lg-4 control-label">Phone Number:</label>
                       <div class="col-lg-8">
                         <input type="text" name="phone" value="{{ user.phone }}">
+                        <div><input type="checkbox" name="phone_privacy" {% if user.phone_public %}checked{% endif %}> Show phone number in public.</div>
                       </div>
                     </div>
                     <div class="form-group">
                       <label class="col-lg-4 control-label">Education:</label>
                       <div class="col-lg-8">
                         <input type="text" name="university" value="{{ user.university }}">
+                        <div><input type="checkbox" name="university_privacy" {% if user.university_public %}checked{% endif %}> Show university in public.</div>
                       </div>
                     </div>
                     <div class="form-group">
                       <label class="col-lg-4 control-label">Degree's Subject:</label>
                       <div class="col-lg-8">
                         <input type="text" name="degree_subject" value="{{ user.degree_subject }}">
+                        <div><input type="checkbox" name="degree_subject_privacy" {% if user.degree_subject_public %}checked{% endif %}> Show degree's subject in public.</div>
                       </div>
                     </div>
                     <div class="form-group">
                       <label class="col-lg-4 control-label">Current Company:</label>
                       <div class="col-lg-8">
                         <input type="text" name="company" value="{{ user.company }}">
+                        <div><input type="checkbox" name="company_privacy" {% if user.company_public %}checked{% endif %}> Show company in public.</div>
                       </div>
                     </div>
                     <div class="form-group">
                       <label class="col-lg-4 control-label">Current Position:</label>
                       <div class="col-lg-8">
                         <input type="text" name="position" value="{{ user.position }}">
+                        <div><input type="checkbox" name="position_privacy" {% if user.position_public %}checked{% endif %}> Show position in public.</div>
                       </div>
                     </div>
                     {% if messages %}

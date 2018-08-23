@@ -151,10 +151,30 @@ class profile(View):
             user.name = request.POST['name']
             user.surname = request.POST['surname']
             user.phone = request.POST['phone']
+            if request.POST.get("phone_privacy", False):
+                user.phone_public = True
+            else:
+                user.phone_public = False
             user.university = request.POST['university']
+            if request.POST.get("university_privacy", False):
+                user.university_public = True
+            else:
+                user.university_public = False
             user.degree_subject = request.POST['degree_subject']
+            if request.POST.get("degree_subject_privacy", False):
+                user.degree_subject_public = True
+            else:
+                user.degree_subject_public = False
             user.company = request.POST['company']
+            if request.POST.get("company_privacy", False):
+                user.company_public = True
+            else:
+                user.company_public = False
             user.position = request.POST['position']
+            if request.POST.get("position_privacy", False):
+                user.position_public = True
+            else:
+                user.position_public = False
 
             try:
                 user.full_clean()
@@ -310,6 +330,10 @@ class settings(View):
 
             # Make the changes he did
             user.email = request.POST['email']
+            if request.POST.get("email_privacy", False):
+                user.email_public = True
+            else:
+                user.email_public = False
             user.password = request.POST['password']
 
             try:
