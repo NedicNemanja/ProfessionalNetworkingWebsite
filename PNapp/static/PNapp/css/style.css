@@ -11,6 +11,10 @@ header form{
 
 header .logo{
 	float:left;
+	/*width: 160px;
+	height: 120px;
+	margin: 0px;
+	padding: 0px;*/
 }
 
 .panel-heading{

@@ -17,8 +17,8 @@
   <body>
     <header>
       <div class="container">
-        <!-- <img src="img/logo.png" class="logo">-->
-        <h3>Professional Networking Website</h3>
+        <!-- <img src="{% static 'PNapp/img/mlogo.png' %}" class="logo"> -->
+        <!-- <h3>Professional Networking Website</h3> -->
         <form class="form-inline" method="post">{% csrf_token %}
           <div class="form-group">
             <label class="sr-only" for="logInEmail">Email address</label>
@@ -45,27 +45,6 @@
     </ul>
     {% endif %}
     <nav class="navbar navbar-default">
-      <div class="container">
-        <!--<div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-        </div>
-        <div id="navbar" class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="index.html">Home Page</a></li>
-            <li><a href="members.html">Network</a></li>
-            <li><a href="groups.html">Ads</a></li>
-            <li><a href="photos.html">Messages</a></li>
-            <li><a href="#">Notifications</a></li>
-            <li><a href="profile.html">Profile</a></li>
-            <li><a href="#">Settings</a></li>
-          </ul>-->
-        </div><!--/.nav-collapse -->
-      </div>
     </nav>
 
     <section>
