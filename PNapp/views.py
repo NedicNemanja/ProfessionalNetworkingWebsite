@@ -175,6 +175,20 @@ class profile(View):
                 user.position_public = True
             else:
                 user.position_public = False
+            #check if profile photo changes
+            if request.FILES.get('image-file',False):
+                from django.conf import settings
+                from django.core.files.storage import FileSystemStorage
+                from django.utils import timezone
+                import datetime
+                #get image
+                myfile = request.FILES['image-file']
+                #save image
+                fs = FileSystemStorage()
+                now = datetime.datetime.now()
+                filename = fs.save('profpics/'+now.strftime("%Y/%m/%d//")+str(myfile.name), myfile)
+                #change image url in db
+                user.profile_photo = fs.url(filename)
 
             try:
                 user.full_clean()
@@ -183,7 +197,7 @@ class profile(View):
                 return render(request, self.template_name)
 
             user.save()
-            messages.success(request, "Changes made successfully.")
+            messages.success(request, "Info updated successfully.")
             return redirect('/profile/')
         return render(request, self.template_name)
 

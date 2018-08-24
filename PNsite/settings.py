@@ -126,5 +126,5 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 
 # User uploaded files
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'PNsite/media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'PNsite/')
 MEDIA_URL = '/media/'

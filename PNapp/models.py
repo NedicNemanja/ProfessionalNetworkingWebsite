@@ -23,7 +23,7 @@ class User(models.Model):
 	#Maybe also add blank=True?
 	phone = models.CharField(max_length=17, blank=True)
 	phone_public = models.BooleanField(default=False)
-	profile_photo = models.ImageField(default='/profpics/user.png', upload_to='profpics/%Y/%m/%d/')
+	profile_photo = models.ImageField(default='media/profpics/user.png', upload_to='media/profpics/%Y/%m/%d/')
 	university = models.CharField(max_length=128, blank=True)
 	university_public = models.BooleanField(default=False)
 	degree_subject = models.CharField(max_length=128, blank=True)
