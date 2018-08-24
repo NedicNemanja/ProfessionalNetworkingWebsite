@@ -187,7 +187,6 @@ class profile(View):
                 now = datetime.datetime.now()
                 filename = fs.save('profpics/'+now.strftime("%Y/%m/%d//")+str(myfile.name), myfile)
                 #change image url in db
-                print(fs.url(filename))
                 user.profile_photo = fs.url(filename)
 
             try:
