@@ -238,8 +238,7 @@ class mymessages(View):
             session_test_pk = request.session['user_pk']
         except KeyError:    #user not logged in
             return redirect('/')
-        print("here-------------")
-        return HttpResponse("Message")
+        return render(request, self.template_name)
 
 
 class search(View):
