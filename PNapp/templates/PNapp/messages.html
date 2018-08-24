@@ -19,22 +19,6 @@
       <div class="container">
         <!-- <img src="img/logo.png" class="logo">-->
         <h3>Professional Networking Website</h3>
-        <!--<form class="form-inline" method="post">
-          <div class="form-group">
-            <label class="sr-only" for="exampleInputEmail3">Email address</label>
-            <input type="email" class="form-control" id="exampleInputEmail3" placeholder="Enter email">
-          </div>
-          <div class="form-group">
-            <label class="sr-only" for="exampleInputPassword3">Password</label>
-            <input type="password" class="form-control" id="exampleInputPassword3" placeholder="Password">
-          </div>
-          <button type="submit" class="btn btn-default">Sign in</button><br>
-          <div class="checkbox">
-            <label>
-              <input type="checkbox"> Remember me
-            </label>
-          </div>
-        </form>-->
       </div>
     </header>
     <nav class="navbar navbar-default">
@@ -81,13 +65,16 @@
                 <h3 class="panel-title">Personal Details</h3>
               </div> -->
               <div class="panel-body">
-                <div class="message">
-                  <div class="text-center"><strong>Thanasis Filippidis</strong></div>
-                  <div class="name-divider"></div>
-                  <div class="message-text">
-                    lorem ipsum
+                <a href="/index/">
+                  <div class="message">
+                    <div class="text-center"><strong>Thanasis Filippidis</strong></div>
+                    <div class="name-divider"></div>
+                    <div class="message-text">
+                      lorem ipsum
+                    </div>
                   </div>
-                </div>
+                </a>
+                
 
                 <div class="divider"></div>
 
@@ -121,14 +108,16 @@
                 <h3 class="panel-title">Thanasis Filippidis</h3>
               </div>
               <div class="panel-body conv-order">
+
+
                 <div class="row">
+
                   <div class="col-sm-2">
                     <a class="post-avatar thumbnail" href="profile.html">
                       <img src="{{ post.creator.profile_photo.url }}" class="img-thumbnail">
-                      <!-- <div class="text-center">{{ post.creator.name }} {{ post.creator.surname }}</div> -->
                     </a>
-                    <!-- <div class="likes text-center">{{ post.creation_date }}</div> -->
                   </div><!-- col-sm-2 end -->
+
                   <div class="col-sm-10">
                     <div class="message-bubble-left">
                       <div class="message-pointer">
@@ -136,24 +125,10 @@
                       </div>
                       <div class="pointer-border"></div>
                     </div><!-- bubble end -->
-                    <!-- <p class="post-actions"><a href="#">Interest</a> - <a href="#">Comment</a> - 7 Interested</p> -->
                     <div class="clearfix"></div>
-                    <!-- {% if post.comment_set.all %}
-                      {% for comment in post.comment_set.all %}
-                      <div class="comments">
-                        <div class="comment">
-                          <a class="comment-avatar pull-left" href="#"><img src="{{ post.creator.profile_photo.url }}"></a>
-                          <div class="comment-text">
-                            {{ comment.text }}
-                          </div>
-                        </div>
-                        <div class="clearfix"></div>
-                      </div>
-                      {% endfor %}
-                    {% endif %} -->
                   </div>
-
                 </div>
+
 
                 <div class="row">
                   <div class="col-sm-10">
@@ -163,21 +138,7 @@
                       </div>
                       <div class="pointer-border"></div>
                     </div><!-- bubble end -->
-                    <!-- <p class="post-actions"><a href="#">Interest</a> - <a href="#">Comment</a> - 7 Interested</p> -->
                     <div class="clearfix"></div>
-                    <!-- {% if post.comment_set.all %}
-                      {% for comment in post.comment_set.all %}
-                      <div class="comments">
-                        <div class="comment">
-                          <a class="comment-avatar pull-left" href="#"><img src="{{ post.creator.profile_photo.url }}"></a>
-                          <div class="comment-text">
-                            {{ comment.text }}
-                          </div>
-                        </div>
-                        <div class="clearfix"></div>
-                      </div>
-                      {% endfor %}
-                    {% endif %} -->
                   </div>
 
                   <div class="col-sm-2">
@@ -191,27 +152,16 @@
                 </div>
 
                 <div class="message-form">
-                    <form class="form-inline" method="post">{% csrf_token %}
-                      <div class="form-group" >
-                        <input type="text" class="form-control" name="message" placeholder="Write a message...">
-                      </div>
-                      <button type="submit" value="" name="comment-button" class="glyphicon glyphicon-send"></button>
-                    </form>
-                  </div><!-- message form end -->
-                <!--   -->
-                <!-- <form method="post">{% csrf_token %}
-                  <div class="form-group">
-                    <textarea class="form-control" name="status" placeholder="Write on the wall"></textarea>
-                  </div>
-
-                  <button type="submit" value="Submit status" name="button" class="btn btn-default">Submit</button>
-                  </div>
-                </form> -->
+                  <form class="form-inline" method="post">{% csrf_token %}
+                    <div class="form-group" >
+                      <input type="text" class="form-control" name="message" placeholder="Write a message...">
+                    </div>
+                    <button type="submit" value="" name="comment-button" class="glyphicon glyphicon-send"></button>
+                  </form>
+                </div><!-- message form end -->
               </div>
             </div>
           </div><!-- col-md-8 end -->
-
-
         </div>
       </div>
 
