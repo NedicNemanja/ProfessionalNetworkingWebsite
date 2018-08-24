@@ -188,14 +188,13 @@ class profile(View):
                 now = datetime.datetime.now()
                 filename = fs.save('profpics/'+now.strftime("%Y/%m/%d//")+str(myfile.name), myfile)
                 #change image url in db
-                user.profile_photo = fs.url(filename)
+                user.profile_photo = fs.url(filename).replace('media/','')
 
             try:
                 user.full_clean()
             except ValidationError as v:
                 messages.info(request, "ValidationError:"+str(v.message_dict))
                 return render(request, self.template_name)
-
             user.save()
             messages.success(request, "Info updated successfully.")
             return redirect('/profile/')
