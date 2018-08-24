@@ -135,13 +135,6 @@ class profile(View):
             user = User.objects.get(id=request.session['user_pk'])
         except KeyError:    #user not logged in
             return redirect('/')
-        # LOGIKA KAI AFT AXRIASTO AN REQUIRE LOGIN?
-        # user_id = request.session['user_pk']
-        # try:
-        #     user = User.objects.get(id=user_id)
-        # except User.DoesNotExist:
-        #     messages.error(request, "User with email: "+user_email+" does not exist")
-        #     return render(request, self.template_name)
         context = {'user':user,}
         return render(request, self.template_name, context=context)
 
@@ -152,30 +145,36 @@ class profile(View):
         except KeyError:    #user not logged in
             return redirect('/')
         # If user pressed save his new details
-        new_email = request.POST['email']
         if request.POST["button"] == "Save Changes":
-            # If the submitted email is not the one that user had until now
-            if user.email != new_email:
-                # If the new email is already used
-                if User.objects.filter(email=new_email).exists():
-                    # Then show message that user with that email already exists
-                    messages.info(request, "User with email: " + new_email + " already exists.")
-                    return render(request, self.template_name)
-            # If password is different from the password's confirmation
-            if request.POST['password'] != request.POST['cpassword']:
-                messages.info(request, "Passwords should be the same.")
-                return render(request, self.template_name)
 
             # Make the changes he did
             user.name = request.POST['name']
             user.surname = request.POST['surname']
-            user.email = request.POST['email']
-            user.password = request.POST['password']
             user.phone = request.POST['phone']
+            if request.POST.get("phone_privacy", False):
+                user.phone_public = True
+            else:
+                user.phone_public = False
             user.university = request.POST['university']
+            if request.POST.get("university_privacy", False):
+                user.university_public = True
+            else:
+                user.university_public = False
             user.degree_subject = request.POST['degree_subject']
+            if request.POST.get("degree_subject_privacy", False):
+                user.degree_subject_public = True
+            else:
+                user.degree_subject_public = False
             user.company = request.POST['company']
+            if request.POST.get("company_privacy", False):
+                user.company_public = True
+            else:
+                user.company_public = False
             user.position = request.POST['position']
+            if request.POST.get("position_privacy", False):
+                user.position_public = True
+            else:
+                user.position_public = False
             #check if profile photo changes
             if request.FILES.get('image-file',False):
                 from django.conf import settings
@@ -190,6 +189,7 @@ class profile(View):
                 #change image url in db
                 print(fs.url(filename))
                 user.profile_photo = fs.url(filename)
+
             try:
                 user.full_clean()
             except ValidationError as v:
@@ -306,4 +306,57 @@ class overview(View):
             friends.add(conn.creator)
         #get new context
         context = {'target_user':receiver,'friends':friends, 'connected_users':False,'request_exists':True}
+        return render(request, self.template_name, context=context)
+
+class settings(View):
+    template_name = 'PNapp/settings.html'
+
+    def get(self, request):
+        #get current user's details and check if he is logged in indeed
+        try:
+            user = User.objects.get(id=request.session['user_pk'])
+        except KeyError:    #user not logged in
+            return redirect('/')
+        context = {'user':user,}
+        return render(request, self.template_name, context=context)
+
+    def post(self, request):
+        #get current user's details and check if he is logged in indeed
+        try:
+            user = User.objects.get(id=request.session['user_pk'])
+        except KeyError:    #user not logged in
+            return redirect('/')
+        context = {'user':user,}
+        # If user pressed save his new credentials
+        new_email = request.POST['email']
+        if request.POST["button"] == "Save Changes":
+            # If the submitted email is not the one that user had until now
+            if user.email != new_email:
+                # If the new email is already used
+                if User.objects.filter(email=new_email).exists():
+                    # Then show message that user with that email already exists
+                    messages.info(request, "User with email: " + new_email + " already exists.")
+                    return render(request, self.template_name)
+            # If password is different from the password's confirmation
+            if request.POST['password'] != request.POST['cpassword']:
+                messages.info(request, "Passwords should be the same.")
+                return render(request, self.template_name)
+
+            # Make the changes he did
+            user.email = request.POST['email']
+            if request.POST.get("email_privacy", False):
+                user.email_public = True
+            else:
+                user.email_public = False
+            user.password = request.POST['password']
+
+            try:
+                user.full_clean()
+            except ValidationError as v:
+                messages.info(request, "ValidationError:"+str(v.message_dict))
+                return render(request, self.template_name)
+
+            user.save()
+            messages.success(request, "Changes made successfully.")
+            return redirect('/settings/')
         return render(request, self.template_name, context=context)

@@ -55,7 +55,7 @@
             <li><a href="photos.html">Messages</a></li>
             <li><a href="#">Notifications</a></li>
             <li class="active"><a href="/profile/">Profile</a></li>
-            <li><a href="#">Settings</a></li>
+            <li><a href="/settings/">Settings</a></li>
           </ul>
           <form class="navbar-form navbar-left" action="/search" method="get">
             <!---NO CSRF TOKEN HERE. THEY GET LEAKED WITH GET REQUESTS -->
@@ -108,51 +108,38 @@
                       </div>
                     </div>
                     <div class="form-group">
-                      <label class="col-lg-4 control-label">Email:</label>
-                      <div class="col-lg-8">
-                        <input type="email" name="email" value="{{ user.email }}" required>
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label class="col-lg-4 control-label">Password:</label>
-                      <div class="col-lg-8">
-                        <input type="password" name="password" value="{{ user.password }}" required>
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label class="col-lg-4 control-label">Confirm Password:</label>
-                      <div class="col-lg-8">
-                        <input type="password" name="cpassword" value="{{ user.password }}" required>
-                      </div>
-                    </div>
-                    <div class="form-group">
                       <label class="col-lg-4 control-label">Phone Number:</label>
                       <div class="col-lg-8">
                         <input type="text" name="phone" value="{{ user.phone }}">
+                        <div><input type="checkbox" name="phone_privacy" {% if user.phone_public %}checked{% endif %}> Show phone number in public.</div>
                       </div>
                     </div>
                     <div class="form-group">
                       <label class="col-lg-4 control-label">Education:</label>
                       <div class="col-lg-8">
                         <input type="text" name="university" value="{{ user.university }}">
+                        <div><input type="checkbox" name="university_privacy" {% if user.university_public %}checked{% endif %}> Show university in public.</div>
                       </div>
                     </div>
                     <div class="form-group">
                       <label class="col-lg-4 control-label">Degree's Subject:</label>
                       <div class="col-lg-8">
                         <input type="text" name="degree_subject" value="{{ user.degree_subject }}">
+                        <div><input type="checkbox" name="degree_subject_privacy" {% if user.degree_subject_public %}checked{% endif %}> Show degree's subject in public.</div>
                       </div>
                     </div>
                     <div class="form-group">
                       <label class="col-lg-4 control-label">Current Company:</label>
                       <div class="col-lg-8">
                         <input type="text" name="company" value="{{ user.company }}">
+                        <div><input type="checkbox" name="company_privacy" {% if user.company_public %}checked{% endif %}> Show company in public.</div>
                       </div>
                     </div>
                     <div class="form-group">
                       <label class="col-lg-4 control-label">Current Position:</label>
                       <div class="col-lg-8">
                         <input type="text" name="position" value="{{ user.position }}">
+                        <div><input type="checkbox" name="position_privacy" {% if user.position_public %}checked{% endif %}> Show position in public.</div>
                       </div>
                     </div>
                     {% if messages %}
