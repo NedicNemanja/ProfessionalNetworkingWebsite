@@ -74,7 +74,7 @@
     <section>
       <div class="container">
         <div class="row">
-          <form class="form-horizontal" method="post">{% csrf_token %}
+          <form class="form-horizontal" method="post" enctype="multipart/form-data">{% csrf_token %}
             <div class="col-md-8">
               <div class="profile">
                 <h1 class="page-header">{{ user.name }} {{ user.surname }}</h1>
@@ -94,7 +94,7 @@
                     </div>
                   </div>
                   <div class="col-md-8">
-                  
+
                     <div class="form-group">
                       <label class="col-lg-4 control-label">First name:</label>
                       <div class="col-lg-8">
