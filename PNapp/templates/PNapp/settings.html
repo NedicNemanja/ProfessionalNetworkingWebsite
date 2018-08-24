@@ -52,7 +52,7 @@
             <li><a href="/index/">Home Page</a></li>
             <li><a href="/network/">Network</a></li>
             <li><a href="groups.html">Ads</a></li>
-            <li><a href="photos.html">Messages</a></li>
+            <li><a href="/messages/">Messages</a></li>
             <li><a href="#">Notifications</a></li>
             <li><a href="/profile/">Profile</a></li>
             <li class="active"><a href="/settings/">Settings</a></li>
@@ -83,7 +83,7 @@
                     <img src="{{ user.profile_photo.url }}" class="img-thumbnail">
                   </div>
                   <div class="col-md-8">
-                  
+
                     <div class="form-group">
                       <label class="col-lg-4 control-label">Email:</label>
                       <div class="col-lg-8">
@@ -103,7 +103,7 @@
                         <input type="password" name="cpassword" value="{{ user.password }}" required>
                       </div>
                     </div>
-                    
+
                     {% if messages %}
                     <div class="messages">
                       <ul>

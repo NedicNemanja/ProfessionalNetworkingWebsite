@@ -181,8 +181,9 @@ class profile(View):
                 from django.core.files.storage import FileSystemStorage
                 from django.utils import timezone
                 import datetime
-                #get and save image
+                #get image
                 myfile = request.FILES['image-file']
+                #save image
                 fs = FileSystemStorage()
                 now = datetime.datetime.now()
                 filename = fs.save('profpics/'+now.strftime("%Y/%m/%d//")+str(myfile.name), myfile)

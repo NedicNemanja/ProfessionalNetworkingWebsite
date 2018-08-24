@@ -52,10 +52,10 @@
             <li><a href="/index/">Home Page</a></li>
             <li class="active"><a href="/network/">Network</a></li>
             <li><a href="groups.html">Ads</a></li>
-            <li><a href="photos.html">Messages</a></li>
+            <li><a href="/messages/">Messages</a></li>
             <li><a href="#">Notifications</a></li>
             <li><a href="/profile/">Profile</a></li>
-            <li><a href="#">Settings</a></li>
+            <li><a href="/settings/">Settings</a></li>
           </ul>
           <form class="navbar-form navbar-left" action="/search" method="get">
             <!---NO CSRF TOKEN HERE. THEY GET LEAKED WITH GET REQUESTS -->
@@ -83,9 +83,8 @@
                 <ul>
                   {% for friend in friends%}
                     <li><a class="comment-avatar" href="profile.html">
-                        <img src={{friend.profile_photo.url}}></a>
-                        <div>{{friend.name}}</div>
-                        <div>{{friend.surname}}</div>
+                        <img src={{friend.profile_photo.url}} height="70" width="70"></a>
+                        <div><h>{{friend.name}} {{friend.surname}}</h></div>
                     </li>
                   {% endfor %}
                 </ul>
