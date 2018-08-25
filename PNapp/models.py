@@ -158,4 +158,4 @@ class Comment(models.Model):
 class Interest(models.Model):
 	creator = models.ForeignKey(User, on_delete=models.CASCADE)
 	post_id = models.ForeignKey(Post, on_delete=models.CASCADE)
-	creation_date = models.DateTimeField(editable=False)
+	creation_date = models.DateTimeField()

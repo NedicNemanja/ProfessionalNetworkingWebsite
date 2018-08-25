@@ -164,7 +164,7 @@
                     {% if user != target_user %}
                       <form method="post">{% csrf_token %}
                         {% if request_exists %}
-                          <button type="button" class="btn btn-success btn-block" ><i class="fa fa-users"></i> Request Pending</button>
+                          <button type="button" class="btn btn-primary disabled btn-block" ><i class="fa fa-users"></i> Request Pending</button>
                         {% else %}
                           <button type="submit" value="{{target_user.id}}" class="btn btn-success btn-block" name="add user"><i class="fa fa-users"></i> Add Friend</button>
                         {% endif %}
