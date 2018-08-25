@@ -82,8 +82,8 @@
               <div class="panel-body">
                 <ul>
                   {% for friend in friends%}
-                    <li><a class="comment-avatar" href="/overview/{{friend.id}}">
-                        <img src={{friend.profile_photo.url}} height="70" width="70"></a>
+                    <li><a class="network-avatar" href="/overview/{{friend.id}}">
+                        <img src={{friend.profile_photo.url}} class="network-thumbnail"></a>
                         <div><h>{{friend.name}} {{friend.surname}}</h></div>
                     </li>
                   {% endfor %}
