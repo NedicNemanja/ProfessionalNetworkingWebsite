@@ -62,9 +62,19 @@ class User(models.Model):
 				users_friends.append(c.creator)
 		return users_friends
 
+	def get_friends(self):
+		friends=set()
+		connections=Connection.objects.filter(creator=self,accepted=True)
+		for conn in connections:  #conns with user as creator
+			friends.add(conn.receiver)
+		connections=Connection.objects.filter(receiver=self,accepted=True)
+		for conn in connections:  #conns with user as receiver
+			friends.add(conn.creator)
+		return friends
+
 	def get_conversations(self):
-		return Conversation.objects.filter(creator=self).order_by('creation_date')\
-			 | Conversation.objects.filter(receiver=self).order_by('creation_date')
+		return Conversation.objects.filter(creator=self).order_by('-creation_date')\
+			 | Conversation.objects.filter(receiver=self).order_by('-creation_date')
 
 class Connection(models.Model):
 	#on deletion of a creator or a receiver the said field will be set to null
