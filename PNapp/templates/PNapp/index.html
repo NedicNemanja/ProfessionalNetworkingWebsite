@@ -51,9 +51,9 @@
           <ul class="nav navbar-nav">
             <li class="active"><a href="/index/">Home Page</a></li>
             <li><a href="/network/">Network</a></li>
-            <li><a href="groups.html">Ads</a></li>
+            <li><a href="/ads/">Ads</a></li>
             <li><a href="/messages/">Messages</a></li>
-            <li><a href="#">Notifications</a></li>
+            <li><a href="/notifications/">Notifications</a></li>
             <li><a href="/profile/">Profile</a></li>
             <li><a href="/settings/">Settings</a></li>
           </ul>
@@ -119,7 +119,7 @@
               <div class="panel-body">
                 <ul>
                   {% for friend in friends %}
-                    <li><a class="comment-avatar" href="profile.html">
+                    <li><a class="comment-avatar" href="/overview/{{friend.id}}">
                       <img src={{friend.profile_photo.url}} height="70" width="70"></a>
                   </li>
                   {% endfor %}

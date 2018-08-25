@@ -51,9 +51,9 @@
           <ul class="nav navbar-nav">
             <li><a href="/index/">Home Page</a></li>
             <li><a href="/network/">Network</a></li>
-            <li><a href="groups.html">Ads</a></li>
+            <li><a href="/ads/">Ads</a></li>
             <li><a href="/messages/">Messages</a></li>
-            <li><a href="#">Notifications</a></li>
+            <li><a href="/notifications/">Notifications</a></li>
             <li><a href="/profile/">Profile</a></li>
             <li><a href="/settings/">Settings</a></li>
           </ul>
@@ -118,7 +118,7 @@
                 <div class="panel-body">
                   <ul>
                     {% for friend in friends%}
-                      <li><a class="comment-avatar" href="profile.html">
+                      <li><a class="comment-avatar" href="/overview/{{friend.id}}">
                             <img src={{friend.profile_photo.url}}>
                           </a>
                           <div>{{friend.name}}</div>
@@ -159,17 +159,21 @@
                     <div><strong>Phone Number: </strong>{{ target_user.phone }}</div>
                   {% endif %}
                   <div class="col-md-5">
-                    <form method="post">{% csrf_token %}
-                      {% if request_exists %}
-                        <button type="button" class="btn btn-success btn-block" ><i class="fa fa-users"></i> Request Pending</button>
-                      {% else %}
-                        <button type="submit" value="{{target_user.id}}" class="btn btn-success btn-block" name="add user"><i class="fa fa-users"></i> Add Friend</button>
-                      {% endif %}
-                    </form>
+                    {% if user != target_user %}
+                      <form method="post">{% csrf_token %}
+                        {% if request_exists %}
+                          <button type="button" class="btn btn-success btn-block" ><i class="fa fa-users"></i> Request Pending</button>
+                        {% else %}
+                          <button type="submit" value="{{target_user.id}}" class="btn btn-success btn-block" name="add user"><i class="fa fa-users"></i> Add Friend</button>
+                        {% endif %}
+                      </form>
+                    {% endif %}
                   </div>
                   <div class="col-md-2"></div>
                   <div class="col-md-5">
-                    <p><a href="/messages/" class="btn btn-default btn-block btn"><i class="fa fa-envelope"></i> Send Message</a></p>
+                    {% if user != target_user %}
+                      <p><a href="/messages/" class="btn btn-default btn-block btn"><i class="fa fa-envelope"></i> Send Message</a></p>
+                    {% endif %}
                   </div>
                 </div>
               </div>

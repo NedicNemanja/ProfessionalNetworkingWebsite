@@ -299,7 +299,9 @@ class overview(View):
         #get status of friendship in order to decide the context of add button
         connected_users = Connection.objects.filter(creator=user,receiver=target_user,accepted=True).exists() | Connection.objects.filter(creator=target_user,receiver=user,accepted=True).exists()
         request_exists = Connection.objects.filter(creator=user,receiver=target_user).exists() | Connection.objects.filter(creator=target_user,receiver=user).exists()
-        context = {'target_user':target_user,'friends':friends, 'connected_users':connected_users,'request_exists':request_exists}
+        context = { 'user':user, 'target_user':target_user,
+                    'friends':friends, 'connected_users':connected_users,
+                    'request_exists':request_exists}
         return render(request, self.template_name, context)
 
     def post(self, request, pk):
@@ -376,3 +378,15 @@ class settings(View):
             messages.success(request, "Changes made successfully.")
             return redirect('/settings/')
         return render(request, self.template_name, context=context)
+
+
+class ads(View):
+
+    def get(self, request):
+        return HttpResponse("ads")
+
+
+class notifications(View):
+
+    def get(self, request):
+        return HttpResponse("notifications")
