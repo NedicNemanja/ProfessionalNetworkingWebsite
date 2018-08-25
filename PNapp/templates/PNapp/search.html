@@ -97,7 +97,9 @@
                   </form>
                 </div>--->
                 <div class="col-md-3">
-                  <p><a href="/messages/" class="btn btn-default btn-block"><i class="fa fa-envelope"></i> Send Message</a></p>
+                  <p><form method="post" action="/messages/">{% csrf_token %}
+                    <button type="submit" value="{{user.id}}" class="btn btn-default btn-block" name="send message"><i class="fa fa-envelope"></i> Send Message</button>
+                  </form></p>
 
                 </div>
                 <div class="col-md-3">

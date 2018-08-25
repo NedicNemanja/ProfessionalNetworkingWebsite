@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.template import loader
 from django.views import View
@@ -241,7 +241,6 @@ class mymessages(View):
         #get conversations
         conversations = user.get_conversations()
         if conversations is not None:
-            print(conversations)
             #get target conversation
             if conversation_pk == -1:
                 target_conversation = conversations.first()
@@ -256,8 +255,29 @@ class mymessages(View):
 
         return render(request, self.template_name)
 
-    def post(self, request):
-        pass
+    def post(self, request, conversation_pk=-1):
+        #get current user's details
+        try:
+            user = User.objects.get(id=request.session['user_pk'])
+        except KeyError:    #user not logged in
+            return redirect('/')
+        #new message in chat
+        if 'message'in request.POST:
+            text=request.POST['message']
+            Message.objects.create(text=text,creator=user,conversation=get_object_or_404(Conversation, pk=conversation_pk))
+            return redirect('/messages/'+str(conversation_pk))
+        #new message from overview (convo might not exist)
+        if 'send message' in request.POST:
+            target_user=User.objects.get(id=request.POST['send message'])
+            #find the conversation between these two
+            conversation=Conversation.objects.filter(creator=user,receiver=target_user)\
+                       | Conversation.objects.filter(creator=user,receiver=target_user)
+            if not conversation:
+                #conversation doesnt exist, create
+                conversation=Conversation.objects.create(creator=user,receiver=target_user)
+                return redirect('/messages/'+str(conversation.id))
+            print(conversation)
+            return redirect('/messages/'+str(conversation.first().id))
 
 class search(View):
     template_name = 'PNapp/search.html'
@@ -273,7 +293,6 @@ class search(View):
         users = set()
         for str in query.split():
             result = User.objects.filter(name__icontains=str) | User.objects.filter(surname__icontains=str)
-            print(set(result))
             users.update(set(result))
         context = {'users':users,}
         return render(request, self.template_name, context=context)
@@ -311,20 +330,14 @@ class overview(View):
             creator = User.objects.get(id=request.session['user_pk'])
         except KeyError:    #user not logged in
             return redirect('/')
-        print(creator)
-        print(receiver)
+
+        #if 'add user' in request.POST:
         conn = Connection.objects.create(creator=creator,receiver=receiver,accepted=False)
-        #get all target_user's friends
-        friends = set()
-        connections = Connection.objects.filter(creator=creator)
-        for conn in connections:    #conns with user as creator
-            friends.add(conn.receiver)
-        connections = Connection.objects.filter(receiver=creator)
-        for conn in connections:    #conns with user as receiver
-            friends.add(conn.creator)
+        friends = creator.get_friends() #get all target_user's friends
         #get new context
         context = {'target_user':receiver,'friends':friends, 'connected_users':False,'request_exists':True}
         return render(request, self.template_name, context=context)
+
 
 class settings(View):
     template_name = 'PNapp/settings.html'

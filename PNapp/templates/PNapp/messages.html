@@ -143,11 +143,11 @@
                 {% endif %}
               {% endfor %}
                 <div class="message-form">
-                  <form class="form-inline" method="post">{% csrf_token %}
+                  <form class="form-inline" method="post" action="/messages/{{target_conversation.id}}">{% csrf_token %}
                     <div class="form-group" >
                       <input type="text" class="form-control" name="message" placeholder="Write a message...">
                     </div>
-                    <button type="submit" value="" name="comment-button" class="glyphicon glyphicon-send"></button>
+                    <button type="submit" value="" name="new-mess" class="glyphicon glyphicon-send"></button>
                   </form>
                 </div><!-- message form end -->
               </div>
