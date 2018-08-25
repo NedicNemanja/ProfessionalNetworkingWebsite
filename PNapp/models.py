@@ -44,6 +44,10 @@ class User(models.Model):
 		posts = Post.objects.filter(creator__email__in= group_of_interest)
 		return posts
 
+	def get_conversations(self):
+		return Conversation.objects.filter(creator=self).order_by('creation_date')\
+			 | Conversation.objects.filter(receiver=self).order_by('creation_date')
+
 class Connection(models.Model):
 	#on deletion of a creator or a receiver the said field will be set to null
 	creator = models.ForeignKey('User', on_delete=models.SET_NULL, null=True, related_name="CActive")
@@ -80,13 +84,23 @@ class Applicant(models.Model):
 	def __str__(self):
 		return self.user
 
-class Message(models.Model):
+class Conversation(models.Model):
 	#this could be SET_DEFAULT as well
 	creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="MActive")
-	#https://stackoverflow.com/questions/26955319/django-reverse-accessor-clashes
 	receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name="MPassive")
+	creation_date = models.DateTimeField(editable=False, default=timezone.now)
+
+	def __str__(self):
+		return str(self.creator)+str(self.receiver)
+
+	def get_messages(self):
+		return Message.objects.filter(conversation=self).order_by('creation_date')
+
+class Message(models.Model):
 	text = models.CharField(max_length=512)
-	creation_date = models.DateTimeField(editable=False)
+	creator = models.ForeignKey(User, on_delete=models.CASCADE)
+	creation_date = models.DateTimeField(editable=False, default=timezone.now)
+	conversation = models.ForeignKey(Conversation, on_delete=models.CASCADE)
 
 	def __str__(self):
 		return self.text

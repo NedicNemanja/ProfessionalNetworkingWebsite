@@ -12,6 +12,7 @@ urlpatterns = [
     path('profile/', profile.as_view()),
     path('network/', network.as_view()),
     path('messages/', mymessages.as_view()),
+    path('messages/<int:conversation_pk>', mymessages.as_view()),
     path('search/', search.as_view()),
     path('overview/<int:pk>', overview.as_view()),
     path('settings/', settings.as_view()),

@@ -64,22 +64,40 @@
               <!-- <div class="panel-heading">
                 <h3 class="panel-title">Personal Details</h3>
               </div> -->
-                {% for convo in conversations %}
-                  <div class="panel-body">
-                    <a href="{{convo.id}}">
-                      <div class="message">
-                        <div class="text-center"><strong>
-                            {% if user == convo.receiver %}
-                              {{convo.creator.name}} {{convo.creator.surname}}
-                            {% else %}
-                              {{convo.receiver.name}} {{convo.receiver.surname}}
-                            {% endif %}
-                        </strong></div>
-                        <div class="name-divider"></div>
-                      </div>
-                    </a>
-                    <div class="divider"></div>
-                  {% endfor %}
+              <div class="panel-body">
+                <a href="/index/">
+                  <div class="message">
+                    <div class="text-center"><strong>Thanasis Filippidis</strong></div>
+                    <div class="name-divider"></div>
+                    <div class="message-text">
+                      lorem ipsum
+                    </div>
+                  </div>
+                </a>
+
+
+                <div class="divider"></div>
+
+                <div class="message">
+                  <div class="text-center"><strong>Thanasis Filippidis</strong></div>
+                  <div class="name-divider"></div>
+                  <div class="message-text">
+                    lorem ipsum
+                  </div>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="message">
+                  <div class="text-center"><strong>Thanasis Filippidis</strong></div>
+                  <div class="name-divider"></div>
+                  <div class="message-text">
+                    lorem ipsum
+                  </div>
+                </div>
+
+                <div class="divider"></div>
+
               </div>
             </div>
           </div>
@@ -91,50 +109,48 @@
               </div>
               <div class="panel-body conv-order">
 
-              {% for message in messages %}
-                {% if message.creator == user %}
-                  <div class="row">
-                    <div class="col-sm-10">
-                      <div class="message-bubble-right">
-                        <div class="message-pointer">
-                          <p>{{message.text}}</p>
-                        </div>
-                        <div class="pointer-border"></div>
-                      </div><!-- bubble end -->
-                      <div class="clearfix"></div>
-                    </div>
 
-                    <div class="col-sm-2">
-                      <a class="post-avatar thumbnail" href="profile.html">
-                        <img src="{{ target_conversation.creator.profile_photo.url }}" class="img-thumbnail">
-                      </a>
-                    </div>
+                <div class="row">
 
+                  <div class="col-sm-2">
+                    <a class="post-avatar thumbnail" href="profile.html">
+                      <img src="{{ post.creator.profile_photo.url }}" class="img-thumbnail">
+                    </a>
+                  </div><!-- col-sm-2 end -->
+
+                  <div class="col-sm-10">
+                    <div class="message-bubble-left">
+                      <div class="message-pointer">
+                        <p>Hey bro how are you?Hey bro how are you?Hey bro how are you?Hey bro how are you?Hey bro how are you?Hey bro how are you?Hey bro how are you?Hey bro how are you?Hey bro how are you?Hey bro how are you?Hey bro how are you?Hey bro how are you?Hey bro how are you?Hey bro how are you?Hey bro how are you?Hey bro how are you?Hey bro how are you?Hey bro how are you?Hey bro how are you?Hey bro how are you?Hey bro how are you?Hey bro how are you?Hey bro how are you?Hey bro how are you?Hey bro how are you?Hey bro how are you?Hey bro how are you?Hey bro how are you?Hey bro how are you?Hey bro how are you?Hey bro how are you?</p>
+                      </div>
+                      <div class="pointer-border"></div>
+                    </div><!-- bubble end -->
                     <div class="clearfix"></div>
-
                   </div>
-                {% else %}
-                  <div class="row">
+                </div>
 
-                    <div class="col-sm-2">
-                      <a class="post-avatar thumbnail" href="profile.html">
-                        <img src="{{ target_conversation.receiver.profile_photo.url }}" class="img-thumbnail">
-                      </a>
-                    </div>
 
-                    <div class="col-sm-10">
-                      <div class="message-bubble-left">
-                        <div class="message-pointer">
-                          <p>{{message.text}}</div>
-                        <div class="pointer-border"></div>
-                      </div><!-- bubble end -->
-
-                      <div class="clearfix"></div>
-
-                    </div>
+                <div class="row">
+                  <div class="col-sm-10">
+                    <div class="message-bubble-right">
+                      <div class="message-pointer">
+                        <p>All good man how nout ya?</p>
+                      </div>
+                      <div class="pointer-border"></div>
+                    </div><!-- bubble end -->
+                    <div class="clearfix"></div>
                   </div>
-                {% endif %}
-              {% endfor %}
+
+                  <div class="col-sm-2">
+                    <a class="post-avatar thumbnail" href="profile.html">
+                      <img src="{{ post.creator.profile_photo.url }}" class="img-thumbnail">
+                      <!-- <div class="text-center">{{ post.creator.name }} {{ post.creator.surname }}</div> -->
+                    </a>
+                    <!-- <div class="likes text-center">{{ post.creation_date }}</div> -->
+                  </div><!-- col-sm-2 end -->
+
+                </div>
+
                 <div class="message-form">
                   <form class="form-inline" method="post">{% csrf_token %}
                     <div class="form-group" >

@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.template import loader
 from django.views import View
-from .models import User, Post, Connection, Comment
+from .models import User, Post, Connection, Comment, Conversation, Message
 from django.core.exceptions import ValidationError
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_protect
@@ -232,14 +232,32 @@ class network(View):
 class mymessages(View):
     template_name = 'PNapp/messages.html'
 
-    def get(self, request):
-        #test if session active
+    def get(self, request, conversation_pk=-1):
+        #get current user's details
         try:
-            session_test_pk = request.session['user_pk']
+            user = User.objects.get(id=request.session['user_pk'])
         except KeyError:    #user not logged in
             return redirect('/')
+        #get conversations
+        conversations = user.get_conversations()
+        if conversations is not None:
+            print(conversations)
+            #get target conversation
+            if conversation_pk == -1:
+                target_conversation = conversations.first()
+            else:
+                target_conversation = Conversation.objects.get(id=conversation_pk)
+            if target_conversation is not None:
+                context = { 'user':user,
+                            'conversations':conversations,
+                            'target_conversation':target_conversation,
+                            'messages':target_conversation.get_messages(), }
+                return render(request, self.template_name, context=context)
+
         return render(request, self.template_name)
 
+    def post(self, request):
+        pass
 
 class search(View):
     template_name = 'PNapp/search.html'
