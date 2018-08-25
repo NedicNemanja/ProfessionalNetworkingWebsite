@@ -103,7 +103,7 @@
                 <ul>
                   {% for friend in friends %}
                     <li><a class="comment-avatar" href="/overview/{{friend.id}}">
-                      <img src={{friend.profile_photo.url}} height="70" width="70"></a>
+                      <img src={{friend.profile_photo.url}} class="overview-network-thumbnail"></a>
                   </li>
                   {% endfor %}
                 </ul>

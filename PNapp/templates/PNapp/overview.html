@@ -81,7 +81,7 @@
                   <h3 class="panel-title">Personal Details</h3>
                 </div>
                 <div class="panel-body">
-                  <div><img src="{{ target_user.profile_photo.url }}" alt="User Profile Picture" class="img-thumbnail"></div>
+                  <div><img src="{{ target_user.profile_photo.url }}" alt="User Profile Picture" class="overview-prof-pic"></div>
                   <div><strong>Name: </strong>{{ target_user.name }} {{target_user.surname}}</div>
                   {% if target_user.email_public %}
                     <div><strong>Email: </strong>{{ target_user.email }}</div>
@@ -121,7 +121,7 @@
                   <ul>
                     {% for friend in friends%}
                       <li><a class="comment-avatar" href="/overview/{{friend.id}}">
-                            <img src={{friend.profile_photo.url}}>
+                            <img src={{friend.profile_photo.url}} class="overview-network-thumbnail">
                           </a>
                           <div>{{friend.name}}</div>
                           <div>{{friend.surname}}</div>
@@ -140,7 +140,7 @@
                   <h3 class="panel-title">Personal Details</h3>
                 </div>
                 <div class="panel-body">
-                  <div><img src="{{ target_user.profile_photo.url }}" alt="User Profile Picture" class="img-thumbnail"></div>
+                  <div><img src="{{ target_user.profile_photo.url }}" alt="User Profile Picture" class="overview-prof-pic"></div>
                   <div><strong>Name: </strong>{{ target_user.name }} {{target_user.surname}}</div>
                   {% if target_user.email_public %}
                     <div><strong>Email: </strong>{{ target_user.email }}</div>
