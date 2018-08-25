@@ -271,7 +271,7 @@ class mymessages(View):
             target_user=User.objects.get(id=request.POST['send message'])
             #find the conversation between these two
             conversation=Conversation.objects.filter(creator=user,receiver=target_user)\
-                       | Conversation.objects.filter(creator=user,receiver=target_user)
+                       | Conversation.objects.filter(creator=target_user,receiver=user)
             if not conversation:
                 #conversation doesnt exist, create
                 conversation=Conversation.objects.create(creator=user,receiver=target_user)
