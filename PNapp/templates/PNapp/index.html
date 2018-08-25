@@ -108,7 +108,7 @@
                   {% endfor %}
                 </ul>
                 <div class="clearfix"></div>
-                <a class="btn btn-primary" href="#">View All Friends</a>
+                <a class="btn btn-primary view-friends" href="#">View All Friends</a>
               </div>
             </div>
           </div>
@@ -169,7 +169,7 @@
                           {% for comment in post.comment_set.all %}
                           <div class="comments">
                             <div class="comment">
-                              <a class="comment-avatar pull-left" href="#"><img src="{{ post.creator.profile_photo.url }}"></a>
+                              <a class="comment-avatar pull-left" href="#"><img src="{{ comment.creator.profile_photo.url }}"></a>
                               <div class="comment-text">
                                 {{ comment.text }}
                               </div>

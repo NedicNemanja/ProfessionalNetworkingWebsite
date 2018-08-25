@@ -306,6 +306,7 @@ footer {
 
 .messages-panel {
 	min-height: 492px;
+
 }
 
 .panel-message-heading {
@@ -409,6 +410,11 @@ footer {
 	min-height: 492px;
 }
 
+.view-friends {
+	margin:5px;
+}
+
 /*.conv-order{
 	vertical-align: bottom;
 }*/
+
