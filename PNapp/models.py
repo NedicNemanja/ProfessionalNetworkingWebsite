@@ -41,8 +41,26 @@ class User(models.Model):
 
 	def get_posts(self):
 		group_of_interest = [self.email]
+		users_friends = User.get_users_friends(self)
+		for f in users_friends:
+			group_of_interest.append(f.email)
 		posts = Post.objects.filter(creator__email__in= group_of_interest)
-		return posts
+		ordered_posts = posts.order_by('-creation_date')
+		return ordered_posts
+
+	def get_users_posts(self):
+		return Post.objects.filter(creator=self)
+
+	def get_users_friends(self):
+		accepted_connections = Connection.objects.filter(accepted=True)
+		users_connections = accepted_connections.filter(creator=self) | accepted_connections.filter(receiver=self)
+		users_friends = []
+		for c in users_connections:
+			if c.creator == self:
+				users_friends.append(c.receiver)
+			else:
+				users_friends.append(c.creator)
+		return users_friends
 
 	def get_conversations(self):
 		return Conversation.objects.filter(creator=self).order_by('creation_date')\

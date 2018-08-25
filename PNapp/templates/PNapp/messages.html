@@ -18,7 +18,7 @@
     <header>
       <div class="container">
         <!-- <img src="img/logo.png" class="logo">-->
-        <h3>Professional Networking Website</h3>
+        <a href="/index"><img src="{% static 'PNapp/img/logo.png' %}" class="logo"></a>
       </div>
     </header>
     <nav class="navbar navbar-default">
@@ -75,7 +75,7 @@
                               {{convo.receiver.name}} {{convo.receiver.surname}}
                             {% endif %}
                         </strong></div>
-                        <div class="name-divider"></div>
+                        <!-- <div class="name-divider"></div> -->
                       </div>
                     </a>
                     <div class="divider"></div>
