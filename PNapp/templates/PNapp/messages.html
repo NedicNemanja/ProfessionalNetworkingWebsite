@@ -35,9 +35,9 @@
           <ul class="nav navbar-nav">
             <li><a href="/index/">Home Page</a></li>
             <li><a href="/network/">Network</a></li>
-            <li><a href="groups.html">Ads</a></li>
+            <li><a href="/ads/">Ads</a></li>
             <li class="active"><a href="/messages/">Messages</a></li>
-            <li><a href="#">Notifications</a></li>
+            <li><a href="/notifications/">Notifications</a></li>
             <li><a href="/profile/">Profile</a></li>
             <li><a href="/settings/">Settings</a></li>
           </ul>
@@ -79,15 +79,21 @@
                       </div>
                     </a>
                     <div class="divider"></div>
+                  </div>
                   {% endfor %}
-              </div>
             </div>
           </div>
 
           <div class="col-md-8">
             <div class="panel panel-default conversation">
               <div class="panel-message-heading">
-                <h3 class="panel-title">Thanasis Filippidis</h3>
+                <h3 class="panel-title">
+                  {% if user == target_conversation.receiver %}
+                    {{target_conversation.creator.name}} {{target_conversation.creator.surname}}
+                  {% else %}
+                    {{target_conversation.receiver.name}} {{target_conversation.receiver.surname}}
+                  {% endif %}
+                </h3>
               </div>
               <div class="panel-body conv-order">
 
@@ -105,8 +111,8 @@
                     </div>
 
                     <div class="col-sm-2">
-                      <a class="post-avatar thumbnail" href="profile.html">
-                        <img src="{{ target_conversation.creator.profile_photo.url }}" class="img-thumbnail">
+                      <a class="post-avatar thumbnail" href="/overview/{{message.creator.id}}">
+                        <img src="{{ message.creator.profile_photo.url }}" class="img-thumbnail">
                       </a>
                     </div>
 
@@ -117,8 +123,8 @@
                   <div class="row">
 
                     <div class="col-sm-2">
-                      <a class="post-avatar thumbnail" href="profile.html">
-                        <img src="{{ target_conversation.receiver.profile_photo.url }}" class="img-thumbnail">
+                      <a class="post-avatar thumbnail" href="/overview/{{message.creator.id}}">
+                        <img src="{{ message.creator.profile_photo.url }}" class="img-thumbnail">
                       </a>
                     </div>
 

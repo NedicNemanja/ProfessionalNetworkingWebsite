@@ -116,7 +116,7 @@ class Conversation(models.Model):
 
 class Message(models.Model):
 	text = models.CharField(max_length=512)
-	creator = models.ForeignKey(User, on_delete=models.CASCADE)
+	creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="creator")
 	creation_date = models.DateTimeField(editable=False, default=timezone.now)
 	conversation = models.ForeignKey(Conversation, on_delete=models.CASCADE)
 

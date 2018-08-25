@@ -2,7 +2,7 @@ from django.urls import path
 from django.conf import settings as django_settings
 from django.conf.urls.static import static
 from . import views
-from PNapp.views import welcome, index, profile, network, mymessages, search, overview, settings
+from PNapp.views import welcome, index, profile, network, mymessages, search, overview, settings, ads, notifications
 
 urlpatterns = [
     path('', welcome.as_view()),
@@ -16,6 +16,8 @@ urlpatterns = [
     path('search/', search.as_view()),
     path('overview/<int:pk>', overview.as_view()),
     path('settings/', settings.as_view()),
+    path('ads/', ads.as_view()),
+    path('notifications/', notifications.as_view()),
 ]
 #urlpatterns += staticfiles_urlpatterns()
 urlpatterns += static(django_settings.MEDIA_URL, document_root=django_settings.MEDIA_ROOT)
