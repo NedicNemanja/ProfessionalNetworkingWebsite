@@ -476,6 +476,19 @@ footer {
 	margin-right:5px;
 }
 
+.message-bubble{
+	position:relative;
+	width:100%;
+	min-height:65px;
+	padding:15px;
+	background:#fff;
+	border-radius: 10px;
+	border:1px solid #ccc;
+}
+
+.my-notification {
+	padding-bottom: 10px;
+}
 /*.conv-order{
 	vertical-align: bottom;
 }*/
