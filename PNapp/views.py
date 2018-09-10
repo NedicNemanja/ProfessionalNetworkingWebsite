@@ -94,7 +94,7 @@ class index(View):
             else:
                 friends.append(conn.creator)
 
-        context = {'user':user,'friends':friends, 'posts_list':posts_list,}
+        context = {'user':user,'friends':friends, 'posts_list':posts_list,'template_name':"index",}
         return render(request, self.template_name, context=context)
 
     def post(self, request):
@@ -149,7 +149,7 @@ class profile(View):
             user = User.objects.get(id=request.session['user_pk'])
         except KeyError:    #user not logged in
             return redirect('/')
-        context = {'user':user,}
+        context = {'user':user,'template_name':"profile",}
         return render(request, self.template_name, context=context)
 
     def post(self, request):
@@ -230,7 +230,7 @@ class network(View):
                 friends.append(conn.receiver)
             else:
                 friends.append(conn.creator)
-        context = {'user':user,'friends':friends,}
+        context = {'user':user,'friends':friends,'template_name':"network",}
         return render(request, self.template_name, context=context)
 
     def post(self, request):
@@ -239,7 +239,7 @@ class network(View):
             user = User.objects.get(id=request.session['user_pk'])
         except KeyError:    #user not logged in
             return redirect('/')
-        context = {'user':user,}
+        context = {'user':user,'template_name':"network",}
         return render(request, self.template_name, context=context)
 
 
@@ -264,7 +264,8 @@ class mymessages(View):
                 context = { 'user':user,
                             'conversations':conversations,
                             'target_conversation':target_conversation,
-                            'messages':target_conversation.get_messages(), }
+                            'messages':target_conversation.get_messages(),
+                            'template_name':"messages",}
                 return render(request, self.template_name, context=context)
 
         return render(request, self.template_name)
@@ -362,7 +363,7 @@ class settings(View):
             user = User.objects.get(id=request.session['user_pk'])
         except KeyError:    #user not logged in
             return redirect('/')
-        context = {'user':user,}
+        context = {'user':user,'template_name':"settings",}
         return render(request, self.template_name, context=context)
 
     def post(self, request):
@@ -371,7 +372,7 @@ class settings(View):
             user = User.objects.get(id=request.session['user_pk'])
         except KeyError:    #user not logged in
             return redirect('/')
-        context = {'user':user,}
+        context = {'user':user,'template_name':"settings",}
         # If user pressed save his new credentials
         new_email = request.POST['email']
         if request.POST["button"] == "Save Changes":
