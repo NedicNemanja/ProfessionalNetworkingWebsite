@@ -1,59 +1,7 @@
+{% extends "PNapp/main.html" %}
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Professional Networking Website</title>
-    <!-- Bootstrap core CSS -->
-    <link href="{% static 'PNapp/css/bootstrap.css' %}" rel="stylesheet">
-    <!-- Custom styles for this template -->
-    <link href="{% static 'PNapp/css/font-awesome.css' %}" rel="stylesheet">
-    <link href="{% static 'PNapp/css/style.css' %}" rel="stylesheet">
-  </head>
-
-  <body>
-    <header>
-      <div class="container">
-        <a href="/index"><img src="{% static 'PNapp/img/logo.png' %}" class="logo"></a>
-      </div>
-    </header>
-    <nav class="navbar navbar-default">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-        </div>
-        <div id="navbar" class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="/index/">Home Page</a></li>
-            <li><a href="/network/">Network</a></li>
-            <li><a href="/ads/">Ads</a></li>
-            <li><a href="/messages/">Messages</a></li>
-            <li><a href="/notifications/">Notifications</a></li>
-            <li><a href="/profile/">Profile</a></li>
-            <li><a href="/settings/">Settings</a></li>
-          </ul>
-          <form class="navbar-form navbar-left" action="/search" method="get">
-            <!---NO CSRF TOKEN HERE. THEY GET LEAKED WITH GET REQUESTS -->
-  	        <div class="form-group">
-  	          <input type="text" class="form-control" name="search_text" placeholder="Search">
-  	        </div>
-  	        <button type="submit" class="btn btn-default" name="button" value="search_button">Submit</button>
-	        </form>
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="/logout/">Log out</a></li>
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
-    </nav>
-
+{% block content %}
     <section>
       <div class="container mainc">
         <div class="row">
@@ -136,40 +84,49 @@
               </div>
             </div>
 
-            {% if posts %}
-              {% for post in posts %}
+            {% if posts_list %}
+              {% for post in posts_list %}
                 <div class="panel panel-default post">
                   <div class="panel-body">
                     <div class="row">
                       <div class="col-sm-2">
                         <a class="post-avatar thumbnail" href="/overview/{{post.creator.id}}">
-                          <img src="{{ post.creator.profile_photo.url }}" class="img-thumbnail">
-                          <div class="text-center">{{ post.creator.name }} {{ post.creator.surname }}</div>
+                          <img src="{{ post.0.creator.profile_photo.url }}" class="img-thumbnail">
+                          <div class="text-center">{{ post.0.creator.name }} {{ post.0.creator.surname }}</div>
                         </a>
-                        <div class="likes text-center">{{ post.creation_date }}</div>
+                        <div class="likes text-center">{{ post.0.creation_date }}</div>
                       </div><!-- col-sm-2 end -->
                       <div class="col-sm-10">
                         <div class="bubble">
                           <div class="pointer">
-                            <p>{{ post.text }}</p>
+                            <p>{{ post.0.text }}</p>
                           </div>
                           <div class="pointer-border"></div>
                         </div><!-- bubble end -->
-                        <p class="post-actions"><a href="#">Interest</a> - <a href="#">Comment</a> - 7 Interested</p>
+
+                        {% if post.2 %}
+                          already interested
+                        {% else %}
+                          <p class="post-actions" id="interest{{post.0.id}}"  data-postid="{{post.0.id}}">
+                            <input type="submit" value="Interest: {{post.1}}"/>
+                          </p>
+                        {% endif %}
+
                         <div class="comment-form">
                           <form class="form-inline" method="post">{% csrf_token %}
                             <div class="form-group" >
                               <input type="text" class="form-control" name="comment" placeholder="Enter Comment">
                             </div>
-                            <button type="submit" value="{{post.id}}" name="comment-button" class="btn btn-default">Add</button>
+                            <button type="submit" value="{{post.0.id}}" name="comment-button" class="btn btn-default">Add</button>
                           </form>
                         </div><!-- comment form end -->
+
                         <div class="clearfix"></div>
-                        {% if post.comment_set.all %}
-                          {% for comment in post.comment_set.all %}
+                        {% if post.0.comment_set.all %}
+                          {% for comment in post.0.comment_set.all %}
                           <div class="comments">
                             <div class="comment">
-                              <a class="comment-avatar pull-left" href="#"><img src="{{ comment.creator.profile_photo.url }}"></a>
+                              <a class="comment-avatar pull-left" href="/overview/{{comment.creator.id}}"><img src="{{ comment.creator.profile_photo.url }}"></a>
                               <div class="comment-text">
                                 {{ comment.text }}
                               </div>
@@ -189,19 +146,5 @@
 
         </div>
       </div>
-
     </section>
-
-    <footer>
-      <div class="container">
-        <p>Professional Networking Website &copy; 2018, All Rights Reserved</p>
-      </div>
-    </footer>
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="{% static 'https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap.js' %}"></script>
-  </body>
-</html>
+{% endblock %}

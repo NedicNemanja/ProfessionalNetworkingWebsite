@@ -138,6 +138,7 @@ class Post(models.Model):
 	#maybe add editable = False in production level
 	creation_date = models.DateTimeField()
 	text = models.CharField(max_length=512)
+	interests = models.ManyToManyField(User, blank=True, related_name='interests')
 
 	def __str__(self):
 		return self.text
@@ -145,6 +146,9 @@ class Post(models.Model):
 	def get_comments(self):
 		comments = Comment.objects.filter(post_id=self.id)
 		return comments
+
+	def total_interests(self):
+		return self.interests.count()
 
 class Comment(models.Model):
 	creator = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -158,4 +162,4 @@ class Comment(models.Model):
 class Interest(models.Model):
 	creator = models.ForeignKey(User, on_delete=models.CASCADE)
 	post_id = models.ForeignKey(Post, on_delete=models.CASCADE)
-	creation_date = models.DateTimeField()
+	creation_date = models.DateTimeField(editable=False, default=timezone.now)
