@@ -137,6 +137,7 @@ header .logo{
 	margin-bottom:20px;
 }
 
+
 .members img{
 	margin-bottom:5px;
 }
@@ -167,11 +168,11 @@ header .logo{
 }
 
 
-@media(min-width: 991px){
+/*@media(min-width: 991px){
 	.members p{
 		padding-top:40px;
 	}
-}
+}*/
 
 /*Welcome page css*/
 body, html{
@@ -180,6 +181,7 @@ body, html{
  	/*background-color: #d3d3d3;
  	font-family: 'Oxygen', sans-serif;*/
 }
+
 
 .main{
  	margin-top: 70px;
@@ -476,7 +478,28 @@ footer {
 	margin-right:5px;
 }
 
+.message-bubble{
+	position:relative;
+	width:100%;
+	min-height:65px;
+	padding:15px;
+	background:#fff;
+	border-radius: 10px;
+	border:1px solid #ccc;
+}
+
+.my-notification {
+	padding-bottom: 10px;
+}
 /*.conv-order{
 	vertical-align: bottom;
 }*/
 
+.mainc {
+	min-height: 605px;
+}
+
+.search-action-buttons {
+	margin-top: 60px;
+	margin-bottom: 60px;
+}

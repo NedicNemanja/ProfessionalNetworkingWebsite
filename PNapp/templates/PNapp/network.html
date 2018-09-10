@@ -3,7 +3,7 @@
 
 {% block content %}
     <section>
-      <div class="container">
+      <div class="container mainc">
         <div class="row">
           <div class="col-md-12">
             <div class="panel panel-default friends">
@@ -15,7 +15,9 @@
                   {% for friend in friends%}
                     <li><a class="network-avatar" href="/overview/{{friend.id}}">
                         <img src={{friend.profile_photo.url}} class="network-thumbnail"></a>
-                        <div><h>{{friend.name}} {{friend.surname}}</h></div>
+                        <div>{{friend.name}} {{friend.surname}}</div>
+                        <div>{{ friend.position }}</div>
+                        <div>{{ friend.company }}</div>
                     </li>
                   {% endfor %}
                 </ul>

@@ -414,6 +414,7 @@ class ads(View):
 
 
 class notifications(View):
+    template_name ='PNapp/notifications.html'
 
     def get(self, request):
         return HttpResponse("notifications")
