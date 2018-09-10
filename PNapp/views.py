@@ -418,7 +418,8 @@ class notifications(View):
     template_name ='PNapp/notifications.html'
 
     def get(self, request):
-        return HttpResponse("notifications")
+        context = {'template_name':"notifications",}
+        return render(request, self.template_name, context=context)
 
 
 ##################AJAX VIEWS#############################################
