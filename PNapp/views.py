@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.template import loader
 from django.views import View
 from .models import User, Post, Connection, Comment, Conversation, Message
@@ -10,6 +10,12 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth import logout as site_logout
 from django.utils import timezone
 from itertools import chain
+from django.template.loader import render_to_string
+
+try:
+    from django.utils import simplejson as json
+except ImportError:
+    import json
 
 # Create your views here.
 class welcome(View):
@@ -72,8 +78,13 @@ class index(View):
             user = User.objects.get(id=request.session['user_pk'])
         except KeyError:    #user not logged in
             return redirect('/')
-
+        #get the [post,total_inetrests,if user already interested in post] for every post
         posts = User.get_posts(user)
+        posts_list = []
+        for post in posts:
+            posts_list.append([ post,\
+                                post.total_interests(),\
+                                post.interests.filter(id=user.id).exists()])
         #get 9-18 connections
         connections = Connection.objects.filter(receiver=user,accepted=True) | Connection.objects.all().filter(creator=user,accepted=True)
         friends = []
@@ -82,10 +93,13 @@ class index(View):
                 friends.append(conn.receiver)
             else:
                 friends.append(conn.creator)
-        context = {'user':user,'friends':friends, 'posts':posts,}
+
+        context = {'user':user,'friends':friends, 'posts_list':posts_list,}
         return render(request, self.template_name, context=context)
 
     def post(self, request):
+        print("getget---------------------")
+
         #get current user's details
         try:
             user = User.objects.get(id=request.session['user_pk'])
@@ -403,3 +417,46 @@ class notifications(View):
 
     def get(self, request):
         return HttpResponse("notifications")
+
+
+##################AJAX VIEWS#############################################
+
+def interest(request):
+    print("inside interest view-----------------")
+    #get current user's details and check if he is logged in indeed
+    try:
+        user = User.objects.get(id=request.session['user_pk'])
+    except KeyError:    #user not logged in
+        return redirect('/')
+    #get post with pid
+    postid = request.GET['post_id']
+    post = get_object_or_404(Post, id=postid)
+    print(postid)
+    #check if this user already expressed interest in this post
+    if post.interests.filter(id=user.id).exists():
+        return HttpResponse('already exists')
+    else:
+        post.interests.add(user)
+        print("intersed")
+
+    if request.is_ajax():
+        #get the [post,total_inetrests,if user already interested in post] for every post
+        posts = User.get_posts(user)
+        posts_list = []
+        for post in posts:
+            posts_list.append([ post,\
+                                post.total_interests(),\
+                                post.interests.filter(id=user.id).exists()])
+        #get 9-18 connections
+        connections = Connection.objects.filter(receiver=user,accepted=True) | Connection.objects.all().filter(creator=user,accepted=True)
+        friends = []
+        for conn in connections[:9]:
+            if conn.creator == user:
+                friends.append(conn.receiver)
+            else:
+                friends.append(conn.creator)
+
+        context = {'user':user,'friends':friends, 'posts_list':posts_list,}
+        print(context)
+        html=render_to_string('PNapp/interest.html', context, request=request)
+        return JsonResponse({'context':context})
