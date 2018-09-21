@@ -1,52 +1,27 @@
 from django.contrib import admin
 from .models import *
+from django.template.loader import render_to_string
+from django.http import HttpResponse
 
 
 # Export method
-def export_xlsx(modeladmin, request, queryset):
-    import openpyxl
-    from openpyxl.cell import get_column_letter
-    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-    response['Content-Disposition'] = 'attachment; filename=mymodel.xlsx'
-    wb = openpyxl.Workbook()
-    ws = wb.get_active_sheet()
-    ws.title = "MyModel"
-
-    row_num = 0
-
-    columns = [
-        (u"id", 15),
-        (u"email", 128),
-        (u"password", 128),
-    ]
-
-    for col_num in xrange(len(columns)):
-        c = ws.cell(row=row_num + 1, column=col_num + 1)
-        c.value = columns[col_num][0]
-        c.style.font.bold = True
-        # set column width
-        ws.column_dimensions[get_column_letter(col_num+1)].width = columns[col_num][1]
-
-    for obj in queryset:
-        row_num += 1
-        row = [
-            obj.id,
-            obj.email,
-            obj.password,
-        ]
-        for col_num in xrange(len(row)):
-            c = ws.cell(row=row_num + 1, column=col_num + 1)
-            c.value = row[col_num]
-            c.style.alignment.wrap_text = True
-
-    wb.save(response)
+def export_xml(modeladmin, request, queryset):
+    template_name = 'PNapp/xml_template.xml'
+    users = queryset
+    xml = render_to_string(template_name, {'users': users})
+    myFile = open("FinalXML.xml", "w")
+    myFile.write(xml)
+    myFile.close()
+    myFile = open("FinalXML.xml", "r")
+    response = HttpResponse(myFile, content_type='application/xml')
+    response['Content-Disposition'] = 'attachment; filename=FXML.xml'
     return response
 
-export_xlsx.short_description = u"Export XLSX"
+export_xml.short_description = u"Export XML"
 
 # Admin's model
 class MyModelAdmin(admin.ModelAdmin):
-    actions = [export_xlsx]
+    actions = [export_xml]
 
 # Register your models here.
 admin.site.register(User, MyModelAdmin)

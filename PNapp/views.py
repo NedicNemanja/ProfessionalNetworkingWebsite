@@ -408,10 +408,11 @@ class settings(View):
         return render(request, self.template_name, context=context)
 
 
-class ads(View):
+class advertisments(View):
+    template_name = 'PNapp/advertisments.html'
 
     def get(self, request):
-        return HttpResponse("ads")
+        return render(request, self.template_name)
 
 
 class notifications(View):

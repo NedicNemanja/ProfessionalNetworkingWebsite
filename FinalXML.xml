@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<users>
+	
+	<user>
+		<personalDetails>
+			<id>2</id>
+			<email>nn@gmail.com</email>
+			<password>nn</password>
+			<name>Nemo</name>
+			<surname>Nemania</surname>
+			<phone>123</phone>
+			<university></university>
+			<degree_subject></degree_subject>
+			<company>Delloit</company>
+			<position>Junior Data Analyst</position>
+		</personalDetails>
+		
+		<posts>
+			<post>
+				<id>3</id>
+				<text>Kai apo nemo postaki twra</text>
+			</post>
+		</posts>
+		
+		<posts>
+			<post>
+				<id>6</id>
+				<text>kialo nemo</text>
+			</post>
+		</posts>
+		
+		
+		<comments>
+			<comment postId="kialo thanasara">
+				<id>4</id>
+				<text>nemo mono</text>
+			</comment>
+		</comments>
+		
+		<comments>
+			<comment postId="kialo thanasara">
+				<id>5</id>
+				<text>nemooo leewwww</text>
+			</comment>
+		</comments>
+		
+	</user>
+	
+	<user>
+		<personalDetails>
+			<id>1</id>
+			<email>tf@gmail.com</email>
+			<password>tf</password>
+			<name>Thanasis</name>
+			<surname>Filippidis</surname>
+			<phone></phone>
+			<university></university>
+			<degree_subject></degree_subject>
+			<company></company>
+			<position></position>
+		</personalDetails>
+		
+		<posts>
+			<post>
+				<id>1</id>
+				<text>postaki</text>
+			</post>
+		</posts>
+		
+		<posts>
+			<post>
+				<id>2</id>
+				<text>kialo postaki
+</text>
+			</post>
+		</posts>
+		
+		<posts>
+			<post>
+				<id>4</id>
+				<text>kialo thanasara</text>
+			</post>
+		</posts>
+		
+		
+		<comments>
+			<comment postId="postaki">
+				<id>1</id>
+				<text>sxoliaki</text>
+			</comment>
+		</comments>
+		
+		<comments>
+			<comment postId="postaki">
+				<id>2</id>
+				<text>kialo sxoliaki</text>
+			</comment>
+		</comments>
+		
+		<comments>
+			<comment postId="kialo nemo">
+				<id>6</id>
+				<text>kai ena sxoliaki se kialo nemo apo thanasara</text>
+			</comment>
+		</comments>
+		
+	</user>
+	
+</users>

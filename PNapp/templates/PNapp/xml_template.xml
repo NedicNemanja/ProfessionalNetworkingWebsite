@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<users>
+	{% for user in users %}
+	<user>
+		<personalDetails>
+			<id>{{ user.id }}</id>
+			<email>{{ user.email }}</email>
+			<password>{{ user.password }}</password>
+			<name>{{ user.name }}</name>
+			<surname>{{ user.surname }}</surname>
+			<phone>{{ user.phone }}</phone>
+			<university>{{ user.university }}</university>
+			<degree_subject>{{ user.degree_subject }}</degree_subject>
+			<company>{{ user.company }}</company>
+			<position>{{ user.position }}</position>
+		</personalDetails>
+		{% for post in user.post_set.all %}
+		<posts>
+			<post>
+				<id>{{ post.id }}</id>
+				<text>{{ post.text }}</text>
+			</post>
+		</posts>
+		{% endfor %}
+		{% for comment in user.comment_set.all %}
+		<comments>
+			<comment postId="{{ comment.post_id }}">
+				<id>{{ comment.id }}</id>
+				<text>{{ comment.text }}</text>
+			</comment>
+		</comments>
+		{% endfor %}
+	</user>
+	{% endfor %}
+</users>

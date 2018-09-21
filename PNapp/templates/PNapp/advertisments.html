@@ -1,0 +1,190 @@
+{% extends "PNapp/main.html" %}
+{% load static %}
+
+{% block content %}
+    <section>
+      <div class="container mainc">
+        <div class="row">
+        	<div class="col-md-5">
+
+            <div class="panel panel-default personal-details">
+              <div class="panel-heading">
+                <h3 class="panel-title">My Advertisments</h3>
+              </div>
+              <div class="panel-body">
+                <div><img src="{{ user.profile_photo.url }}" alt="User Profile Picture" class="personal-details-avatar"></div>
+                <div>{{ user.name }} {{user.surname}}</div>
+                <div>{{ user.email }}</div>
+                <div>{{ user.university }}</div>
+                <div>{{ user.degree_subject }}</div>
+                <div>{{ user.company }}</div>
+                <div>{{ user.position }}</div>
+                <div>{{ user.phone }}</div>
+                <div><button class="btn btn-default" onclick="location.href='/profile/'" type="button">Edit details</button></div>
+                <!-- <div class="group-item">
+                  <img src="img/group.png">
+                  <h4><a href="#">Sample Group One</a></h4>
+                  <p>This is a Dobble social network sample group</p>
+                </div>
+                <div class="clearfix"></div>
+                <div class="group-item">
+                  <img src="img/group.png">
+                  <h4><a href="#">Sample Group One</a></h4>
+                  <p>This is a Dobble social network sample group</p>
+                </div>
+                <div class="clearfix"></div>
+                <div class="group-item">
+                  <img src="img/group.png">
+                  <h4><a href="#">Sample Group One</a></h4>
+                  <p>This is a Dobble social network sample group</p>
+                </div>
+                <div class="clearfix"></div>
+                <a class="btn btn-primary" href="#">View All Groups</a>-->
+              </div>
+            </div>
+
+          </div>
+
+          <div class="col-md-7">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">Job Advertisments</h3>
+              </div>
+              <div class="panel-body">
+                <form method="post">{% csrf_token %}
+                  <div class="form-group">
+                    <input class="form-control" type="text" name="title" placeholder="Position's Title" required>
+                  </div>
+                  <div class="form-group">
+                    <textarea class="form-control" name="status" placeholder="Job's details like company, salary, requirements"></textarea>
+                  </div>
+                  <div class="form-inline">
+                    <input class="form-control skill" type="text" name="skill" placeholder="Skill hashtag">
+                    <button type="button" class="btn btn-default" class="btn-inline" ><i class="fa fa-plus"></i></button>
+                  </div>
+                  <div class="form-group"></div>
+
+                  <button type="submit" value="Submit ad" name="button" class="btn btn-default">Submit</button>
+                  
+                </form>
+              </div>
+            </div>
+
+            <!-- Testing Ad -->
+
+            <div class="panel panel-default post">
+              <div class="panel-body">
+                <div class="row">
+                  <div class="col-sm-2">
+                    <a class="post-avatar thumbnail" href="/overview/{{post.creator.id}}">
+                      <img src="{{ post.0.creator.profile_photo.url }}" class="img-thumbnail">
+                      <div class="text-center">{{ post.0.creator.name }} {{ post.0.creator.surname }}</div>
+                    </a>
+                    <div class="likes text-center">{{ post.0.creation_date }}</div>
+                  </div><!-- col-sm-2 end -->
+                  <div class="col-sm-10">
+                    <div class="job-bubble-title">
+                      Junior Software Engineer
+                    </div><!-- bubble end -->
+                    <div class="job-bubble">
+                      <p>Required Education: Master in Data Science</p>
+                      <p>Company: Microsoft Corporation</p>
+                      <p>Salary: 65.000 per year</p>
+                    </div><!-- bubble end -->
+
+                    {% if post.2 %}
+                      already interested
+                    {% else %}
+                      <p class="post-actions" id="interest{{post.0.id}}"  data-postid="{{post.0.id}}">
+                        <!-- <input type="submit" value="Interest: {{post.1}}"/> -->
+                        <div class="apply">
+                          <button type="submit" class="btn btn-success btn-block" ><i class="fa fa-check"></i> Apply</button>
+                        </div>
+                      </p>
+                    {% endif %}
+
+                    <div class="clearfix"></div>
+                    <!-- {% if post.0.comment_set.all %}
+                      {% for comment in post.0.comment_set.all %}
+                      <div class="comments">
+                        <div class="comment">
+                          <a class="comment-avatar pull-left" href="/overview/{{comment.creator.id}}"><img src="{{ comment.creator.profile_photo.url }}"></a>
+                          <div class="comment-text">
+                            {{ comment.text }}
+                          </div>
+                        </div>
+                        <div class="clearfix"></div>
+                      </div>
+                      {% endfor %}
+                    {% endif %} -->
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- End of Testing Ad -->
+
+            {% if posts_list %}
+              {% for post in posts_list %}
+                <div class="panel panel-default post">
+                  <div class="panel-body">
+                    <div class="row">
+                      <div class="col-sm-2">
+                        <a class="post-avatar thumbnail" href="/overview/{{post.creator.id}}">
+                          <img src="{{ post.0.creator.profile_photo.url }}" class="img-thumbnail">
+                          <div class="text-center">{{ post.0.creator.name }} {{ post.0.creator.surname }}</div>
+                        </a>
+                        <div class="likes text-center">{{ post.0.creation_date }}</div>
+                      </div><!-- col-sm-2 end -->
+                      <div class="col-sm-10">
+                        <div class="bubble">
+                          <div class="pointer">
+                            <p>{{ post.0.text }}</p>
+                          </div>
+                          <div class="pointer-border"></div>
+                        </div><!-- bubble end -->
+
+                        {% if post.2 %}
+                          already interested
+                        {% else %}
+                          <p class="post-actions" id="interest{{post.0.id}}"  data-postid="{{post.0.id}}">
+                            <input type="submit" value="Interest: {{post.1}}"/>
+                          </p>
+                        {% endif %}
+
+                        <div class="comment-form">
+                          <form class="form-inline" method="post">{% csrf_token %}
+                            <div class="form-group" >
+                              <input type="text" class="form-control" name="comment" placeholder="Enter Comment">
+                            </div>
+                            <button type="submit" value="{{post.0.id}}" name="comment-button" class="btn btn-default">Add</button>
+                          </form>
+                        </div><!-- comment form end -->
+
+                        <div class="clearfix"></div>
+                        {% if post.0.comment_set.all %}
+                          {% for comment in post.0.comment_set.all %}
+                          <div class="comments">
+                            <div class="comment">
+                              <a class="comment-avatar pull-left" href="/overview/{{comment.creator.id}}"><img src="{{ comment.creator.profile_photo.url }}"></a>
+                              <div class="comment-text">
+                                {{ comment.text }}
+                              </div>
+                            </div>
+                            <div class="clearfix"></div>
+                          </div>
+                          {% endfor %}
+                        {% endif %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            {% endif %}
+          </div><!-- col-md-8 end -->
+
+
+        </div>
+      </div>
+    </section>
+{% endblock %}
