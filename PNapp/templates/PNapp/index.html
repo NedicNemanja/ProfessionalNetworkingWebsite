@@ -105,7 +105,11 @@
                         </div><!-- bubble end -->
 
                         {% if post.2 %}
-                          already interested
+                          {% if post.1 > 1 %}
+                            You and {{post.1|add:"-1"}} other are interested.
+                          {% else %}
+                            You are interested in this.
+                          {% endif %}
                         {% else %}
                           <p class="post-actions" id="interest{{post.0.id}}"  data-postid="{{post.0.id}}">
                             <input type="submit" value="Interest: {{post.1}}"/>

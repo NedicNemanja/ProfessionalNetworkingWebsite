@@ -18,7 +18,9 @@ urlpatterns = [
     path('settings/', settings.as_view()),
     path('ads/', ads.as_view()),
     path('notifications/', notifications.as_view()),
-    path('interest', views.interest, name='interest'),
+    path('interest/', views.interest, name='interest'),
+    path('friend_request/', views.friend_request, name='friend_request'),
+
 ]
 #urlpatterns += staticfiles_urlpatterns()
 urlpatterns += static(django_settings.MEDIA_URL, document_root=django_settings.MEDIA_ROOT)

@@ -14,79 +14,45 @@
                 </h3>
               </div>
               <div class="panel-body">
-                <form method="post">{% csrf_token %}
 
-                  <div class="row">
+                  {% for fr in friend_requests %}
+                  <input type="hidden" value="hello">
+                    <div class="row">
 
-                    <div class="col-sm-2">
-                      <a class="post-avatar thumbnail" href="/overview/1">
-                        <img src="" class="my-img-thumbnail">
-                      </a>
-                    </div>
+                      <div class="col-sm-2">
+                        <a class="post-avatar thumbnail" href="/overview/{{fr.creator.id}}">
+                          <img src={{fr.creator.profile_photo.url}} class="my-img-thumbnail">
+                        </a>
+                      </div>
 
-                    <div class="col-sm-10">
-                      <div class="my-notification">
-                        <div class="message-bubble">
-                          <div class="message-pointer">
-                            <div class="row">
-                              <div class="col-sm-6">
-                                <p>Blah Blah user added you</p>
-                              </div>
-                              <div class="col-sm-3">
-                                <button type="button" class="btn btn-success btn-block" ><i class="fa fa-check"></i> Accept Request</button>
-                              </div>
-                              <div class="col-sm-3">
-                                <button type="button" class="btn btn-danger btn-block" ><i class="fa fa-trash"></i> Reject Request</button>
+                      <div class="col-sm-10">
+                        <div class="my-notification">
+                          <div class="message-bubble">
+                            <div class="message-pointer">
+                              <div class="row">
+                                <div class="col-sm-6">
+                                  <p>{{fr.creator.name}} {{fr.creator.surname}} added you.</p>
+                                </div>
+                                <div class="col-sm-3">
+                                  <button type="submit" value="{{fr.id}}" class="btn btn-success btn-block friend_request" name="Accept"><i class="fa fa-check"></i> Accept Request</button>
+                                </div>
+                                <div class="col-sm-3">
+                                  <button type="submit" value="{{fr.id}}" class="btn btn-danger btn-block friend_request" name="Reject"><i class="fa fa-trash"></i> Reject Request</button>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                          <div class="pointer-border"></div>
-                        </div><!-- bubble end -->
+                            <div class="pointer-border"></div>
+                          </div><!-- bubble end -->
+                        </div>
+                        <div class="clearfix"></div>
                       </div>
+
                       <div class="clearfix"></div>
+
                     </div>
-
-                    <div class="clearfix"></div>
-
-                  </div>
-
-
-                  <div class="row">
-
-                    <div class="col-sm-2">
-                      <a class="post-avatar thumbnail" href="/overview/1">
-                        <img src="" class="my-img-thumbnail">
-                      </a>
-                    </div>
-
-                    <div class="col-sm-10">
-                      <div class="my-notification">
-                        <div class="message-bubble">
-                          <div class="message-pointer">
-                            <div class="row">
-                              <div class="col-sm-6">
-                                <p>Blah Blah user 2 added you</p>
-                              </div>
-                              <div class="col-sm-3">
-                                <button type="button" class="btn btn-success btn-block" ><i class="fa fa-check"></i> Accept Request</button>
-                              </div>
-                              <div class="col-sm-3">
-                                <button type="button" class="btn btn-danger btn-block" ><i class="fa fa-trash"></i> Reject Request</button>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="pointer-border"></div>
-                        </div><!-- bubble end -->
-                      </div>
-                      <div class="clearfix"></div>
-                    </div>
-
-                    <div class="clearfix"></div>
-
-                  </div>
-
-
-                </form>
+                  {% empty %}
+                    No Connection Requests pending.
+                  {% endfor %}
 
               </div>
             </div>
@@ -99,71 +65,48 @@
             <div class="panel panel-default"><!-- add min height class  -->
               <div class="panel-message-heading"><!--   -->
                 <h3 class="panel-title">
-                  Interest Notifications
+                  Post Notifications
                 </h3>
               </div>
+
               <div class="panel-body">
-                <form method="post">{% csrf_token %}
+                {% for action in notifications %}
+                  {% if user.id != action.creator.id %}
+                    <div class="row">
 
-                  <div class="row">
+                      <div class="col-sm-2">
+                        <a class="post-avatar thumbnail" href="/overview/{{action.creator.id}}">
+                          <img src="{{action.creator.profile_photo.url}}" class="my-img-thumbnail">
+                        </a>
+                      </div>
 
-                    <div class="col-sm-2">
-                      <a class="post-avatar thumbnail" href="/overview/1">
-                        <img src="" class="my-img-thumbnail">
-                      </a>
-                    </div>
-
-                    <div class="col-sm-10">
-                      <div class="my-notification">
-                        <div class="message-bubble">
-                          <div class="message-pointer">
-                            <div class="row">
-                              <div class="col-sm-12">
-                                <p>Blah Blah user commented you</p>
+                      <div class="col-sm-10">
+                        <div class="my-notification">
+                          <div class="message-bubble">
+                            <div class="message-pointer">
+                              <div class="row">
+                                <div class="col-sm-12">
+                                  {% if action.get_classname == "Interest" %}
+                                    <p>{{action.creator.name}} {{action.creator.surname}} is interested in your post: "{{action.post}}".</p>
+                                  {% elif action.get_classname == "Comment" %}
+                                    <p>{{action.creator.name}} {{action.creator.surname}} commented on your post: "{{action.post_id}}" and wrote "{{action.text}}"</p>
+                                  {% else %}
+                                      asd{{action.get_classname}}asd
+                                  {% endif %}
+                                </div>
                               </div>
                             </div>
-                          </div>
-                          <div class="pointer-border"></div>
-                        </div><!-- bubble end -->
+                            <div class="pointer-border"></div>
+                          </div><!-- bubble end -->
+                        </div>
+                        <div class="clearfix"></div>
                       </div>
+
                       <div class="clearfix"></div>
+
                     </div>
-
-                    <div class="clearfix"></div>
-
-                  </div>
-
-
-                  <div class="row">
-
-                    <div class="col-sm-2">
-                      <a class="post-avatar thumbnail" href="/overview/1">
-                        <img src="" class="my-img-thumbnail">
-                      </a>
-                    </div>
-
-                    <div class="col-sm-10">
-                      <div class="my-notification">
-                        <div class="message-bubble">
-                          <div class="message-pointer">
-                            <div class="row">
-                              <div class="col-sm-12">
-                                <p>Blah Blah user 2 declared interest on blah blah post 2</p>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="pointer-border"></div>
-                        </div><!-- bubble end -->
-                      </div>
-                      <div class="clearfix"></div>
-                    </div>
-
-                    <div class="clearfix"></div>
-
-                  </div>
-
-
-                </form>
+                  {% endif %}
+                {% endfor %}
 
               </div>
             </div>

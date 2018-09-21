@@ -2,14 +2,13 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, JsonResponse
 from django.template import loader
 from django.views import View
-from .models import User, Post, Connection, Comment, Conversation, Message
+from .models import *
 from django.core.exceptions import ValidationError
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_protect
 from django.utils.decorators import method_decorator
 from django.contrib.auth import logout as site_logout
 from django.utils import timezone
-from itertools import chain
 from django.template.loader import render_to_string
 
 try:
@@ -78,13 +77,13 @@ class index(View):
             user = User.objects.get(id=request.session['user_pk'])
         except KeyError:    #user not logged in
             return redirect('/')
-        #get the [post,total_inetrests,if user already interested in post] for every post
+        #get the [post,total_interests,if user already interested in post] for every post
         posts = User.get_posts(user)
         posts_list = []
         for post in posts:
             posts_list.append([ post,\
                                 post.total_interests(),\
-                                post.interests.filter(id=user.id).exists()])
+                                Interest.objects.filter(creator=user,post=post).exists()])
         #get 9-18 connections
         connections = Connection.objects.filter(receiver=user,accepted=True) | Connection.objects.all().filter(creator=user,accepted=True)
         friends = []
@@ -98,14 +97,13 @@ class index(View):
         return render(request, self.template_name, context=context)
 
     def post(self, request):
-        print("getget---------------------")
-
         #get current user's details
         try:
             user = User.objects.get(id=request.session['user_pk'])
         except KeyError:    #user not logged in
             return redirect('/')
         context = {'user':user,}
+
         if request.POST.get("button", False):
             if request.POST["button"] == "Submit status":
                 status = request.POST['status']
@@ -418,48 +416,61 @@ class notifications(View):
     template_name ='PNapp/notifications.html'
 
     def get(self, request):
-        context = {'template_name':"notifications",}
+        #get current user's details and check if he is logged in indeed
+        try:
+            user = User.objects.get(id=request.session['user_pk'])
+        except KeyError:    #user not logged in
+            return redirect('/')
+        #friend Requests
+        friend_requests = Connection.objects.filter(receiver=user,accepted=False)
+        #post notifications
+        notifications = user.get_notifications()
+        context = {'template_name':"notifications",
+                    'friend_requests':friend_requests,
+                    'notifications':notifications,
+                    'user':user,
+                    }
         return render(request, self.template_name, context=context)
 
 
-##################AJAX VIEWS#############################################
 
+##################AJAX VIEWS#############################################
+from django.views.decorators.csrf import csrf_exempt
+
+@csrf_exempt
 def interest(request):
-    print("inside interest view-----------------")
     #get current user's details and check if he is logged in indeed
     try:
         user = User.objects.get(id=request.session['user_pk'])
     except KeyError:    #user not logged in
         return redirect('/')
     #get post with pid
-    postid = request.GET['post_id']
-    post = get_object_or_404(Post, id=postid)
-    print(postid)
-    #check if this user already expressed interest in this post
-    if post.interests.filter(id=user.id).exists():
-        return HttpResponse('already exists')
-    else:
-        post.interests.add(user)
-        print("intersed")
-
     if request.is_ajax():
-        #get the [post,total_inetrests,if user already interested in post] for every post
-        posts = User.get_posts(user)
-        posts_list = []
-        for post in posts:
-            posts_list.append([ post,\
-                                post.total_interests(),\
-                                post.interests.filter(id=user.id).exists()])
-        #get 9-18 connections
-        connections = Connection.objects.filter(receiver=user,accepted=True) | Connection.objects.all().filter(creator=user,accepted=True)
-        friends = []
-        for conn in connections[:9]:
-            if conn.creator == user:
-                friends.append(conn.receiver)
-            else:
-                friends.append(conn.creator)
+        postid = request.POST['postid']
+        post = get_object_or_404(Post, id=postid)
+        #check if this user already expressed interest in this post
+        if not Interest.objects.filter(creator=user,post=post).exists():
+            print("INterest Create")
+            Interest.objects.create(creator=user,post=post,creation_date=timezone.now())
+            return JsonResponse({'total_interests': post.total_interests()})
+        else:
+            return JsonResponse({"error":"User already interested."})
+    else:
+        return JsonResponse({"error":"request not ajax"})
 
-        context = {'user':user,'friends':friends, 'posts_list':posts_list,}
-        print(context)
-        html=render_to_string('PNapp/interest.html', context, request=request)
-        return JsonResponse({'context':context})
+@csrf_exempt
+def friend_request(request):
+    #get current user's details and check if he is logged in indeed
+    try:
+        user = User.objects.get(id=request.session['user_pk'])
+    except KeyError:    #user not logged in
+        return redirect('/')
+    #got a accept/reject on a friendship requets?
+    friend_request = Connection.objects.get(id=request.POST['fr_id'])
+    if request.POST["action"] == "Accept":
+        friend_request.accepted = True
+        friend_request.save()
+    elif request.POST["action"] == "Reject":
+        print("here")
+        friend_request.delete()
+    return JsonResponse({})

@@ -76,6 +76,17 @@ class User(models.Model):
 		return Conversation.objects.filter(creator=self).order_by('-creation_date')\
 			 | Conversation.objects.filter(receiver=self).order_by('-creation_date')
 
+	def get_notifications(self):
+		posts = self.get_posts()
+		actions = []
+		for post in posts:
+			for interest in post.get_interests():
+				actions.append(interest)
+			for comment in post.get_comments():
+				actions.append(comment)
+		actions.sort(reverse=True,key=SortNotificationsFunc)
+		return actions
+
 class Connection(models.Model):
 	#on deletion of a creator or a receiver the said field will be set to null
 	creator = models.ForeignKey('User', on_delete=models.SET_NULL, null=True, related_name="CActive")
@@ -138,7 +149,7 @@ class Post(models.Model):
 	#maybe add editable = False in production level
 	creation_date = models.DateTimeField()
 	text = models.CharField(max_length=512)
-	interests = models.ManyToManyField(User, blank=True, related_name='interests')
+	#interests = models.ManyToManyField(User, blank=True, related_name='interests')
 
 	def __str__(self):
 		return self.text
@@ -147,8 +158,26 @@ class Post(models.Model):
 		comments = Comment.objects.filter(post_id=self.id)
 		return comments
 
+	def get_interests(self):
+		return Interest.objects.filter(post=self)
+
+	def get_comments(self):
+		return Comment.objects.filter(post_id=self)
+
 	def total_interests(self):
-		return self.interests.count()
+		return Interest.objects.filter(post=self).count()
+
+class Interest(models.Model):
+	creator = models.ForeignKey(User, on_delete=models.CASCADE)
+	post = models.ForeignKey(Post, on_delete=models.CASCADE)
+	creation_date = models.DateTimeField()
+
+	def __str__(self):
+		return str(self.creation_date)
+		#return str(self.creator)+"      "+self.post.__str__()
+
+	def get_classname(self):
+		return "Interest"
 
 class Comment(models.Model):
 	creator = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -159,7 +188,8 @@ class Comment(models.Model):
 	def __str__(self):
 		return self.text
 
-class Interest(models.Model):
-	creator = models.ForeignKey(User, on_delete=models.CASCADE)
-	post_id = models.ForeignKey(Post, on_delete=models.CASCADE)
-	creation_date = models.DateTimeField(editable=False, default=timezone.now)
+	def get_classname(self):
+		return "Comment"
+
+def SortNotificationsFunc(element):
+	return element.creation_date
