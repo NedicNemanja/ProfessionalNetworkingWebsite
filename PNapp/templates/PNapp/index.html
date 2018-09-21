@@ -69,7 +69,7 @@
               <div class="panel-body">
                 <form method="post">{% csrf_token %}
                   <div class="form-group">
-                    <textarea class="form-control" name="status" placeholder="Write on the wall"></textarea>
+                    <textarea class="form-control" name="status" placeholder="Write on the wall" required></textarea>
                   </div>
 
                   <button type="submit" value="Submit status" name="button" class="btn btn-default">Submit</button>
@@ -119,7 +119,7 @@
                         <div class="comment-form">
                           <form class="form-inline" method="post">{% csrf_token %}
                             <div class="form-group" >
-                              <input type="text" class="form-control" name="comment" placeholder="Enter Comment">
+                              <input type="text" class="form-control" name="comment" placeholder="Enter Comment" required>
                             </div>
                             <button type="submit" value="{{post.0.id}}" name="comment-button" class="btn btn-default">Add</button>
                           </form>

@@ -93,7 +93,7 @@
                 <div class="message-form">
                   <form class="form-inline" method="post" action="/messages/{{target_conversation.id}}">{% csrf_token %}
                     <div class="form-group" >
-                      <input type="text" class="form-control" name="message" placeholder="Write a message...">
+                      <input type="text" class="form-control" name="message" placeholder="Write a message..." required>
                     </div>
                     <button type="submit" value="" name="new-mess" class="glyphicon glyphicon-send"></button>
                   </form>
