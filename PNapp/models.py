@@ -2,6 +2,12 @@ from django.db import models
 from django.utils import timezone
 import datetime
 
+class Skill(models.Model):
+	name = models.CharField(max_length=128, primary_key=True)
+
+	def __str__(self):
+		return str(self.name)
+
 class User(models.Model):
 	"""docstring for User"""
 	"""def __init__(self, arg):
@@ -32,6 +38,8 @@ class User(models.Model):
 	company_public = models.BooleanField(default=False)
 	position = models.CharField(max_length=256, blank=True)
 	position_public = models.BooleanField(default=False)
+	skills = models.ManyToManyField(Skill)
+	skills_public = models.BooleanField(default=False)
 
 	def __str__(self):
 		return self.email
@@ -86,6 +94,7 @@ class User(models.Model):
 				actions.append(comment)
 		actions.sort(reverse=True,key=SortNotificationsFunc)
 		return actions
+
 
 class Connection(models.Model):
 	#on deletion of a creator or a receiver the said field will be set to null
