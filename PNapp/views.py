@@ -187,6 +187,30 @@ class profile(View):
                 user.position_public = True
             else:
                 user.position_public = False
+
+            if request.POST.get("skill1", False):
+                skill1_name = request.POST['skill1'].lower()
+                try:
+                    skill1 = Skill.objects.get(name=skill1_name)
+                except Skill.DoesNotExist:
+                    skill1 = Skill(name=skill1_name)
+                    skill1.save()
+                user.skills.add(skill1)
+
+            if request.POST.get("skill2", False):
+                skill2_name = request.POST['skill2'].lower()
+                try:
+                    skill2 = Skill.objects.get(name=skill2_name)
+                except Skill.DoesNotExist:
+                    skill2 = Skill(name=skill2_name)
+                    skill2.save()
+                user.skills.add(skill2)
+
+            if request.POST.get("skills_privacy", False):
+                user.skills_public = True
+            else:
+                user.skills_public = False
+
             #check if profile photo changes
             if request.FILES.get('image-file',False):
                 from django.conf import settings

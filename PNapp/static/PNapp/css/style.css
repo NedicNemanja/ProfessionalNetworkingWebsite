@@ -142,14 +142,14 @@ header .logo{
 	margin-bottom:5px;
 }
 
-.profile ul{
+/*.profile ul{
 	margin-top:30px;
 }
 
 .profile li{
 	list-style: none;
 	line-height: 1.9em;
-}
+}*/
 
 .photos{
 	margin:0;
@@ -491,9 +491,7 @@ footer {
 .my-notification {
 	padding-bottom: 10px;
 }
-/*.conv-order{
-	vertical-align: bottom;
-}*/
+
 
 .mainc {
 	min-height: 605px;
@@ -506,11 +504,16 @@ footer {
 
 .skill {
 	width: 10%;
+	margin-right: 5px;
+	margin-top: 10px;
+}
+
+.skill-plus {
+	margin-top: 10px;
 }
 
 .job-bubble-title{
 	position:relative;
-	/*width:580px;*/
 	min-height:10px;
 	padding:15px;
 	background:#fff;
@@ -521,7 +524,6 @@ footer {
 
 .job-bubble{
 	position:relative;
-	/*width:580px;*/
 	min-height:65px;
 	padding:15px;
 	background:#fff;
@@ -531,11 +533,7 @@ footer {
 
 .apply {
 	margin: auto;
+	margin-top: 10px;
 	display: block;
 	width: 140px;
-	/*width: 30%;*/
-	/*margin-left: 140px;*/
-	/*text-align: center;*/
-	/*position: absolute;
-	top: 50%;*/
 }

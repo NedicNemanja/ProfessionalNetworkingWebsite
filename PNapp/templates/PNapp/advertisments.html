@@ -12,34 +12,42 @@
                 <h3 class="panel-title">My Advertisments</h3>
               </div>
               <div class="panel-body">
-                <div><img src="{{ user.profile_photo.url }}" alt="User Profile Picture" class="personal-details-avatar"></div>
-                <div>{{ user.name }} {{user.surname}}</div>
-                <div>{{ user.email }}</div>
-                <div>{{ user.university }}</div>
-                <div>{{ user.degree_subject }}</div>
-                <div>{{ user.company }}</div>
-                <div>{{ user.position }}</div>
-                <div>{{ user.phone }}</div>
-                <div><button class="btn btn-default" onclick="location.href='/profile/'" type="button">Edit details</button></div>
-                <!-- <div class="group-item">
-                  <img src="img/group.png">
-                  <h4><a href="#">Sample Group One</a></h4>
-                  <p>This is a Dobble social network sample group</p>
+                <!-- Part to be repeated for every ad notification  --> 
+                <div class="row">
+
+                  <div class="col-sm-2">
+                    <a class="post-avatar thumbnail" href="/overview/{{action.creator.id}}">
+                      <img src="{{action.creator.profile_photo.url}}" class="my-img-thumbnail">
+                    </a>
+                  </div>
+
+                  <div class="col-sm-10">
+                    <div class="my-notification">
+                      <div class="message-bubble">
+                        <div class="message-pointer">
+                          <div class="row">
+                            <div class="col-sm-12">
+                              <!-- {% if action.get_classname == "Interest" %}
+                                <p>{{action.creator.name}} {{action.creator.surname}} is interested in your post: "{{action.post}}".</p>
+                              {% elif action.get_classname == "Comment" %}
+                                <p>{{action.creator.name}} {{action.creator.surname}} commented on your post: "{{action.post_id}}" and wrote "{{action.text}}"</p>
+                              {% else %}
+                                  asd{{action.get_classname}}asd
+                              {% endif %} -->
+                              User blah blah (link to his prof) applied for your job ad "Junior Software Engineer"
+                            </div>
+                          </div>
+                        </div>
+                        <div class="pointer-border"></div>
+                      </div><!-- bubble end -->
+                    </div>
+                    <div class="clearfix"></div>
+                  </div>
+
+                  <div class="clearfix"></div>
+
                 </div>
-                <div class="clearfix"></div>
-                <div class="group-item">
-                  <img src="img/group.png">
-                  <h4><a href="#">Sample Group One</a></h4>
-                  <p>This is a Dobble social network sample group</p>
-                </div>
-                <div class="clearfix"></div>
-                <div class="group-item">
-                  <img src="img/group.png">
-                  <h4><a href="#">Sample Group One</a></h4>
-                  <p>This is a Dobble social network sample group</p>
-                </div>
-                <div class="clearfix"></div>
-                <a class="btn btn-primary" href="#">View All Groups</a>-->
+                <!-- End of the repeatition  -->
               </div>
             </div>
 
@@ -60,7 +68,11 @@
                   </div>
                   <div class="form-inline">
                     <input class="form-control skill" type="text" name="skill" placeholder="Skill hashtag">
-                    <button type="button" class="btn btn-default" class="btn-inline" ><i class="fa fa-plus"></i></button>
+                    <input class="form-control skill" type="text" name="skill" placeholder="Skill hashtag">
+                    <input class="form-control skill" type="text" name="skill" placeholder="Skill hashtag">
+                    <input class="form-control skill" type="text" name="skill" placeholder="Skill hashtag">
+                    <input class="form-control skill" type="text" name="skill" placeholder="Skill hashtag">
+                    <button type="button" class="btn btn-default skill-plus" class="btn-inline" ><i class="fa fa-plus"></i></button>
                   </div>
                   <div class="form-group"></div>
 

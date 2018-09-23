@@ -32,6 +32,16 @@
                   {% if target_user.phone_public %}
                     <div><strong>Phone Number: </strong>{{ target_user.phone }}</div>
                   {% endif %}
+                  {% if target_user.skills_public %}
+                  <div><strong>Skills: </strong></div>
+                    {% if target_user.skills.all %}
+                    <ul>
+                      {% for skill in target_user.skills.all %}
+                        <li>{{ skill.name }}</li>
+                      {% endfor %}
+                    </ul>
+                    {% endif %}
+                  {% endif %}
                   <div class="col-md-4"></div>
                   <div class="col-md-4">
                     <form method="post" action="/messages/">{% csrf_token %}
@@ -90,6 +100,16 @@
                   {% endif %}
                   {% if target_user.phone_public %}
                     <div><strong>Phone Number: </strong>{{ target_user.phone }}</div>
+                  {% endif %}
+                  {% if target_user.skills_public %}
+                  <div><strong>Skills: </strong></div>
+                    {% if target_user.skills.all %}
+                    <ul>
+                      {% for skill in target_user.skills.all %}
+                        <li>{{ skill.name }}</li>
+                      {% endfor %}
+                    </ul>
+                    {% endif %}
                   {% endif %}
                   <div class="col-md-5">
                     {% if user != target_user %}
