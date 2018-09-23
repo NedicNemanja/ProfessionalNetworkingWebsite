@@ -10,6 +10,7 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth import logout as site_logout
 from django.utils import timezone
 from django.template.loader import render_to_string
+from .CCF_Posts import CCFilterPosts
 
 try:
     from django.utils import simplejson as json
@@ -78,12 +79,15 @@ class index(View):
         except KeyError:    #user not logged in
             return redirect('/')
         #get the [post,total_interests,if user already interested in post] for every post
-        posts = User.get_posts(user)
+        posts_filtered = CCFilterPosts(user)
+        print("---------------")
+        print(posts_filtered)
         posts_list = []
-        for post in posts:
+        for post in posts_filtered:
             posts_list.append([ post,\
                                 post.total_interests(),\
                                 Interest.objects.filter(creator=user,post=post).exists()])
+        print(posts_filtered)
         #get 9-18 connections
         connections = Connection.objects.filter(receiver=user,accepted=True) | Connection.objects.all().filter(creator=user,accepted=True)
         friends = []
@@ -289,8 +293,8 @@ class mymessages(View):
                             'messages':target_conversation.get_messages(),
                             'template_name':"messages",}
                 return render(request, self.template_name, context=context)
-
-        return render(request, self.template_name)
+        context = {'template_name':"messages",}
+        return render(request, self.template_name, context=context)
 
     def post(self, request, conversation_pk=-1):
         #get current user's details
@@ -451,6 +455,7 @@ class notifications(View):
         friend_requests = Connection.objects.filter(receiver=user,accepted=False)
         #post notifications
         notifications = user.get_notifications()
+        print(notifications)
         context = {'template_name':"notifications",
                     'friend_requests':friend_requests,
                     'notifications':notifications,
