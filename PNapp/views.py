@@ -410,7 +410,8 @@ class advertisments(View):
     template_name = 'PNapp/advertisments.html'
 
     def get(self, request):
-        return render(request, self.template_name)
+        context = {'template_name':"advertisments",}
+        return render(request, self.template_name, context=context)
 
 
 class notifications(View):
@@ -475,3 +476,15 @@ def friend_request(request):
         print("here")
         friend_request.delete()
     return JsonResponse({})
+
+@csrf_exempt
+def new_message(request):
+    #get current user's details and check if he is logged in indeed
+    try:
+        user = User.objects.get(id=request.session['user_pk'])
+    except KeyError:    #user not logged in
+        return redirect('/')
+    #Create the new message
+    conversation = get_object_or_404(Conversation, id=request.POST["convo_id"])
+    Message.objects.create(text=request.POST["message"],creator=user,creation_date=timezone.now(),conversation=conversation)
+    return JsonResponse({"user_id":user.id, "profile_photo_url":user.profile_photo.url})

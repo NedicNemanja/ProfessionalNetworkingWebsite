@@ -173,8 +173,7 @@ class Interest(models.Model):
 	creation_date = models.DateTimeField()
 
 	def __str__(self):
-		return str(self.creation_date)
-		#return str(self.creator)+"      "+self.post.__str__()
+		return str(self.creator)+" is interested in"+self.post.__str__()
 
 	def get_classname(self):
 		return "Interest"

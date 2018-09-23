@@ -54,3 +54,50 @@ $(document).ready(function() {
 
   });
 });
+
+/************************messages.html related*********************************/
+//accept/reject request for notification.html
+$(document).ready(function() {
+  $('[name=new-mess]').click(function(event) {
+    event.preventDefault();
+    var element = $(this);
+    var message = $(element).siblings(".form-group").children(".form-control").val();
+    var convo_id = $(element).attr("data-convoid");
+
+    $.ajax({
+      url: '/new_message/',
+      type: 'POST',
+      data: { message: message,
+              convo_id: convo_id,
+              },
+
+      success: function(json){
+        $(element).closest(".form-inline").closest(".message-form").siblings(".panel-body").append(
+          '<div class="row">'+
+            '<div class="col-sm-10">'+
+              '<div class="message-bubble-right">'+
+                '<div class="message-pointer">'+
+                  '<p>'+message+'</p>'+
+                '</div>'+
+                '<div class="pointer-border"></div>'+
+              '</div>'+
+              '<div class="clearfix"></div>'+
+            '</div>'+
+
+            '<div class="col-sm-2">'+
+              '<a class="post-avatar thumbnail" href="/overview/'+json.user_id+'">'+
+                '<img src="'+json.profile_photo_url+'" class="my-img-thumbnail">'+
+              '</a>'+
+            '</div>'+
+          '<div class="clearfix"></div>'+
+        '</div>');
+        $(element).siblings(".form-group").children(".form-control").val('');
+      },
+
+      error: function(){
+        alert("error");
+      }
+    });
+
+  });
+});
