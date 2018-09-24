@@ -112,8 +112,20 @@ class User(models.Model):
 		actions.sort(reverse=True,key=SortNotificationsFunc)
 		return actions
 
+	#num of total interests and comments of this user
 	def shill_score(self):
 		return Interest.objects.filter(creator=self).count()+Comment.objects.filter(creator=self).count()
+
+	#get ads created by this user
+	def get_user_ads(self):
+		return Advertisment.objects.filter(creator=self)
+
+	#get available ads for this user
+	def get_ads(self):
+		ads = []
+		for friend in self.get_friends():
+			ads += friend.get_user_ads()
+		return ads
 
 class Connection(models.Model):
 	#on deletion of a creator or a receiver the said field will be set to null
@@ -130,6 +142,7 @@ class Advertisment(models.Model):
 	title = models.TextField()
 	details = models.TextField()
 	skills = models.ManyToManyField(Skill)
+	creation_date = models.DateTimeField(editable=False, default=timezone.now)
 
 	def __str__(self):
 		return self.title
