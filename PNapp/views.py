@@ -435,7 +435,7 @@ class advertisments(View):
 
     def get(self, request):
         context = {'template_name':"advertisments",}
-        return render(request, context=context)
+        return render(request, self.template_name, context=context)
 
 
 class notifications(View):
