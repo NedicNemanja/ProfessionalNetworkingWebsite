@@ -440,9 +440,10 @@ class advertisments(View):
         except KeyError:    #user not logged in
             return redirect('/')
 
-        ads = user.get_ads() #USE CCF HERE to sort ads
+        ads = user.get_ads()
         context = { 'template_name':"advertisments",
-                    'ads':ads,}
+                    'ads':ads,
+                    'user':user,}
         return render(request, self.template_name, context=context)
 
 
@@ -530,3 +531,24 @@ def new_ad(request):
             Skill.objects.create(name=skill)
         ad.skills.add(skill)
     return JsonResponse({})
+
+@csrf_exempt
+def ad_apply(request):
+    user = UserSessionCheck(request)
+    try:
+        ad = Advertisment.objects.get(id=request.POST['ad_id'])
+        if user in ad.applicants.all():
+            return JsonResponse({"message":"already applied"})
+        else:
+            ad.applicants.add(user)
+            return JsonResponse({"message":"successfully applied"})
+    except KeyError:
+        return JsonResponse({"message":"couldnt find ad"})
+
+def UserSessionCheck(request):
+    #get current user's details and check if he is logged in indeed
+    try:
+        user = User.objects.get(id=request.session['user_pk'])
+        return user
+    except KeyError:    #user not logged in
+        return redirect('/')

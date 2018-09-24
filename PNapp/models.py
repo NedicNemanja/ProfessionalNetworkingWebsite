@@ -125,6 +125,8 @@ class User(models.Model):
 		ads = []
 		for friend in self.get_friends():
 			ads += friend.get_user_ads()
+			print(friend.get_user_ads())
+		ads += self.get_user_ads()
 		return ads
 
 class Connection(models.Model):
@@ -138,11 +140,12 @@ class Connection(models.Model):
 		return str(self.creator)+"+"+str(self.receiver)+"="+str(self.accepted)
 
 class Advertisment(models.Model):
-	creator = models.ForeignKey(User, on_delete=models.CASCADE)
+	creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="ad_creator")
 	title = models.TextField()
 	details = models.TextField()
 	skills = models.ManyToManyField(Skill)
 	creation_date = models.DateTimeField(editable=False, default=timezone.now)
+	applicants = models.ManyToManyField(User)
 
 	def __str__(self):
 		return self.title

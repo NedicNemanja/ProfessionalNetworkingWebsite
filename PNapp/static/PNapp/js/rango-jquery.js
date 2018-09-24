@@ -1,7 +1,7 @@
 /**********************index.html related*************************************/
 //interest jquery for index.html
 $(document).ready(function() {
-  $(".post-actions").click(function(event) {
+  $(".post_interested").click(function(event) {
       event.preventDefault();
       var element=$(this);
       var pid=$(element).attr("data-postid");
@@ -133,10 +133,41 @@ $(document).ready(function() {
   });
 });
 
-//add new skill button
+//add new skill to ad button
 $(document).ready(function() {
   $('.add_skill').click(function(event) {
     event.preventDefault();
     $(this).before('<input class="form-control skill" type="text" name="skill" placeholder="Add a skill">');
   });
+});
+
+//apply for an ad
+$(document).ready(function() {
+  $('.ad_apply').click(function(event) {
+    event.preventDefault();
+    var element = $(this);
+
+    $.ajax({
+      url: '/ad_apply/',
+      type: 'POST',
+      data: { ad_id: $(this).val(),},
+
+      success: function(json){
+        $(element).closest(".post-actions").remove();
+        console.log(json.message);
+      },
+
+      error: function(){
+        alert("error");
+      }
+    });
+
+  });
+});
+
+
+/****************profile.html related******************************************/
+//add new skill to profile button
+$('.skill_plus').click(function(event) {
+  $(this).before('<input class="form-control skill" type="text" name="skill" placeholder="Add a skill">');
 });

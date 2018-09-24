@@ -22,7 +22,7 @@ urlpatterns = [
     path('friend_request/', views.friend_request, name='friend_request'),
     path('new_message/', views.new_message, name='new_message'),
     path('new_ad/', views.new_ad, name='new_ad'),
-
+    path('ad_apply/', views.ad_apply, name='ad_apply'),
 ]
 #urlpatterns += staticfiles_urlpatterns()
 urlpatterns += static(django_settings.MEDIA_URL, document_root=django_settings.MEDIA_ROOT)
