@@ -103,6 +103,7 @@ $(document).ready(function() {
 });
 
 /*******************advertisments.html related*********************************/
+//button for submitting a new ad
 $(document).ready(function() {
   $('.ad_submit').click(function(event) {
     event.preventDefault();
@@ -129,5 +130,13 @@ $(document).ready(function() {
       }
     });
 
+  });
+});
+
+//add new skill button
+$(document).ready(function() {
+  $('.add_skill').click(function(event) {
+    event.preventDefault();
+    $(this).before('<input class="form-control skill" type="text" name="skill" placeholder="Add a skill">');
   });
 });

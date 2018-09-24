@@ -53,6 +53,7 @@
 
           </div>
 
+          <!--- Submit new ad --->
           <div class="col-md-7">
             <div class="panel panel-default">
               <div class="panel-heading">
@@ -64,9 +65,8 @@
                   <div class="form-group"></div>
                   <textarea class="form-control" name="details" placeholder="Job's details like company, salary, requirements"></textarea>
                   <div class="form-inline">
-                    <input class="form-control skill" type="text" name="skill" placeholder="Skill">
-                    <input class="form-control skill" type="text" name="skill" placeholder="Skill hashtag">
-                    <button type="button" class="btn btn-default skill-plus" class="btn-inline" ><i class="fa fa-plus"></i></button>
+                    <input class="form-control skill" type="text" name="skill" placeholder="Add a skill">
+                    <button type="button" class="btn btn-default skill-plus btn-inline add_skill"><i class="fa fa-plus"></i></button>
                   </div>
                   <div class="form-group"></div>
 
@@ -76,7 +76,7 @@
               </div>
             </div>
 
-            <!-- Testing Ad -->
+            <!-- Show Ads -->
             {% for ad in ads %}
               <div class="panel panel-default post">
                 <div class="panel-body">
@@ -87,14 +87,14 @@
                         <div class="text-center">{{ ad.creator.name }} {{ad.creator.surname }}</div>
                       </a>
                       <div class="likes text-center">{{ ad.creation_date }}</div>
-                    </div><!-- col-sm-2 end -->
+                    </div>
                     <div class="col-sm-10">
                       <div class="job-bubble-title">
                         {{ad.title}}
-                      </div><!-- bubble end -->
+                      </div>
                       <div class="job-bubble">
                         <p>{{ad.details}}</p>
-                      </div><!-- bubble end -->
+                      </div>
 
                       <p class="post-actions" id="interest{{post.0.id}}"  data-postid="{{post.0.id}}">
                         <!-- <input type="submit" value="Interest: {{post.1}}"/> -->
@@ -111,7 +111,7 @@
             {% empty %}
               No Job Advertisments available yet.
             {% endfor %}
-          </div><!-- col-md-8 end -->
+          </div><!-- col-md-7 end -->
 
         </div>
       </div>

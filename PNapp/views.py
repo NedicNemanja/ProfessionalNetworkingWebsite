@@ -440,8 +440,9 @@ class advertisments(View):
         except KeyError:    #user not logged in
             return redirect('/')
 
+        ads = user.get_ads() #USE CCF HERE to sort ads
         context = { 'template_name':"advertisments",
-                    'ads':user.get_ads()}
+                    'ads':ads,}
         return render(request, self.template_name, context=context)
 
 
