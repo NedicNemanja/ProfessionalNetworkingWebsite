@@ -21,6 +21,7 @@ urlpatterns = [
     path('interest/', views.interest, name='interest'),
     path('friend_request/', views.friend_request, name='friend_request'),
     path('new_message/', views.new_message, name='new_message'),
+    path('new_ad/', views.new_ad, name='new_ad'),
 
 ]
 #urlpatterns += staticfiles_urlpatterns()

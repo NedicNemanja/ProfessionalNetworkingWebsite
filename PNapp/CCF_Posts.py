@@ -21,7 +21,6 @@ def CCFilterPosts(user):
     #penalize older posts scores logarithmically
     DateTimePenalty(post_scores_dict)
     #order posts by score
-    print(post_scores_dict)
     return sorted(post_scores_dict, key=post_scores_dict.get, reverse=True)
     #return this to see how it would look just with time ordered posts: return user.get_posts()
 
@@ -52,7 +51,6 @@ def PostScores(posts,user_jackard_distances):
         for comment in post.get_comments():
             if comment.creator in user_jackard_distances:
                 post_scores[post] += user_jackard_distances[comment.creator]
-    print(post_scores)
     return post_scores
 
 def InteractedPenalty(post_scores,interacted_posts):

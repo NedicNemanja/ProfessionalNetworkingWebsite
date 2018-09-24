@@ -101,3 +101,33 @@ $(document).ready(function() {
 
   });
 });
+
+/*******************advertisments.html related*********************************/
+$(document).ready(function() {
+  $('.ad_submit').click(function(event) {
+    event.preventDefault();
+    var skills = $(":input[name^='skill']");
+    var skills_val = [];
+    for(i=0; i< skills.length; i++){
+      skills_val[i] = skills[i].value;
+    }
+
+    $.ajax({
+      url: '/new_ad/',
+      type: 'POST',
+      data: { title : $(this).siblings('[name="title"]').val(),
+              details: $(this).siblings('[name="details"]').val(),
+              skills : JSON.stringify(skills_val),
+            },
+
+      success: function(json){
+        alert("success");
+      },
+
+      error: function(){
+        alert("error");
+      }
+    });
+
+  });
+});

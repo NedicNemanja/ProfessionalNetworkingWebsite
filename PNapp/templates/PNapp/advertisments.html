@@ -12,7 +12,7 @@
                 <h3 class="panel-title">My Advertisments</h3>
               </div>
               <div class="panel-body">
-                <!-- Part to be repeated for every ad notification  --> 
+                <!-- Part to be repeated for every ad notification  -->
                 <div class="row">
 
                   <div class="col-sm-2">
@@ -60,24 +60,18 @@
               </div>
               <div class="panel-body">
                 <form method="post">{% csrf_token %}
-                  <div class="form-group">
-                    <input class="form-control" type="text" name="title" placeholder="Position's Title" required>
-                  </div>
-                  <div class="form-group">
-                    <textarea class="form-control" name="status" placeholder="Job's details like company, salary, requirements"></textarea>
-                  </div>
+                  <input class="form-control" type="text" name="title" placeholder="Position's Title" required>
+                  <div class="form-group"></div>
+                  <textarea class="form-control" name="details" placeholder="Job's details like company, salary, requirements"></textarea>
                   <div class="form-inline">
-                    <input class="form-control skill" type="text" name="skill" placeholder="Skill hashtag">
-                    <input class="form-control skill" type="text" name="skill" placeholder="Skill hashtag">
-                    <input class="form-control skill" type="text" name="skill" placeholder="Skill hashtag">
-                    <input class="form-control skill" type="text" name="skill" placeholder="Skill hashtag">
+                    <input class="form-control skill" type="text" name="skill" placeholder="Skill">
                     <input class="form-control skill" type="text" name="skill" placeholder="Skill hashtag">
                     <button type="button" class="btn btn-default skill-plus" class="btn-inline" ><i class="fa fa-plus"></i></button>
                   </div>
                   <div class="form-group"></div>
 
-                  <button type="submit" value="Submit ad" name="button" class="btn btn-default">Submit</button>
-                  
+                  <button type="submit" value="" name="button" class="btn btn-default ad_submit">Submit</button>
+
                 </form>
               </div>
             </div>

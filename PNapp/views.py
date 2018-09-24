@@ -80,14 +80,11 @@ class index(View):
             return redirect('/')
         #get the [post,total_interests,if user already interested in post] for every post
         posts_filtered = CCFilterPosts(user)
-        print("---------------")
-        print(posts_filtered)
         posts_list = []
         for post in posts_filtered:
             posts_list.append([ post,\
                                 post.total_interests(),\
                                 Interest.objects.filter(creator=user,post=post).exists()])
-        print(posts_filtered)
         #get 9-18 connections
         connections = Connection.objects.filter(receiver=user,accepted=True) | Connection.objects.all().filter(creator=user,accepted=True)
         friends = []
@@ -317,7 +314,6 @@ class mymessages(View):
                 #conversation doesnt exist, create
                 conversation=Conversation.objects.create(creator=user,receiver=target_user)
                 return redirect('/messages/'+str(conversation.id))
-            print(conversation)
             return redirect('/messages/'+str(conversation.first().id))
 
 class search(View):
@@ -455,7 +451,6 @@ class notifications(View):
         friend_requests = Connection.objects.filter(receiver=user,accepted=False)
         #post notifications
         notifications = user.get_notifications()
-        print(notifications)
         context = {'template_name':"notifications",
                     'friend_requests':friend_requests,
                     'notifications':notifications,
@@ -481,7 +476,6 @@ def interest(request):
         post = get_object_or_404(Post, id=postid)
         #check if this user already expressed interest in this post
         if not Interest.objects.filter(creator=user,post=post).exists():
-            print("INterest Create")
             Interest.objects.create(creator=user,post=post,creation_date=timezone.now())
             return JsonResponse({'total_interests': post.total_interests()})
         else:
@@ -502,7 +496,6 @@ def friend_request(request):
         friend_request.accepted = True
         friend_request.save()
     elif request.POST["action"] == "Reject":
-        print("here")
         friend_request.delete()
     return JsonResponse({})
 
@@ -517,3 +510,18 @@ def new_message(request):
     conversation = get_object_or_404(Conversation, id=request.POST["convo_id"])
     Message.objects.create(text=request.POST["message"],creator=user,creation_date=timezone.now(),conversation=conversation)
     return JsonResponse({"user_id":user.id, "profile_photo_url":user.profile_photo.url})
+
+@csrf_exempt
+def new_ad(request):
+    #get current user's details and check if he is logged in indeed
+    try:
+        user = User.objects.get(id=request.session['user_pk'])
+    except KeyError:    #user not logged in
+        return redirect('/')
+    #create a new ad
+    ad = Advertisment.objects.create(title=request.POST['title'], creator=user, details=request.POST['details'])
+    for skill in json.loads(request.POST['skills']):
+        if not Skill.objects.filter(name=skill).exists():
+            Skill.objects.create(name=skill)
+        ad.skills.add(skill)
+    return JsonResponse({})

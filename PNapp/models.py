@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 import datetime
 
+
 class Skill(models.Model):
 	name = models.CharField(max_length=128, primary_key=True)
 
@@ -126,10 +127,12 @@ class Connection(models.Model):
 
 class Advertisment(models.Model):
 	creator = models.ForeignKey(User, on_delete=models.CASCADE)
-	description = models.TextField()
+	title = models.TextField()
+	details = models.TextField()
+	skills = models.ManyToManyField(Skill)
 
 	def __str__(self):
-		return self.description#Again maybe also the descript?
+		return self.title
 
 class Applicant(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
