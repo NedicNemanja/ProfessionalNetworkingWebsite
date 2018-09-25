@@ -131,9 +131,9 @@ class User(models.Model):
 
 class Connection(models.Model):
 	#on deletion of a creator or a receiver the said field will be set to null
-	creator = models.ForeignKey('User', on_delete=models.SET_NULL, null=True, related_name="CActive")
+	creator = models.ForeignKey('User', on_delete=models.CASCADE, null=True, related_name="CActive")
 	#https://stackoverflow.com/questions/26955319/django-reverse-accessor-clashes
-	receiver = models.ForeignKey('User', on_delete=models.SET_NULL, null=True, related_name="CPassive")
+	receiver = models.ForeignKey('User', on_delete=models.CASCADE, null=True, related_name="CPassive")
 	accepted = models.BooleanField(default=False)
 
 	def __str__(self):
