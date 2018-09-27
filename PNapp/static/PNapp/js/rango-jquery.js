@@ -54,3 +54,89 @@ $(document).ready(function() {
 
   });
 });
+
+/************************messages.html related*********************************/
+//accept/reject request for notification.html
+$(document).ready(function() {
+  $('[name=new-mess]').click(function(event) {
+    event.preventDefault();
+    var element = $(this);
+    var message = $(element).siblings(".form-group").children(".form-control").val();
+    var convo_id = $(element).attr("data-convoid");
+
+    $.ajax({
+      url: '/new_message/',
+      type: 'POST',
+      data: { message: message,
+              convo_id: convo_id,
+              },
+
+      success: function(json){
+        $(element).closest(".form-inline").closest(".message-form").siblings(".panel-body").append(
+          '<div class="row">'+
+            '<div class="col-sm-10">'+
+              '<div class="message-bubble-right">'+
+                '<div class="message-pointer">'+
+                  '<p>'+message+'</p>'+
+                '</div>'+
+                '<div class="pointer-border"></div>'+
+              '</div>'+
+              '<div class="clearfix"></div>'+
+            '</div>'+
+
+            '<div class="col-sm-2">'+
+              '<a class="post-avatar thumbnail" href="/overview/'+json.user_id+'">'+
+                '<img src="'+json.profile_photo_url+'" class="my-img-thumbnail">'+
+              '</a>'+
+            '</div>'+
+          '<div class="clearfix"></div>'+
+        '</div>');
+        $(element).siblings(".form-group").children(".form-control").val('');
+      },
+
+      error: function(){
+        alert("error");
+      }
+    });
+
+  });
+});
+
+/*******************advertisments.html related*********************************/
+//button for submitting a new ad
+$(document).ready(function() {
+  $('.ad_submit').click(function(event) {
+    event.preventDefault();
+    var skills = $(":input[name^='skill']");
+    var skills_val = [];
+    for(i=0; i< skills.length; i++){
+      skills_val[i] = skills[i].value;
+    }
+
+    $.ajax({
+      url: '/new_ad/',
+      type: 'POST',
+      data: { title : $(this).siblings('[name="title"]').val(),
+              details: $(this).siblings('[name="details"]').val(),
+              skills : JSON.stringify(skills_val),
+            },
+
+      success: function(json){
+        alert("success");
+      },
+
+      error: function(){
+        alert("error");
+      }
+    });
+
+  });
+});
+
+//add new skill button
+$(document).ready(function() {
+  $('.add_skill').click(function(event) {
+    event.preventDefault();
+    $(this).before('<input class="form-control skill" type="text" name="skill" placeholder="Add a skill">');
+  });
+});

@@ -2,7 +2,7 @@ from django.urls import path, re_path
 from django.conf import settings as django_settings
 from django.conf.urls.static import static
 from . import views
-from PNapp.views import welcome, index, profile, network, mymessages, search, overview, settings, advertisments, notifications, interest
+from PNapp.views import *
 
 urlpatterns = [
     path('', welcome.as_view()),
@@ -20,6 +20,8 @@ urlpatterns = [
     path('notifications/', notifications.as_view()),
     path('interest/', views.interest, name='interest'),
     path('friend_request/', views.friend_request, name='friend_request'),
+    path('new_message/', views.new_message, name='new_message'),
+    path('new_ad/', views.new_ad, name='new_ad'),
 
 ]
 #urlpatterns += staticfiles_urlpatterns()

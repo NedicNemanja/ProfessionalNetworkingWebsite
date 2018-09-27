@@ -12,7 +12,7 @@
                 <h3 class="panel-title">My Advertisments</h3>
               </div>
               <div class="panel-body">
-                <!-- Part to be repeated for every ad notification  --> 
+                <!-- Part to be repeated for every ad notification  -->
                 <div class="row">
 
                   <div class="col-sm-2">
@@ -53,6 +53,7 @@
 
           </div>
 
+          <!--- Submit new ad --->
           <div class="col-md-7">
             <div class="panel panel-default">
               <div class="panel-heading">
@@ -60,141 +61,66 @@
               </div>
               <div class="panel-body">
                 <form method="post">{% csrf_token %}
-                  <div class="form-group">
-                    <input class="form-control" type="text" name="title" placeholder="Position's Title" required>
-                  </div>
-                  <div class="form-group">
-                    <textarea class="form-control" name="status" placeholder="Job's details like company, salary, requirements"></textarea>
-                  </div>
+                  <input class="form-control" type="text" name="title" placeholder="Position's Title" required>
+                  <div class="form-group"></div>
+                  <textarea class="form-control" name="details" placeholder="Job's details like company, salary, requirements" required></textarea>
                   <div class="form-inline">
-                    <input class="form-control skill" type="text" name="skill" placeholder="Skill hashtag">
-                    <input class="form-control skill" type="text" name="skill" placeholder="Skill hashtag">
-                    <input class="form-control skill" type="text" name="skill" placeholder="Skill hashtag">
-                    <input class="form-control skill" type="text" name="skill" placeholder="Skill hashtag">
-                    <input class="form-control skill" type="text" name="skill" placeholder="Skill hashtag">
-                    <button type="button" class="btn btn-default skill-plus" class="btn-inline" ><i class="fa fa-plus"></i></button>
+                    <input class="form-control skill" type="text" name="skill" placeholder="Add a skill">
+                    <button type="button" class="btn btn-default skill-plus btn-inline add_skill"><i class="fa fa-plus"></i></button>
                   </div>
                   <div class="form-group"></div>
 
-                  <button type="submit" value="Submit ad" name="button" class="btn btn-default">Submit</button>
-                  
+                  <button type="submit" value="" name="button" class="btn btn-default ad_submit">Submit</button>
+
                 </form>
               </div>
             </div>
 
-            <!-- Testing Ad -->
+            <!-- Show Ads -->
+            {% for ad in ads %}
+              <div class="panel panel-default post">
+                <div class="panel-body">
+                  <div class="row">
+                    <div class="col-sm-2">
+                      <a class="post-avatar thumbnail" href="/overview/{{ad.creator.id}}">
+                        <img src="{{ ad.creator.profile_photo.url }}" class="img-thumbnail">
+                        <div class="text-center">{{ ad.creator.name }} {{ad.creator.surname }}</div>
+                      </a>
+                      <div class="likes text-center">{{ ad.creation_date }}</div>
+                    </div>
+                    <div class="col-sm-10">
+                      <div class="job-bubble-title">
+                        {{ad.title}}
+                      </div>
+                      <div class="job-bubble">
+                        <p>{{ad.details}}</p>
+                      </div>
+                      <div class="job-bubble-skills">
+                        {% if ad.skills.all %}
+                          {% for skill in ad.skills.all %}
+                            #{{ skill }} 
+                          {% endfor %}
+                        {% else %}
+                          No special skills required for this job
+                        {% endif %}
+                      </div>
 
-            <div class="panel panel-default post">
-              <div class="panel-body">
-                <div class="row">
-                  <div class="col-sm-2">
-                    <a class="post-avatar thumbnail" href="/overview/{{post.creator.id}}">
-                      <img src="{{ post.0.creator.profile_photo.url }}" class="img-thumbnail">
-                      <div class="text-center">{{ post.0.creator.name }} {{ post.0.creator.surname }}</div>
-                    </a>
-                    <div class="likes text-center">{{ post.0.creation_date }}</div>
-                  </div><!-- col-sm-2 end -->
-                  <div class="col-sm-10">
-                    <div class="job-bubble-title">
-                      Junior Software Engineer
-                    </div><!-- bubble end -->
-                    <div class="job-bubble">
-                      <p>Required Education: Master in Data Science</p>
-                      <p>Company: Microsoft Corporation</p>
-                      <p>Salary: 65.000 per year</p>
-                    </div><!-- bubble end -->
-
-                    {% if post.2 %}
-                      already interested
-                    {% else %}
                       <p class="post-actions" id="interest{{post.0.id}}"  data-postid="{{post.0.id}}">
                         <!-- <input type="submit" value="Interest: {{post.1}}"/> -->
                         <div class="apply">
                           <button type="submit" class="btn btn-success btn-block" ><i class="fa fa-check"></i> Apply</button>
                         </div>
                       </p>
-                    {% endif %}
 
-                    <div class="clearfix"></div>
-                    <!-- {% if post.0.comment_set.all %}
-                      {% for comment in post.0.comment_set.all %}
-                      <div class="comments">
-                        <div class="comment">
-                          <a class="comment-avatar pull-left" href="/overview/{{comment.creator.id}}"><img src="{{ comment.creator.profile_photo.url }}"></a>
-                          <div class="comment-text">
-                            {{ comment.text }}
-                          </div>
-                        </div>
-                        <div class="clearfix"></div>
-                      </div>
-                      {% endfor %}
-                    {% endif %} -->
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- End of Testing Ad -->
-
-            {% if posts_list %}
-              {% for post in posts_list %}
-                <div class="panel panel-default post">
-                  <div class="panel-body">
-                    <div class="row">
-                      <div class="col-sm-2">
-                        <a class="post-avatar thumbnail" href="/overview/{{post.creator.id}}">
-                          <img src="{{ post.0.creator.profile_photo.url }}" class="img-thumbnail">
-                          <div class="text-center">{{ post.0.creator.name }} {{ post.0.creator.surname }}</div>
-                        </a>
-                        <div class="likes text-center">{{ post.0.creation_date }}</div>
-                      </div><!-- col-sm-2 end -->
-                      <div class="col-sm-10">
-                        <div class="bubble">
-                          <div class="pointer">
-                            <p>{{ post.0.text }}</p>
-                          </div>
-                          <div class="pointer-border"></div>
-                        </div><!-- bubble end -->
-
-                        {% if post.2 %}
-                          already interested
-                        {% else %}
-                          <p class="post-actions" id="interest{{post.0.id}}"  data-postid="{{post.0.id}}">
-                            <input type="submit" value="Interest: {{post.1}}"/>
-                          </p>
-                        {% endif %}
-
-                        <div class="comment-form">
-                          <form class="form-inline" method="post">{% csrf_token %}
-                            <div class="form-group" >
-                              <input type="text" class="form-control" name="comment" placeholder="Enter Comment">
-                            </div>
-                            <button type="submit" value="{{post.0.id}}" name="comment-button" class="btn btn-default">Add</button>
-                          </form>
-                        </div><!-- comment form end -->
-
-                        <div class="clearfix"></div>
-                        {% if post.0.comment_set.all %}
-                          {% for comment in post.0.comment_set.all %}
-                          <div class="comments">
-                            <div class="comment">
-                              <a class="comment-avatar pull-left" href="/overview/{{comment.creator.id}}"><img src="{{ comment.creator.profile_photo.url }}"></a>
-                              <div class="comment-text">
-                                {{ comment.text }}
-                              </div>
-                            </div>
-                            <div class="clearfix"></div>
-                          </div>
-                          {% endfor %}
-                        {% endif %}
-                      </div>
+                      <div class="clearfix"></div>
                     </div>
                   </div>
                 </div>
-              {% endfor %}
-            {% endif %}
-          </div><!-- col-md-8 end -->
-
+              </div>
+            {% empty %}
+              No Job Advertisments available yet.
+            {% endfor %}
+          </div><!-- col-md-7 end -->
 
         </div>
       </div>

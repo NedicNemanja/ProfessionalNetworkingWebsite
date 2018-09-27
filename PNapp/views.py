@@ -10,6 +10,8 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth import logout as site_logout
 from django.utils import timezone
 from django.template.loader import render_to_string
+from .CCF_Posts import CCFilterPosts
+from .CCF_Ads import CCFilterAds
 
 try:
     from django.utils import simplejson as json
@@ -78,9 +80,9 @@ class index(View):
         except KeyError:    #user not logged in
             return redirect('/')
         #get the [post,total_interests,if user already interested in post] for every post
-        posts = User.get_posts(user)
+        posts_filtered = CCFilterPosts(user)
         posts_list = []
-        for post in posts:
+        for post in posts_filtered:
             posts_list.append([ post,\
                                 post.total_interests(),\
                                 Interest.objects.filter(creator=user,post=post).exists()])
@@ -196,7 +198,7 @@ class profile(View):
                     skill1 = Skill(name=skill1_name)
                     skill1.save()
                 user.skills.add(skill1)
-            
+
             if request.POST.get("skill2", False):
                 skill2_name = request.POST['skill2'].lower()
                 try:
@@ -289,8 +291,8 @@ class mymessages(View):
                             'messages':target_conversation.get_messages(),
                             'template_name':"messages",}
                 return render(request, self.template_name, context=context)
-
-        return render(request, self.template_name)
+        context = {'template_name':"messages",}
+        return render(request, self.template_name, context=context)
 
     def post(self, request, conversation_pk=-1):
         #get current user's details
@@ -313,7 +315,6 @@ class mymessages(View):
                 #conversation doesnt exist, create
                 conversation=Conversation.objects.create(creator=user,receiver=target_user)
                 return redirect('/messages/'+str(conversation.id))
-            print(conversation)
             return redirect('/messages/'+str(conversation.first().id))
 
 class search(View):
@@ -434,7 +435,15 @@ class advertisments(View):
     template_name = 'PNapp/advertisments.html'
 
     def get(self, request):
-        context = {'template_name':"advertisments",}
+        #get current user's details and check if he is logged in indeed
+        try:
+            user = User.objects.get(id=request.session['user_pk'])
+        except KeyError:    #user not logged in
+            return redirect('/')
+
+        ads = CCFilterAds(user) #USE CCF HERE to sort ads
+        context = { 'template_name':"advertisments",
+                    'ads':ads,}
         return render(request, self.template_name, context=context)
 
 
@@ -471,18 +480,14 @@ def interest(request):
     except KeyError:    #user not logged in
         return redirect('/')
     #get post with pid
-    if request.is_ajax():
-        postid = request.POST['postid']
-        post = get_object_or_404(Post, id=postid)
-        #check if this user already expressed interest in this post
-        if not Interest.objects.filter(creator=user,post=post).exists():
-            print("INterest Create")
-            Interest.objects.create(creator=user,post=post,creation_date=timezone.now())
-            return JsonResponse({'total_interests': post.total_interests()})
-        else:
-            return JsonResponse({"error":"User already interested."})
+    postid = request.POST['postid']
+    post = get_object_or_404(Post, id=postid)
+    #check if this user already expressed interest in this post
+    if not Interest.objects.filter(creator=user,post=post).exists():
+        Interest.objects.create(creator=user,post=post,creation_date=timezone.now())
+        return JsonResponse({'total_interests': post.total_interests()})
     else:
-        return JsonResponse({"error":"request not ajax"})
+        return JsonResponse({"error":"User already interested."})
 
 @csrf_exempt
 def friend_request(request):
@@ -497,6 +502,32 @@ def friend_request(request):
         friend_request.accepted = True
         friend_request.save()
     elif request.POST["action"] == "Reject":
-        print("here")
         friend_request.delete()
+    return JsonResponse({})
+
+@csrf_exempt
+def new_message(request):
+    #get current user's details and check if he is logged in indeed
+    try:
+        user = User.objects.get(id=request.session['user_pk'])
+    except KeyError:    #user not logged in
+        return redirect('/')
+    #Create the new message
+    conversation = get_object_or_404(Conversation, id=request.POST["convo_id"])
+    Message.objects.create(text=request.POST["message"],creator=user,creation_date=timezone.now(),conversation=conversation)
+    return JsonResponse({"user_id":user.id, "profile_photo_url":user.profile_photo.url})
+
+@csrf_exempt
+def new_ad(request):
+    #get current user's details and check if he is logged in indeed
+    try:
+        user = User.objects.get(id=request.session['user_pk'])
+    except KeyError:    #user not logged in
+        return redirect('/')
+    #create a new ad
+    ad = Advertisment.objects.create(title=request.POST['title'], creator=user, details=request.POST['details'], creation_date=timezone.now())
+    for skill in json.loads(request.POST['skills']):
+        if not Skill.objects.filter(name=skill).exists():
+            Skill.objects.create(name=skill)
+        ad.skills.add(skill)
     return JsonResponse({})

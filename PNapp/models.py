@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 import datetime
 
+
 class Skill(models.Model):
 	name = models.CharField(max_length=128, primary_key=True)
 
@@ -47,6 +48,7 @@ class User(models.Model):
 	def autheniticate(self,password):
 		return (self.password == password)
 
+	#get posts users network created
 	def get_posts(self):
 		group_of_interest = [self.email]
 		users_friends = User.get_users_friends(self)
@@ -56,8 +58,23 @@ class User(models.Model):
 		ordered_posts = posts.order_by('-creation_date')
 		return ordered_posts
 
+	#get posts user created
 	def get_users_posts(self):
 		return Post.objects.filter(creator=self)
+
+	#get posts user created,interested,commented on
+	def get_interacted_posts(self):
+		#posts user created
+		interacted_posts = self.get_users_posts()
+		#posts user was interested in
+		post_ids_interested = Interest.objects.filter(creator=self).values('post')
+		for post_dict in post_ids_interested:
+			interacted_posts = interacted_posts | Post.objects.filter(id=post_dict['post'])
+		#posts user commented on
+		post_ids_commented = Comment.objects.filter(creator=self).values('post_id')
+		for post_dict in post_ids_commented:
+			interacted_posts = interacted_posts | Post.objects.filter(id=post_dict['post_id'])
+		return interacted_posts
 
 	def get_users_friends(self):
 		accepted_connections = Connection.objects.filter(accepted=True)
@@ -85,7 +102,7 @@ class User(models.Model):
 			 | Conversation.objects.filter(receiver=self).order_by('-creation_date')
 
 	def get_notifications(self):
-		posts = self.get_posts()
+		posts = self.get_users_posts()
 		actions = []
 		for post in posts:
 			for interest in post.get_interests():
@@ -95,6 +112,24 @@ class User(models.Model):
 		actions.sort(reverse=True,key=SortNotificationsFunc)
 		return actions
 
+	#num of total interests and comments of this user
+	def shill_score(self):
+		return Interest.objects.filter(creator=self).count()+Comment.objects.filter(creator=self).count()
+
+	#get ads created by this user
+	def get_user_ads(self):
+		return Advertisment.objects.filter(creator=self)
+
+	#get available ads for this user
+	def get_ads(self):
+		ads = []
+		for friend in self.get_friends():
+			ads += friend.get_user_ads()
+		return ads
+
+	#get the skills of a user
+	def get_skills(self):
+		return self.skills.all()
 
 class Connection(models.Model):
 	#on deletion of a creator or a receiver the said field will be set to null
@@ -108,10 +143,13 @@ class Connection(models.Model):
 
 class Advertisment(models.Model):
 	creator = models.ForeignKey(User, on_delete=models.CASCADE)
-	description = models.TextField()
+	title = models.TextField()
+	details = models.TextField()
+	skills = models.ManyToManyField(Skill)
+	creation_date = models.DateTimeField(editable=False, default=timezone.now)
 
 	def __str__(self):
-		return self.description#Again maybe also the descript?
+		return self.title
 
 class Applicant(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -182,8 +220,7 @@ class Interest(models.Model):
 	creation_date = models.DateTimeField()
 
 	def __str__(self):
-		return str(self.creation_date)
-		#return str(self.creator)+"      "+self.post.__str__()
+		return str(self.creator)+" is interested in"+self.post.__str__()
 
 	def get_classname(self):
 		return "Interest"
