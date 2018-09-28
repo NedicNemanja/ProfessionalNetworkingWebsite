@@ -169,10 +169,13 @@ class profile(View):
             user.position = request.POST['position']
             #update skills
             for skill_name in request.POST.getlist('skill'):
-                if not skill_name:
+                print(skill_name)
+                if skill_name:
                     try:
+                        print("try")
                         skill = Skill.objects.get(name=skill_name)
                     except Skill.DoesNotExist:
+                        print("except")
                         skill = Skill.objects.create(name=skill_name)
                     user.skills.add(skill)
             #check privacy changes

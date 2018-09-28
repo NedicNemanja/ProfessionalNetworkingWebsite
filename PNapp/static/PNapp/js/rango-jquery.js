@@ -153,7 +153,7 @@ $(document).ready(function() {
       data: { ad_id: $(this).val(),},
 
       success: function(json){
-        $(element).closest(".post-actions").remove();
+        $(element).closest(".post-actions").replaceWith("already applied");
         console.log(json.message);
       },
 

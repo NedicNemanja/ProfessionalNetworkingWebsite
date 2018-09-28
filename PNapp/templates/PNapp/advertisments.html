@@ -63,7 +63,7 @@
                 <form method="post">{% csrf_token %}
                   <input class="form-control" type="text" name="title" placeholder="Position's Title" required>
                   <div class="form-group"></div>
-                  <textarea class="form-control" name="details" placeholder="Job's details like company, salary, requirements"></textarea>
+                  <textarea class="form-control" name="details" placeholder="Job's details like company, salary, requirements" required></textarea>
                   <div class="form-inline">
                     <input class="form-control skill" type="text" name="skill" placeholder="Add a skill">
                     <button type="button" class="btn btn-default skill-plus btn-inline add_skill"><i class="fa fa-plus"></i></button>
