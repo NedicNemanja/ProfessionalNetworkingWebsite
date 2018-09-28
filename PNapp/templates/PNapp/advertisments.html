@@ -13,40 +13,37 @@
               </div>
               <div class="panel-body">
                 <!-- Part to be repeated for every ad notification  -->
-                <div class="row">
+                {% for ad in user.get_user_ads %} <!--order_by({{ad.title}})-->
+                  {% for applicant in ad.applicants.all %}
+                    <div class="row">
 
-                  <div class="col-sm-2">
-                    <a class="post-avatar thumbnail" href="/overview/{{action.creator.id}}">
-                      <img src="{{action.creator.profile_photo.url}}" class="my-img-thumbnail">
-                    </a>
-                  </div>
+                      <div class="col-sm-2">
+                        <a class="post-avatar thumbnail" href="/overview/{{applicant.id}}">
+                          <img src="{{applicant.profile_photo.url}}" class="my-img-thumbnail">
+                        </a>
+                      </div>
 
-                  <div class="col-sm-10">
-                    <div class="my-notification">
-                      <div class="message-bubble">
-                        <div class="message-pointer">
-                          <div class="row">
-                            <div class="col-sm-12">
-                              <!-- {% if action.get_classname == "Interest" %}
-                                <p>{{action.creator.name}} {{action.creator.surname}} is interested in your post: "{{action.post}}".</p>
-                              {% elif action.get_classname == "Comment" %}
-                                <p>{{action.creator.name}} {{action.creator.surname}} commented on your post: "{{action.post_id}}" and wrote "{{action.text}}"</p>
-                              {% else %}
-                                  asd{{action.get_classname}}asd
-                              {% endif %} -->
-                              User blah blah (link to his prof) applied for your job ad "Junior Software Engineer"
+                      <div class="col-sm-10">
+                        <div class="my-notification">
+                          <div class="message-bubble">
+                            <div class="message-pointer">
+                              <div class="row">
+                                <div class="col-sm-12">
+                                  {{applicant.name}} {{applicant.surname}} applied for your job ad "{{ad.title}}".
+                                </div>
+                              </div>
                             </div>
-                          </div>
+                            <div class="pointer-border"></div>
+                          </div><!-- bubble end -->
                         </div>
-                        <div class="pointer-border"></div>
-                      </div><!-- bubble end -->
+                        <div class="clearfix"></div>
+                      </div>
+
+                      <div class="clearfix"></div>
+
                     </div>
-                    <div class="clearfix"></div>
-                  </div>
-
-                  <div class="clearfix"></div>
-
-                </div>
+                  {% endfor %}
+                {% endfor %}
                 <!-- End of the repeatition  -->
               </div>
             </div>
@@ -114,6 +111,8 @@
                               Apply
                             </button>
                           </p>
+                          {% else %}
+                            Your advertisment.
                           {% endif %}
                       {% endif %}
                       <div class="clearfix"></div>

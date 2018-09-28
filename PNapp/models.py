@@ -118,7 +118,7 @@ class User(models.Model):
 
 	#get ads created by this user
 	def get_user_ads(self):
-		return Advertisment.objects.filter(creator=self)
+		return Advertisment.objects.filter(creator=self).order_by('-creation_date')
 
 	#get available ads for this user
 	def get_ads(self):
