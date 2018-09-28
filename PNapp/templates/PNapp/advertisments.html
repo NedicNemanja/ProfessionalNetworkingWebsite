@@ -95,6 +95,15 @@
                       <div class="job-bubble">
                         <p>{{ad.details}}</p>
                       </div>
+                      <div class="job-bubble-skills">
+                        {% if ad.skills.all %}
+                          {% for skill in ad.skills.all %}
+                            #{{ skill }} 
+                          {% endfor %}
+                        {% else %}
+                          No special skills required for this job
+                        {% endif %}
+                      </div>
 
                       <p class="post-actions">
                         {% if ad.creator != user %}

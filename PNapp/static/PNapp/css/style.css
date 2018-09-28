@@ -82,6 +82,7 @@ header .logo{
 	margin:5px 0;
 	overflow:auto;
 	width:100%;
+	min-height: 40px;
 }
 
 .friends li{
@@ -529,6 +530,16 @@ footer {
 	background:#fff;
 	border-radius: 10px;
 	border:1px solid #ccc;
+}
+
+.job-bubble-skills{
+	position:relative;
+	min-height:10px;
+	padding:15px;
+	background:#fff;
+	border-radius: 10px;
+	border:1px solid #ccc;
+	margin-top: 10px;
 }
 
 .apply {

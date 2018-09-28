@@ -8,7 +8,7 @@ from django.http import HttpResponse
 def export_xml(modeladmin, request, queryset):
     template_name = 'PNapp/xml_template.xml'
     users = queryset
-    xml = render_to_string(template_name, {'users': users})
+    xml = render_to_string(template_name, {'users': users,})
     myFile = open("FinalXML.xml", "w")
     myFile.write(xml)
     myFile.close()

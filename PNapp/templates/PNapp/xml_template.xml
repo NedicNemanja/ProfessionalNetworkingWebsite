@@ -14,22 +14,48 @@
 			<company>{{ user.company }}</company>
 			<position>{{ user.position }}</position>
 		</personalDetails>
-		{% for post in user.post_set.all %}
 		<posts>
-			<post>
-				<id>{{ post.id }}</id>
-				<text>{{ post.text }}</text>
-			</post>
+			{% for post in user.post_set.all %}
+				<post>
+					<id>{{ post.id }}</id>
+					<text>{{ post.text }}</text>
+				</post>
+			{% endfor %}
 		</posts>
-		{% endfor %}
-		{% for comment in user.comment_set.all %}
 		<comments>
-			<comment postId="{{ comment.post_id }}">
-				<id>{{ comment.id }}</id>
-				<text>{{ comment.text }}</text>
-			</comment>
+			{% for comment in user.comment_set.all %}
+				<comment postId="{{ comment.post_id }}">
+					<id>{{ comment.id }}</id>
+					<text>{{ comment.text }}</text>
+				</comment>
+			{% endfor %}
 		</comments>
-		{% endfor %}
+		<interests>
+			{% for interest in user.interest_set.all %}
+				<interest postId="{{ interest.post }}">
+					<id>{{ interest.id }}</id>
+				</interest>
+			{% endfor %}
+		</interests>
+		<advertisments>
+			{% for advertisment in user.get_user_ads %}
+				<advertisment>
+					<id>{{ advertisment.id }}</id>
+					<title>{{ advertisment.title }}</title>
+					<details>{{ advertisment.details }}</details>
+					<skills>
+						{% for skill in advertisment.skills.all %}
+						<skills>{{ skill }}</skills>
+						{% endfor %}
+					</skills>
+				</advertisment>
+			{% endfor %}
+		</advertisments>
+		<network>
+			{% for friend in user.get_users_friends %}
+				<connection>{{ friend }}</connection>
+			{% endfor %}				
+		</network>
 	</user>
 	{% endfor %}
 </users>

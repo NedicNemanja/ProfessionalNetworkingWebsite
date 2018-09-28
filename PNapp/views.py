@@ -11,6 +11,7 @@ from django.contrib.auth import logout as site_logout
 from django.utils import timezone
 from django.template.loader import render_to_string
 from .CCF_Posts import CCFilterPosts
+from .CCF_Ads import CCFilterAds
 
 try:
     from django.utils import simplejson as json
@@ -429,7 +430,7 @@ class advertisments(View):
         except KeyError:    #user not logged in
             return redirect('/')
 
-        ads = user.get_ads()
+        ads = CCFilterAds(user) #USE CCF HERE to sort ads
         context = { 'template_name':"advertisments",
                     'ads':ads,
                     'user':user,}

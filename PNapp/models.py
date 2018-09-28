@@ -129,6 +129,14 @@ class User(models.Model):
 		ads += self.get_user_ads()
 		return ads
 
+	#get the skills of a user
+	def get_skills(self):
+		return self.skills.all()
+
+	#get the ads on which user has applied
+	def get_applications(self):
+		return self.advertisment_set.all()
+
 class Connection(models.Model):
 	#on deletion of a creator or a receiver the said field will be set to null
 	creator = models.ForeignKey('User', on_delete=models.CASCADE, null=True, related_name="CActive")
