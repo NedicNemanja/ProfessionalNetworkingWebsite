@@ -98,22 +98,24 @@
                       <div class="job-bubble-skills">
                         {% if ad.skills.all %}
                           {% for skill in ad.skills.all %}
-                            #{{ skill }} 
+                            #{{ skill }}
                           {% endfor %}
                         {% else %}
                           No special skills required for this job
                         {% endif %}
                       </div>
-
-                      <p class="post-actions">
-                        {% if ad.creator != user %}
-                          <button type="submit" class="btn btn-success btn-block apply ad_apply" value="{{ad.id}}">
-                            <i class="fa fa-check"></i>
-                            Apply
-                          </button>
-                        {% endif %}
-                      </p>
-
+                      {% if user in ad.applicants.all %}
+                        Already applied.
+                      {% else %}
+                          {% if ad.creator != user %}
+                          <p class="post-actions">
+                            <button type="submit" class="btn btn-success btn-block apply ad_apply" value="{{ad.id}}">
+                              <i class="fa fa-check"></i>
+                              Apply
+                            </button>
+                          </p>
+                          {% endif %}
+                      {% endif %}
                       <div class="clearfix"></div>
                     </div>
                   </div>

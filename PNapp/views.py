@@ -171,7 +171,8 @@ class profile(View):
             #update skills
             for skill_name in request.POST.getlist('skill'):
                 if (not skill_name.isspace()) and (skill_name):    #whitepsace only not allowed
-                    skill_name = skill_name.strip()  #remove leading/trailing whitespace
+                    skill_name = skill_name.strip().lower()  #remove leading/trailing whitespace and only lowercase
+                    print(skill_name)
                     try:
                         skill = Skill.objects.get(name=skill_name)
                     except Skill.DoesNotExist:
@@ -515,9 +516,12 @@ def new_ad(request):
     #create a new ad
     ad = Advertisment.objects.create(title=request.POST['title'], creator=user, details=request.POST['details'], creation_date=timezone.now())
     for skill in json.loads(request.POST['skills']):
-        if not Skill.objects.filter(name=skill).exists():
-            Skill.objects.create(name=skill)
-        ad.skills.add(skill)
+        if (not skill.isspace()) and (skill):    #whitepsace only not allowed
+            skill = skill.strip().lower()  #remove leading/trailing whitespace and only lowercase
+            print(skill)
+            if not Skill.objects.filter(name=skill).exists():
+                Skill.objects.create(name=skill)
+            ad.skills.add(skill)
     return JsonResponse({})
 
 @csrf_exempt
