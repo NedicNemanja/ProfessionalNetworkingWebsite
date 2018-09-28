@@ -174,9 +174,7 @@ class profile(View):
                     skill_name = skill_name.strip()  #remove leading/trailing whitespace
                     try:
                         skill = Skill.objects.get(name=skill_name)
-                        print("try")
                     except Skill.DoesNotExist:
-                        print("except")
                         skill = Skill.objects.create(name=skill_name)
                     user.skills.add(skill)
             #check privacy changes
