@@ -67,4 +67,4 @@ def DateTimePenalty(post_scores):
     for post in post_scores:
         timediff = timezone.now()-post.creation_date
         if timediff.days >= 3:
-            post_scores[post] /= math.log(timediff.days)
+            post_scores[post] /= timediff.days

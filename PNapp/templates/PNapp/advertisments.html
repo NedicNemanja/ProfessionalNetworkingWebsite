@@ -105,11 +105,13 @@
                         {% endif %}
                       </div>
 
-                      <p class="post-actions" id="interest{{post.0.id}}"  data-postid="{{post.0.id}}">
-                        <!-- <input type="submit" value="Interest: {{post.1}}"/> -->
-                        <div class="apply">
-                          <button type="submit" class="btn btn-success btn-block" ><i class="fa fa-check"></i> Apply</button>
-                        </div>
+                      <p class="post-actions">
+                        {% if ad.creator != user %}
+                          <button type="submit" class="btn btn-success btn-block apply ad_apply" value="{{ad.id}}">
+                            <i class="fa fa-check"></i>
+                            Apply
+                          </button>
+                        {% endif %}
                       </p>
 
                       <div class="clearfix"></div>

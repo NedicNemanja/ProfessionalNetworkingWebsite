@@ -160,73 +160,26 @@ class profile(View):
             return redirect('/')
         # If user pressed save his new details
         if request.POST["button"] == "Save Changes":
-
             # Make the changes he did
             user.name = request.POST['name']
             user.surname = request.POST['surname']
             user.phone = request.POST['phone']
-            if request.POST.get("phone_privacy", False):
-                user.phone_public = True
-            else:
-                user.phone_public = False
             user.university = request.POST['university']
-            if request.POST.get("university_privacy", False):
-                user.university_public = True
-            else:
-                user.university_public = False
             user.degree_subject = request.POST['degree_subject']
-            if request.POST.get("degree_subject_privacy", False):
-                user.degree_subject_public = True
-            else:
-                user.degree_subject_public = False
             user.company = request.POST['company']
-            if request.POST.get("company_privacy", False):
-                user.company_public = True
-            else:
-                user.company_public = False
             user.position = request.POST['position']
-            if request.POST.get("position_privacy", False):
-                user.position_public = True
-            else:
-                user.position_public = False
-
-            if request.POST.get("skill1", False):
-                skill1_name = request.POST['skill1'].lower()
-                try:
-                    skill1 = Skill.objects.get(name=skill1_name)
-                except Skill.DoesNotExist:
-                    skill1 = Skill(name=skill1_name)
-                    skill1.save()
-                user.skills.add(skill1)
-
-            if request.POST.get("skill2", False):
-                skill2_name = request.POST['skill2'].lower()
-                try:
-                    skill2 = Skill.objects.get(name=skill2_name)
-                except Skill.DoesNotExist:
-                    skill2 = Skill(name=skill2_name)
-                    skill2.save()
-                user.skills.add(skill2)
-
-            if request.POST.get("skills_privacy", False):
-                user.skills_public = True
-            else:
-                user.skills_public = False
-
+            #update skills
+            for skill_name in request.POST.getlist('skill'):
+                if not skill_name:
+                    try:
+                        skill = Skill.objects.get(name=skill_name)
+                    except Skill.DoesNotExist:
+                        skill = Skill.objects.create(name=skill_name)
+                    user.skills.add(skill)
+            #check privacy changes
+            self.UpdatePrivacy(request,user)
             #check if profile photo changes
-            if request.FILES.get('image-file',False):
-                from django.conf import settings
-                from django.core.files.storage import FileSystemStorage
-                from django.utils import timezone
-                import datetime
-                #get image
-                myfile = request.FILES['image-file']
-                #save image
-                fs = FileSystemStorage()
-                now = datetime.datetime.now()
-                filename = fs.save('profpics/'+now.strftime("%Y/%m/%d//")+str(myfile.name), myfile)
-                #change image url in db
-                user.profile_photo = fs.url(filename).replace('media/','')
+            self.UpdateProfilePhoto(request,user)
 
             try:
                 user.full_clean()
@@ -237,6 +190,47 @@ class profile(View):
             messages.success(request, "Info updated successfully.")
             return redirect('/profile/')
         return render(request, self.template_name)
+
+    def UpdatePrivacy(self,request,user):
+        if request.POST.get("phone_privacy", False):
+            user.phone_public = True
+        else:
+            user.phone_public = False
+        if request.POST.get("university_privacy", False):
+            user.university_public = True
+        else:
+            user.university_public = False
+        if request.POST.get("degree_subject_privacy", False):
+            user.degree_subject_public = True
+        else:
+            user.degree_subject_public = False
+        if request.POST.get("company_privacy", False):
+            user.company_public = True
+        else:
+            user.company_public = False
+        if request.POST.get("position_privacy", False):
+            user.position_public = True
+        else:
+            user.position_public = False
+        if request.POST.get("skills_privacy", False):
+            user.skills_public = True
+        else:
+            user.skills_public = False
+
+    def UpdateProfilePhoto(self,request,user):
+        if request.FILES.get('image-file',False):
+            from django.conf import settings
+            from django.core.files.storage import FileSystemStorage
+            from django.utils import timezone
+            import datetime
+            #get image
+            myfile = request.FILES['image-file']
+            #save image
+            fs = FileSystemStorage()
+            now = datetime.datetime.now()
+            filename = fs.save('profpics/'+now.strftime("%Y/%m/%d//")+str(myfile.name), myfile)
+            #change image url in db
+            user.profile_photo = fs.url(filename).replace('media/','')
 
 class network(View):
     template_name = 'PNapp/network.html'
@@ -255,15 +249,6 @@ class network(View):
             else:
                 friends.append(conn.creator)
         context = {'user':user,'friends':friends,'template_name':"network",}
-        return render(request, self.template_name, context=context)
-
-    def post(self, request):
-        #get current user's details
-        try:
-            user = User.objects.get(id=request.session['user_pk'])
-        except KeyError:    #user not logged in
-            return redirect('/')
-        context = {'user':user,'template_name':"network",}
         return render(request, self.template_name, context=context)
 
 
@@ -294,6 +279,7 @@ class mymessages(View):
         context = {'template_name':"messages",}
         return render(request, self.template_name, context=context)
 
+    #depreciated view, new messages are now send by ajax and have their own view
     def post(self, request, conversation_pk=-1):
         #get current user's details
         try:
@@ -443,7 +429,8 @@ class advertisments(View):
 
         ads = CCFilterAds(user) #USE CCF HERE to sort ads
         context = { 'template_name':"advertisments",
-                    'ads':ads,}
+                    'ads':ads,
+                    'user':user,}
         return render(request, self.template_name, context=context)
 
 
@@ -531,3 +518,24 @@ def new_ad(request):
             Skill.objects.create(name=skill)
         ad.skills.add(skill)
     return JsonResponse({})
+
+@csrf_exempt
+def ad_apply(request):
+    user = UserSessionCheck(request)
+    try:
+        ad = Advertisment.objects.get(id=request.POST['ad_id'])
+        if user in ad.applicants.all():
+            return JsonResponse({"message":"already applied"})
+        else:
+            ad.applicants.add(user)
+            return JsonResponse({"message":"successfully applied"})
+    except KeyError:
+        return JsonResponse({"message":"couldnt find ad"})
+
+def UserSessionCheck(request):
+    #get current user's details and check if he is logged in indeed
+    try:
+        user = User.objects.get(id=request.session['user_pk'])
+        return user
+    except KeyError:    #user not logged in
+        return redirect('/')

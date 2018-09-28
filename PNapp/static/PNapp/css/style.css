@@ -82,6 +82,7 @@ header .logo{
 	margin:5px 0;
 	overflow:auto;
 	width:100%;
+	min-height: 40px;
 }
 
 .friends li{

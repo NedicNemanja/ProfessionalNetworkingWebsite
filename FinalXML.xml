@@ -3,6 +3,48 @@
 	
 	<user>
 		<personalDetails>
+			<id>4</id>
+			<email>kl@gmail.com</email>
+			<password>ka</password>
+			<name>Korina</name>
+			<surname>Al</surname>
+			<phone></phone>
+			<university></university>
+			<degree_subject></degree_subject>
+			<company></company>
+			<position></position>
+		</personalDetails>
+		<posts>
+			
+		</posts>
+		<comments>
+			
+		</comments>
+		<interests>
+			
+				<interest postId="NB1">
+					<id>6</id>
+				</interest>
+			
+				<interest postId="Kai apo nemo postaki twra">
+					<id>7</id>
+				</interest>
+			
+		</interests>
+		<advertisments>
+			
+		</advertisments>
+		<network>
+			
+				<connection>tf@gmail.com</connection>
+			
+				<connection>nn@gmail.com</connection>
+							
+		</network>
+	</user>
+	
+	<user>
+		<personalDetails>
 			<id>2</id>
 			<email>nn@gmail.com</email>
 			<password>nn</password>
@@ -14,96 +56,72 @@
 			<company>Delloit</company>
 			<position>Junior Data Analyst</position>
 		</personalDetails>
-		
 		<posts>
-			<post>
-				<id>3</id>
-				<text>Kai apo nemo postaki twra</text>
-			</post>
+			
+				<post>
+					<id>3</id>
+					<text>Kai apo nemo postaki twra</text>
+				</post>
+			
+				<post>
+					<id>6</id>
+					<text>kialo nemo</text>
+				</post>
+			
+				<post>
+					<id>9</id>
+					<text>NB1</text>
+				</post>
+			
 		</posts>
-		
-		<posts>
-			<post>
-				<id>6</id>
-				<text>kialo nemo</text>
-			</post>
-		</posts>
-		
-		
 		<comments>
-			<comment postId="kialo thanasara">
-				<id>4</id>
-				<text>nemo mono</text>
-			</comment>
+			
+				<comment postId="kialo thanasara">
+					<id>4</id>
+					<text>nemo mono</text>
+				</comment>
+			
+				<comment postId="kialo thanasara">
+					<id>5</id>
+					<text>nemooo leewwww</text>
+				</comment>
+			
+				<comment postId="postaki">
+					<id>11</id>
+					<text>heheB</text>
+				</comment>
+			
 		</comments>
-		
-		<comments>
-			<comment postId="kialo thanasara">
-				<id>5</id>
-				<text>nemooo leewwww</text>
-			</comment>
-		</comments>
-		
-	</user>
-	
-	<user>
-		<personalDetails>
-			<id>1</id>
-			<email>tf@gmail.com</email>
-			<password>tf</password>
-			<name>Thanasis</name>
-			<surname>Filippidis</surname>
-			<phone></phone>
-			<university></university>
-			<degree_subject></degree_subject>
-			<company></company>
-			<position></position>
-		</personalDetails>
-		
-		<posts>
-			<post>
-				<id>1</id>
-				<text>postaki</text>
-			</post>
-		</posts>
-		
-		<posts>
-			<post>
-				<id>2</id>
-				<text>kialo postaki
-</text>
-			</post>
-		</posts>
-		
-		<posts>
-			<post>
-				<id>4</id>
-				<text>kialo thanasara</text>
-			</post>
-		</posts>
-		
-		
-		<comments>
-			<comment postId="postaki">
-				<id>1</id>
-				<text>sxoliaki</text>
-			</comment>
-		</comments>
-		
-		<comments>
-			<comment postId="postaki">
-				<id>2</id>
-				<text>kialo sxoliaki</text>
-			</comment>
-		</comments>
-		
-		<comments>
-			<comment postId="kialo nemo">
-				<id>6</id>
-				<text>kai ena sxoliaki se kialo nemo apo thanasara</text>
-			</comment>
-		</comments>
-		
+		<interests>
+			
+				<interest postId="1Bonus">
+					<id>5</id>
+				</interest>
+			
+		</interests>
+		<advertisments>
+			
+				<advertisment>
+					<id>6</id>
+					<title>Css Html</title>
+					<details>css html</details>
+					<skills>
+						
+						<skills></skills>
+						
+					</skills>
+				</advertisment>
+			
+		</advertisments>
+		<network>
+			
+				<connection>af@gmail.com</connection>
+			
+				<connection>tf@gmail.com</connection>
+			
+				<connection>kl@gmail.com</connection>
+							
+		</network>
 	</user>
 	
 </users>

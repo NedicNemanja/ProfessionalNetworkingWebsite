@@ -1,6 +1,5 @@
 from .models import User, Advertisment
 from django.utils import timezone
-#import math
 
 def CCFilterAds(user):
     #get user's skills
@@ -10,63 +9,67 @@ def CCFilterAds(user):
     ads = Advertisment.objects.all()
     #print (ads)
     #create a dict with the score of each ad based on how similar skills has to the user
-    ads_score = ScoreAds(ads, usersSkills)
-    #print (ads_score)
-    return sorted(ads_score, key=ads_score.get, reverse=True)
-    
+    adsScore = scoreAds(ads, usersSkills)
+    #create a dict with every user and their similarity score based on how many same ads they have applied
+    usersScore = scoreUsers(user)
+    #create combined score dict ad:score of the content based and the collaborative filtering
+    combinedScore = combineScores(adsScore, usersScore)
+    #adding a penalty depending on how old is each add
+    finalScore = timePenalty(combinedScore)
+    #print (combinedScore)
+    return sorted(finalScore, key=finalScore.get, reverse=True)
 
-    #get posts user interacted with
-    interacted_posts = user.get_interacted_posts()
-    #score friend's similarity based on how often they appear in posts in total
-    similarity_scores_dict = ScoreUsers(interacted_posts)
-    if user in similarity_scores_dict:
-        del similarity_scores_dict[user]    #don't need score for himself
-    #calculate jackard distance between user and his cluster
-    user_jackard_distances = JackardDistance(user,similarity_scores_dict)
-    #score all available posts
-    post_scores_dict = PostScores(user.get_posts(),user_jackard_distances)
-    #maybe boost fresh posts?
-    #penalize posts that the user already has seen
-    InteractedPenalty(post_scores_dict,interacted_posts)
-    #penalize users own posts
-    CreatedPenalty(user,post_scores_dict)
-    #penalize older posts scores logarithmically
-    DateTimePenalty(post_scores_dict)
-    #order posts by score
-    return sorted(post_scores_dict, key=post_scores_dict.get, reverse=True)
-    #return this to see how it would look just with time ordered posts: return user.get_posts()
-
-def ScoreAds(ads, usersSkills):
-    ads_score = {}
+def scoreAds(ads, usersSkills):
+    adsScore = {}
     for ad in ads:
-        # if not usersSkills or not ad.skills.all():
-        #     ads_score[ad] = 0.25
-        # else:
-        #     distanceScore = SkillsJaccardSimilarity(usersSkills, ad.skills.all())
-        #     ads_score[ad] = 0.25 + distanceScore
-        # calculate the Jaccard's similarity between user's skills and each ad's skills
-        distanceScore = SkillsJaccardSimilarity(usersSkills, ad.skills.all())
+        distanceScore = querySetsJaccardSimilarity(usersSkills, ad.skills.all())
         # add their similarity to a base score
-        ads_score[ad] = 0.25 + distanceScore
-        # print (usersSkills)
-        # print (ad.skills.all())
-
-        # for skill in usersSkills:
-        #     if skill in ad.skills.all():
-        #         ads_score[ad] = ads_score.get(ad, 0) + 1
-    return ads_score
+        adsScore[ad] = 0.01 + distanceScore
+    return adsScore
 
 # calculate the Jaccard's similarity between to skills querysets
-def SkillsJaccardSimilarity(usersSkills, adsSkills):
-    un = SkillsUnion(usersSkills, adsSkills)
-    inter = SkillsIntersection(usersSkills, adsSkills)
+def querySetsJaccardSimilarity(set1, set2):
+    un = querySetsUnion(set1, set2)
+    inter = querySetsIntersection(set1, set2)
     unionLen = len(un)
     interLen = len(inter)
-    return interLen/unionLen
+    if unionLen == 0:
+        return 1
+    else:
+        return interLen/unionLen
 
-def SkillsUnion(usersSkills, adsSkills):
-    return usersSkills.union(adsSkills)
+def querySetsUnion(set1, set2):
+    return set1.union(set2)
 
-def SkillsIntersection(usersSkills, adsSkills):
-    return usersSkills.intersection(adsSkills)
+def querySetsIntersection(set1, set2):
+    return set1.intersection(set2)
 
+#return a dict of the user's friends and the how similar are they to the user based on their job applications
+def scoreUsers(user):
+    friends = user.get_users_friends()
+    friendsComApps = {}
+    for friend in friends:
+        usersApplicationsSimilarity = querySetsJaccardSimilarity(user.get_applications(), friend.get_applications())
+        friendsComApps[friend] = usersApplicationsSimilarity
+    return friendsComApps
+
+#add to each ad the value of the user's friend suggesting it divided by the number of user's friend suggesting to normalize it
+def combineScores(adsScore, usersScore):
+    for user in usersScore:
+        usersApps = user.get_applications()
+        for app in usersApps:
+            adsScore[app] = adsScore.get(app, 0) + usersScore[user]/len(usersScore)
+    return adsScore
+
+# decrease the score of each ad depending on how many days old is it
+def timePenalty(score):
+    for ad in Advertisment.objects.all():
+        timediff = timezone.now()-ad.creation_date
+        #if is is 75 days old or less
+        if timediff.days <= 75:
+            #for each day old deduct 0.5% from the score of that ad
+            score[ad] = score.get(ad, 0) - score.get(ad, 0)*timediff.days/200
+        else:
+            #other wise deduct the 75% of the score of that ad
+            score[ad] = score.get(ad, 0) - score.get(ad, 0)*75/100
+    return score

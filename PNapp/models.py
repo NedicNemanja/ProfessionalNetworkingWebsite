@@ -4,7 +4,7 @@ import datetime
 
 
 class Skill(models.Model):
-	name = models.CharField(max_length=128, primary_key=True)
+	name = models.CharField(max_length=128, primary_key=True, blank=False)
 
 	def __str__(self):
 		return str(self.name)
@@ -125,28 +125,35 @@ class User(models.Model):
 		ads = []
 		for friend in self.get_friends():
 			ads += friend.get_user_ads()
+			print(friend.get_user_ads())
+		ads += self.get_user_ads()
 		return ads
 
 	#get the skills of a user
 	def get_skills(self):
 		return self.skills.all()
 
+	#get the ads on which user has applied
+	def get_applications(self):
+		return self.advertisment_set.all()
+
 class Connection(models.Model):
 	#on deletion of a creator or a receiver the said field will be set to null
-	creator = models.ForeignKey('User', on_delete=models.SET_NULL, null=True, related_name="CActive")
+	creator = models.ForeignKey('User', on_delete=models.CASCADE, null=True, related_name="CActive")
 	#https://stackoverflow.com/questions/26955319/django-reverse-accessor-clashes
-	receiver = models.ForeignKey('User', on_delete=models.SET_NULL, null=True, related_name="CPassive")
+	receiver = models.ForeignKey('User', on_delete=models.CASCADE, null=True, related_name="CPassive")
 	accepted = models.BooleanField(default=False)
 
 	def __str__(self):
 		return str(self.creator)+"+"+str(self.receiver)+"="+str(self.accepted)
 
 class Advertisment(models.Model):
-	creator = models.ForeignKey(User, on_delete=models.CASCADE)
+	creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="ad_creator")
 	title = models.TextField()
 	details = models.TextField()
 	skills = models.ManyToManyField(Skill)
 	creation_date = models.DateTimeField(editable=False, default=timezone.now)
+	applicants = models.ManyToManyField(User)
 
 	def __str__(self):
 		return self.title
