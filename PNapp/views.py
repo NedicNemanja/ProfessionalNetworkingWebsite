@@ -169,11 +169,11 @@ class profile(View):
             user.position = request.POST['position']
             #update skills
             for skill_name in request.POST.getlist('skill'):
-                print(skill_name)
-                if skill_name:
+                if (not skill_name.isspace()) and (skill_name):    #whitepsace only not allowed
+                    skill_name = skill_name.strip()  #remove leading/trailing whitespace
                     try:
-                        print("try")
                         skill = Skill.objects.get(name=skill_name)
+                        print("try")
                     except Skill.DoesNotExist:
                         print("except")
                         skill = Skill.objects.create(name=skill_name)

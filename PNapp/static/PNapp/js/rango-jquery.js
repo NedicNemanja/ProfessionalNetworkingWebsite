@@ -56,12 +56,16 @@ $(document).ready(function() {
 });
 
 /************************messages.html related*********************************/
-//accept/reject request for notification.html
+//send new message
 $(document).ready(function() {
   $('[name=new-mess]').click(function(event) {
     event.preventDefault();
     var element = $(this);
     var message = $(element).siblings(".form-group").children(".form-control").val();
+    if( message == ""){
+      alert("Write a message before sending.");
+      return;
+    }
     var convo_id = $(element).attr("data-convoid");
 
     $.ajax({
@@ -112,12 +116,22 @@ $(document).ready(function() {
     for(i=0; i< skills.length; i++){
       skills_val[i] = skills[i].value;
     }
+    var title = $(this).siblings('[name="title"]').val();
+    if( title == ""){
+      alert("Title cannot be empty.");
+      return;
+    }
+    var details = $(this).siblings('[name="details"]').val();
+    if( details == ""){
+      alert("Title cannot be empty.");
+      return;
+    }
 
     $.ajax({
       url: '/new_ad/',
       type: 'POST',
-      data: { title : $(this).siblings('[name="title"]').val(),
-              details: $(this).siblings('[name="details"]').val(),
+      data: { title : title,
+              details: details,
               skills : JSON.stringify(skills_val),
             },
 
