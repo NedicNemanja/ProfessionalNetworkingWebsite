@@ -534,9 +534,24 @@ def ad_apply(request):
 def post_submit(request):
     user = UserSessionCheck(request)
     status = request.POST['status']
-    print(status)
+    if status.isspace():
+        return HttpResponse("")
     post = Post.objects.create(creator=user, creation_date=timezone.now(), text=status)
     return render(request,"PNapp/post.html",context={"post":post})
+
+@csrf_exempt
+def comment_submit(request):
+    user = UserSessionCheck(request)
+    post = get_object_or_404(Post,id=request.POST["post_id"])
+    text = request.POST['comment']
+    if text.isspace():
+        return HttpResponse("")
+    c = Comment.objects.create(creator=user, post_id=post, text=text, creation_date=timezone.now())
+    data = '<div class="comment"><a class="comment-avatar pull-left" href="/overview/'+str(user.id)+\
+            '"><img src="'+str(user.profile_photo.url)+'"></a><div class="comment-text">'+\
+            text+'</div></div>'
+    print(data)
+    return HttpResponse(data)
 
 def UserSessionCheck(request):
     #get current user's details and check if he is logged in indeed

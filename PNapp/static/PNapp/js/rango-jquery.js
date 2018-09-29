@@ -56,6 +56,34 @@ $(document).ready(function() {
   });
 });
 
+//make a new comment
+$(document).ready(function() {
+  $('.comment_submit').click(function(event) {
+    event.preventDefault();
+    var element = $(this);
+    var comment = $(this).siblings('[name="comment"]').val();
+    var post_id = $(this).val();
+    if( comment == ""){
+      return;
+    }
+
+    $.ajax({
+      url: '/comment_submit/',
+      type: 'POST',
+      data: { comment: comment,
+              post_id: post_id,},
+
+      success: function(data){
+        $(element).closest("form").closest(".comment-form").siblings(".comments").append(data);
+      },
+
+      error: function(){
+        alert("error");
+      }
+    });
+
+  });
+});
 
 /**********************notifications.html related******************************/
 //accept/reject request for notification.html

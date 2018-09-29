@@ -29,27 +29,25 @@
 
             <div class="comment-form">
               <form class="form-inline" method="post">{% csrf_token %}
-                <div class="form-group" >
-                  <input type="text" class="form-control" name="comment" placeholder="Enter Comment" required>
-                </div>
-                <button type="submit" value="{{post.id}}" name="comment-button" class="btn btn-default">Add</button>
+                <input type="text" class="form-group form-control" name="comment" placeholder="Enter Comment" required>
+                <button type="submit" value="{{post.id}}" name="comment-button" class="btn btn-default comment_submit">Add</button>
               </form>
             </div><!-- comment form end -->
 
             <div class="clearfix"></div>
-            {% if post.comment_set.all %}
-              {% for comment in post.comment_set.all %}
               <div class="comments">
-                <div class="comment">
-                  <a class="comment-avatar pull-left" href="/overview/{{comment.creator.id}}"><img src="{{ comment.creator.profile_photo.url }}"></a>
-                  <div class="comment-text">
-                    {{ comment.text }}
+              {% if post.comment_set.all %}
+                {% for comment in post.comment_set.all %}
+                  <div class="comment">
+                    <a class="comment-avatar pull-left" href="/overview/{{comment.creator.id}}"><img src="{{ comment.creator.profile_photo.url }}"></a>
+                    <div class="comment-text">
+                      {{ comment.text }}
+                    </div>
                   </div>
-                </div>
-                <div class="clearfix"></div>
-              </div>
-              {% endfor %}
-            {% endif %}
+                  <div class="clearfix"></div>
+                {% endfor %}
+              {% endif %}
+            </div>
           </div>
         </div>
       </div>
