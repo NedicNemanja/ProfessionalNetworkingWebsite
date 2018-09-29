@@ -1,33 +1,4 @@
 /**********************index.html related*************************************/
-//interest jquery for index.html
-$(document).ready(function() {
-  $(".post_interested").click(function(event) {
-      event.preventDefault();
-      var element=$(this);
-      var pid=$(element).attr("data-postid");
-
-      $.ajax({
-        url: '/interest/',
-        type: 'POST',
-        data: { postid: pid,
-                csrfmiddlewaretoken: '{{ csrf_token }}' },
-
-        success: function(json){
-          if (json.total_interests == 1)
-            $(element).replaceWith("You are interested in this.");
-          else
-            var num = json.total_interests-1;
-            $(element).replaceWith("You and "+num+" other are interested.");
-        },
-
-        error: function(json){
-          alert(json.error);
-        }
-      });
-
-  });
-});
-
 //submit a new post
 $(document).ready(function() {
   $('.post_submit').click(function(event) {
@@ -42,7 +13,8 @@ $(document).ready(function() {
     $.ajax({
       url: '/post_submit/',
       type: 'POST',
-      data: { status: status,},
+      data: { status: status,
+              csrfmiddlewaretoken: getCookie('csrftoken'),},
 
       success: function(data){
         $(element).closest("form").closest(".panel-body").closest(".panel").after(data);
@@ -59,6 +31,7 @@ $(document).ready(function() {
 //make a new comment
 //(this event had to be delegated all the way up to col-md-8, othervise when
 //creating a new post dynamically it would not trigger the even for its comment submit form)
+$(document).ready(function() {
   $('.col-md-8').on('click','.comment_submit', function(event) {
     event.preventDefault();
     var element = $(this);
@@ -72,7 +45,8 @@ $(document).ready(function() {
       url: '/comment_submit/',
       type: 'POST',
       data: { comment: comment,
-              post_id: post_id,},
+              post_id: post_id,
+              csrfmiddlewaretoken: getCookie('csrftoken'),},
 
       success: function(data){
         $(element).closest("form").closest(".comment-form").siblings(".comments").append(data);
@@ -84,7 +58,36 @@ $(document).ready(function() {
     });
 
   });
+});
 
+//interest jquery for index.html
+$(document).ready(function() {
+    $('.col-md-8').on('click','.post_interested', function(event) {
+        event.preventDefault();
+        var element=$(this);
+        var pid=$(element).attr("data-postid");
+
+        $.ajax({
+          url: '/interest/',
+          type: 'POST',
+          data: { postid: pid,
+                  csrfmiddlewaretoken: getCookie('csrftoken'), },
+
+          success: function(json){
+            if (json.total_interests == 1)
+              $(element).replaceWith("You are interested in this.");
+            else
+              var num = json.total_interests-1;
+              $(element).replaceWith("You and "+num+" other are interested.");
+          },
+
+          error: function(json){
+            alert(json.error);
+          }
+        });
+
+    });
+});
 /**********************notifications.html related******************************/
 //accept/reject request for notification.html
 $(document).ready(function() {
@@ -96,7 +99,8 @@ $(document).ready(function() {
       url: '/friend_request/',
       type: 'POST',
       data: { action: $(element).attr('name'),
-              fr_id: $(element).val(),},
+              fr_id: $(element).val(),
+              csrfmiddlewaretoken: getCookie('csrftoken'),},
 
       success: function(json){
         $(element).closest(".col-sm-3").closest(".row").closest(".message-pointer").closest(".message-bubble").closest(".my-notification").closest(".row").remove();
@@ -128,7 +132,7 @@ $(document).ready(function() {
       type: 'POST',
       data: { message: message,
               convo_id: convo_id,
-              },
+              csrfmiddlewaretoken: getCookie('csrftoken'),},
 
       success: function(json){
         $(element).closest(".form-inline").closest(".message-form").siblings(".panel-body").append(
@@ -188,6 +192,7 @@ $(document).ready(function() {
       data: { title : title,
               details: details,
               skills : JSON.stringify(skills_val),
+              csrfmiddlewaretoken: getCookie('csrftoken'),
             },
 
       success: function(json){
@@ -219,7 +224,8 @@ $(document).ready(function() {
     $.ajax({
       url: '/ad_apply/',
       type: 'POST',
-      data: { ad_id: $(this).val(),},
+      data: { ad_id: $(this).val(),
+              csrfmiddlewaretoken: getCookie('csrftoken'),},
 
       success: function(json){
         $(element).closest(".post-actions").replaceWith('<button type="button" class="btn btn-success disabled btn-block apply ad_apply" ><i class="fa fa-check"></i> Already Applied</button>');
@@ -240,3 +246,22 @@ $(document).ready(function() {
 $('.skill_plus').click(function(event) {
   $(this).before('<input class="form-control skill" type="text" name="skill" placeholder="Add a skill">');
 });
+
+
+/********* MICS *********************************************************/
+//Acquiring the token by name
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}

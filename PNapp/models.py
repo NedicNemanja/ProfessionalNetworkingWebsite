@@ -39,7 +39,7 @@ class User(models.Model):
 	#get posts users network created
 	def get_posts(self):
 		group_of_interest = [self.email]
-		users_friends = User.get_users_friends(self)
+		users_friends = self.get_friends()
 		for f in users_friends:
 			group_of_interest.append(f.email)
 		posts = Post.objects.filter(creator__email__in= group_of_interest)
@@ -64,26 +64,18 @@ class User(models.Model):
 			interacted_posts = interacted_posts | Post.objects.filter(id=post_dict['post_id'])
 		return interacted_posts
 
-	def get_users_friends(self):
-		accepted_connections = Connection.objects.filter(accepted=True)
-		users_connections = accepted_connections.filter(creator=self) | accepted_connections.filter(receiver=self)
-		users_friends = []
-		for c in users_connections:
-			if c.creator == self:
-				users_friends.append(c.receiver)
-			else:
-				users_friends.append(c.creator)
-		return users_friends
-
 	def get_friends(self):
-		friends=set()
-		connections=Connection.objects.filter(creator=self,accepted=True)
-		for conn in connections:  #conns with user as creator
-			friends.add(conn.receiver)
-		connections=Connection.objects.filter(receiver=self,accepted=True)
-		for conn in connections:  #conns with user as receiver
-			friends.add(conn.creator)
+		connections = Connection.objects.filter(receiver=self,accepted=True) | Connection.objects.all().filter(creator=self,accepted=True)
+		friends = []
+		for conn in connections:
+			if conn.creator == self:
+				friends.append(conn.receiver)
+			else:
+				friends.append(conn.creator)
 		return friends
+
+	def get_friend_requests(self):
+		return Connection.objects.filter(receiver=self,accepted=False)
 
 	def get_conversations(self):
 		return Conversation.objects.filter(creator=self).order_by('-creation_date')\
