@@ -83,13 +83,13 @@ class User(models.Model):
 
 	def get_notifications(self):
 		posts = self.get_users_posts()
-		actions = []
+		actions = [] #interests and comments are actions
 		for post in posts:
 			for interest in post.get_interests():
 				actions.append(interest)
 			for comment in post.get_comments():
 				actions.append(comment)
-		actions.sort(reverse=True,key=SortNotificationsFunc)
+		actions.sort(reverse=True,key=SortNotificationsByDate)
 		return actions
 
 	#num of total interests and comments of this user
@@ -127,6 +127,8 @@ class Connection(models.Model):
 	def __str__(self):
 		return str(self.creator)+"+"+str(self.receiver)+"="+str(self.accepted)
 
+######################Ads related###############################################
+
 class Advertisment(models.Model):
 	creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="ad_creator")
 	title = models.TextField()
@@ -138,9 +140,12 @@ class Advertisment(models.Model):
 	def __str__(self):
 		return self.title
 
+
+#unused. Replaced by Advertisment.applicants, but this one is a better for real world application.
 class Applicant(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
 	advertisment = models.ForeignKey(Advertisment, on_delete=models.CASCADE)
+	creation_date = models.DateTimeField(editable=False, default=timezone.now)
 	ACCEPTED = 'ACCEPTED'
 	PENDING = 'PENDING'
 	REJECTED = 'REJECTED'
@@ -156,6 +161,8 @@ class Applicant(models.Model):
 
 	def __str__(self):
 		return self.user
+
+######################Message related##########################################
 
 class Conversation(models.Model):
 	#this could be SET_DEFAULT as well
@@ -177,6 +184,8 @@ class Message(models.Model):
 
 	def __str__(self):
 		return self.text
+
+#############################Post related#######################################
 
 class Post(models.Model):
 	creator = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -230,5 +239,5 @@ class Comment(models.Model):
 	def get_classname(self):
 		return "Comment"
 
-def SortNotificationsFunc(element):
+def SortNotificationsByDate(element):
 	return element.creation_date
