@@ -29,7 +29,7 @@
                             <div class="message-pointer">
                               <div class="row">
                                 <div class="col-sm-12">
-                                  {{applicant.name}} {{applicant.surname}} applied for your job ad "{{ad.title}}".
+                                  <a class="" href="/overview/{{ applicant.id }}">{{applicant.name}} {{applicant.surname}}</a> applied for your job ad "{{ad.title}}".
                                 </div>
                               </div>
                             </div>
@@ -102,7 +102,7 @@
                         {% endif %}
                       </div>
                       {% if user in ad.applicants.all %}
-                        Already applied.
+                        <button type="button" class="btn btn-success disabled btn-block apply ad_apply" ><i class="fa fa-check"></i> Already Applied</button>
                       {% else %}
                           {% if ad.creator != user %}
                           <p class="post-actions">
@@ -112,7 +112,7 @@
                             </button>
                           </p>
                           {% else %}
-                            Your advertisment.
+                            <button type="button" class="btn btn-success disabled btn-block apply ad_apply" >Your Advertisment</button>
                           {% endif %}
                       {% endif %}
                       <div class="clearfix"></div>

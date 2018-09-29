@@ -167,7 +167,7 @@ $(document).ready(function() {
       data: { ad_id: $(this).val(),},
 
       success: function(json){
-        $(element).closest(".post-actions").replaceWith("already applied");
+        $(element).closest(".post-actions").replaceWith('<button type="button" class="btn btn-success disabled btn-block apply ad_apply" ><i class="fa fa-check"></i> Already Applied</button>');
         console.log(json.message);
       },
 

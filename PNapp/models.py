@@ -10,24 +10,12 @@ class Skill(models.Model):
 		return str(self.name)
 
 class User(models.Model):
-	"""docstring for User"""
-	"""def __init__(self, arg):
-					super(User, self).__init__()
-					self.arg = arg"""
 	id = models.AutoField(primary_key=True)
 	email = models.EmailField(unique=True)
 	email_public = models.BooleanField(default=False)
 	password = models.CharField(max_length=128)
 	name = models.CharField(max_length=64)
-	# Dont think thats needed
-	#name_public = models.BooleanField(default=True)
 	surname = models.CharField(max_length=64)
-	#that neither
-	#surname_public = models.BooleanField(default=True)
-	#Maybe requires the Pillow library https://pillow.readthedocs.io/en/latest/
-	#Additional info The default form widget for this field is a ClearableFileInput.
-	#Maybe requires upload_to arg to be set
-	#Maybe also add blank=True?
 	phone = models.CharField(max_length=17, blank=True)
 	phone_public = models.BooleanField(default=False)
 	profile_photo = models.ImageField(default='/profpics/user.png', upload_to='profpics/%Y/%m/%d/')
