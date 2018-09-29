@@ -13,33 +13,24 @@
               </div>
               <div class="panel-body">
                 <div><img src="{{ user.profile_photo.url }}" alt="User Profile Picture" class="personal-details-avatar"></div>
-                <div>{{ user.name }} {{user.surname}}</div>
-                <div>{{ user.email }}</div>
-                <div>{{ user.university }}</div>
-                <div>{{ user.degree_subject }}</div>
-                <div>{{ user.company }}</div>
-                <div>{{ user.position }}</div>
-                <div>{{ user.phone }}</div>
+                <div><label>Name: </label>{{ user.name }} {{user.surname}}</div>
+                <div><label>Email: </label>{{ user.email }}</div>
+                {% if user.university %}
+                  <div><label>Education: </label>{{ user.university }}</div>
+                {% endif %}
+                {% if user.degree_subject %}
+                  <div><label>Subject: </label>{{ user.degree_subject }}</div>
+                {% endif %}
+                {% if user.company %}
+                  <div><label>Company: </label>{{ user.company }}</div>
+                {% endif %}
+                {% if user.position %}
+                  <div><label>Position: </label>{{ user.position }}</div>
+                {% endif %}
+                {% if user.phone %}
+                  <div><label>Phone: </label>{{ user.phone }}</div>
+                {% endif %}
                 <div><button class="btn btn-default" onclick="location.href='/profile/'" type="button">Edit details</button></div>
-                <!-- <div class="group-item">
-                  <img src="img/group.png">
-                  <h4><a href="#">Sample Group One</a></h4>
-                  <p>This is a Dobble social network sample group</p>
-                </div>
-                <div class="clearfix"></div>
-                <div class="group-item">
-                  <img src="img/group.png">
-                  <h4><a href="#">Sample Group One</a></h4>
-                  <p>This is a Dobble social network sample group</p>
-                </div>
-                <div class="clearfix"></div>
-                <div class="group-item">
-                  <img src="img/group.png">
-                  <h4><a href="#">Sample Group One</a></h4>
-                  <p>This is a Dobble social network sample group</p>
-                </div>
-                <div class="clearfix"></div>
-                <a class="btn btn-primary" href="#">View All Groups</a>-->
               </div>
             </div>
 
@@ -56,7 +47,7 @@
                   {% endfor %}
                 </ul>
                 <div class="clearfix"></div>
-                <a class="btn btn-primary view-friends" href="/network">View All Friends</a>
+                <a class="btn btn-default view-friends" href="/network">View All Friends</a>
               </div>
             </div>
           </div>
@@ -73,7 +64,7 @@
                   <button type="submit" value="Submit status" name="button" class="btn btn-default post_submit">Submit</button>
                   <div class="pull-right">
                     <div class="btn-group">
-                      <button type="button" class="btn btn-default"><i class="fa fa-pencil"></i> Text</button>
+                      <button type="button" class="btn btn-default" name="mybutton" value="Set Focus" OnClick="status.focus();"><i class="fa fa-pencil"></i> Text</button>
                       <button type="button" class="btn btn-default"><i class="fa fa-file-image-o"></i> Image</button>
                       <button type="button" class="btn btn-default"> <i class="fa fa-file-video-o"></i> Video</button>
                     </div>

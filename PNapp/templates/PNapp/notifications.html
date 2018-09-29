@@ -31,7 +31,7 @@
                             <div class="message-pointer">
                               <div class="row">
                                 <div class="col-sm-6">
-                                  <p>{{fr.creator.name}} {{fr.creator.surname}} added you.</p>
+                                  <p><a class="" href="/overview/{{ fr.creator.id }}">{{fr.creator.name}} {{fr.creator.surname}}</a> added you.</p>
                                 </div>
                                 <div class="col-sm-3">
                                   <button type="submit" value="{{fr.id}}" class="btn btn-success btn-block friend_request" name="Accept"><i class="fa fa-check"></i> Accept Request</button>
@@ -87,9 +87,9 @@
                               <div class="row">
                                 <div class="col-sm-12">
                                   {% if action.get_classname == "Interest" %}
-                                    <p>{{action.creator.name}} {{action.creator.surname}} is interested in your post: "{{action.post}}".</p>
+                                    <p><a class="" href="/overview/{{ action.creator.id }}">{{action.creator.name}} {{action.creator.surname}}</a> is interested in your post: "{{action.post}}".</p>
                                   {% elif action.get_classname == "Comment" %}
-                                    <p>{{action.creator.name}} {{action.creator.surname}} commented on your post: "{{action.post_id}}" and wrote "{{action.text}}"</p>
+                                    <p><a class="" href="/overview/{{ action.creator.id }}">{{action.creator.name}} {{action.creator.surname}}</a> commented on your post: "{{action.post_id}}" and wrote "{{action.text}}"</p>
                                   {% else %}
                                       asd{{action.get_classname}}asd
                                   {% endif %}

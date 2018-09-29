@@ -100,6 +100,7 @@ class index(View):
         context = {'user':user,}
 
         if request.POST.get("button", False):
+            #if user posted a new post
             if request.POST["button"] == "Submit status":
                 status = request.POST['status']
                 p = Post(creator=user, creation_date=timezone.now(), text=status)
@@ -112,6 +113,7 @@ class index(View):
                 #save and redirect
                 p.save()
                 return redirect('/index/')
+        #if user posted new comment                
         if request.POST.get("comment-button", False):
             post_id = request.POST["comment-button"]
             post = Post.objects.get(pk=post_id)

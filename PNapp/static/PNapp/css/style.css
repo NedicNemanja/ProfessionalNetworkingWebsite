@@ -179,8 +179,8 @@ header .logo{
 body, html{
      height: 100%;
  	background-repeat: no-repeat;
- 	/*background-color: #d3d3d3;
- 	font-family: 'Oxygen', sans-serif;*/
+ 	background-color: #F5F5F5;
+ 	/*font-family: 'Oxygen', sans-serif;*/
 }
 
 
@@ -203,9 +203,9 @@ hr{
 	margin-bottom: 15px;
 }
 
-label{
+/*label{
 	margin-bottom: 15px;
-}
+}*/
 
 input,
 input::-webkit-input-placeholder {
@@ -548,3 +548,15 @@ footer {
 	display: block;
 	width: 140px;
 }
+
+.ad-submit-btn {
+	margin: auto;
+	margin-top: 10px;
+	display: block;
+	width: 140px;
+}
+
+.skill_plus {
+	margin-top: 10px;
+}
+
