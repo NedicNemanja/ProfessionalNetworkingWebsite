@@ -76,6 +76,8 @@ class index(View):
 
     def get(self, request):
         user = UserSessionCheck(request)
+        if not user:
+            return redirect('/')
         #get the posts for this users newsfeed ordere by Colab.Cluster.Filter
         posts_filtered = CCFilterPosts(user)
         #get 9-18 connections to display a portion of the network
@@ -92,6 +94,8 @@ class index(View):
     #Since we user jquery/ajax this is depreciated. Only in case js is disabled.
     def post(self, request):
         user = UserSessionCheck(request)
+        if not user:
+            return redirect('/')
         context = {'user':user,}
 
         if request.POST.get("button", False):
@@ -135,11 +139,15 @@ class profile(View):
 
     def get(self, request):
         user = UserSessionCheck(request)
+        if not user:
+            return redirect('/')
         context = {'user':user,'template_name':"profile",}
         return render(request, self.template_name, context=context)
 
     def post(self, request):
         user = UserSessionCheck(request)
+        if not user:
+            return redirect('/')
         # If user pressed save his new details
         if request.POST["button"] == "Save Changes":
             # Make the changes he did
@@ -219,6 +227,8 @@ class network(View):
     template_name = 'PNapp/network.html'
     def get(self, request):
         user = UserSessionCheck(request)
+        if not user:
+            return redirect('/')
         context = {'user':user,'friends':user.get_friends(),'template_name':"network",}
         return render(request, self.template_name, context=context)
 
@@ -228,6 +238,8 @@ class mymessages(View):
 
     def get(self, request, conversation_pk=-1):
         user = UserSessionCheck(request)
+        if not user:
+            return redirect('/')
         #get conversations
         conversations = user.get_conversations()
         if conversations is not None:
@@ -249,6 +261,8 @@ class mymessages(View):
     #depreciated view since we use jquery/ajax. Only in case js is disabled.
     def post(self, request, conversation_pk=-1):
         user = UserSessionCheck(request)
+        if not user:
+            return redirect('/')
         #new message in chat
         if 'message'in request.POST:
             text=request.POST['message']
@@ -271,6 +285,8 @@ class search(View):
 
     def get(self, request):
         user = UserSessionCheck(request)
+        if not user:
+            return redirect('/')
         query = request.GET["search_text"]
         #if any word of the query is either a name or a surname then add user to set (not case-sensitive)
         users = set()
@@ -285,6 +301,8 @@ class overview(View):
 
     def get(self, request, pk):
         user = UserSessionCheck(request)
+        if not user:
+            return redirect('/')
         target_user = User.objects.get(id=pk)
         #get status of friendship(none,connected,request_exists) in order to decide the context of add button
         connected_users = Connection.objects.filter(creator=user,receiver=target_user,accepted=True).exists() | Connection.objects.filter(creator=target_user,receiver=user,accepted=True).exists()
@@ -318,11 +336,15 @@ class settings(View):
 
     def get(self, request):
         user = UserSessionCheck(request)
+        if not user:
+            return redirect('/')
         context = {'user':user,'template_name':"settings",}
         return render(request, self.template_name, context=context)
 
     def post(self, request):
         user = UserSessionCheck(request)
+        if not user:
+            return redirect('/')
         context = {'user':user,'template_name':"settings",}
         # If user choose to save his new credentials
         new_email = request.POST['email']
@@ -364,6 +386,8 @@ class advertisments(View):
 
     def get(self, request):
         user = UserSessionCheck(request)
+        if not user:
+            return redirect('/')
         ads = CCFilterAds(user) #USE CCF HERE to sort ads
         context = { 'template_name':"advertisments",
                     'ads':  ads,
@@ -376,6 +400,8 @@ class notifications(View):
 
     def get(self, request):
         user = UserSessionCheck(request)
+        if not user:
+            return redirect('/')
         context = {'template_name': "notifications",
                     'friend_requests':  user.get_friend_requests(),
                     'notifications':    user.get_notifications(),
@@ -390,6 +416,8 @@ from django.views.decorators.csrf import csrf_exempt
 
 def interest(request):
     user = UserSessionCheck(request)
+    if not user:
+        return redirect('/')
     #get post with pid
     postid = request.POST['postid']
     post = get_object_or_404(Post, id=postid)
@@ -402,6 +430,8 @@ def interest(request):
 
 def friend_request(request):
     user = UserSessionCheck(request)
+    if not user:
+        return redirect('/')
     #got a accept/reject on a friendship requets?
     friend_request = Connection.objects.get(id=request.POST['fr_id'])
     if request.POST["action"] == "Accept":
@@ -413,6 +443,8 @@ def friend_request(request):
 
 def new_message(request):
     user = UserSessionCheck(request)
+    if not user:
+        return redirect('/')
     #Create the new message
     conversation = get_object_or_404(Conversation, id=request.POST["convo_id"])
     Message.objects.create(text=request.POST["message"],creator=user,creation_date=timezone.now(),conversation=conversation)
@@ -420,6 +452,8 @@ def new_message(request):
 
 def new_ad(request):
     user = UserSessionCheck(request)
+    if not user:
+        return redirect('/')
     #create a new ad
     ad = Advertisment.objects.create(title=request.POST['title'], creator=user, details=request.POST['details'], creation_date=timezone.now())
     for skill in json.loads(request.POST['skills']):
@@ -432,6 +466,8 @@ def new_ad(request):
 
 def ad_apply(request):
     user = UserSessionCheck(request)
+    if not user:
+        return redirect('/')
     try:
         ad = Advertisment.objects.get(id=request.POST['ad_id'])
         if user in ad.applicants.all():
@@ -444,6 +480,8 @@ def ad_apply(request):
 
 def post_submit(request):
     user = UserSessionCheck(request)
+    if not user:
+        return redirect('/')
     status = request.POST['status']
     if status.isspace():
         return HttpResponse("")
@@ -452,6 +490,8 @@ def post_submit(request):
 
 def comment_submit(request):
     user = UserSessionCheck(request)
+    if not user:
+        return redirect('/')
     post = get_object_or_404(Post,id=request.POST["post_id"])
     text = request.POST['comment']
     if text.isspace():
@@ -466,7 +506,6 @@ def comment_submit(request):
 def UserSessionCheck(request):
     #get current user's details and check if he is logged in indeed
     try:
-        user = User.objects.get(id=request.session['user_pk'])
-        return user
-    except KeyError:    #user not logged in
-        return redirect('/')
+        return User.objects.get(id=request.session['user_pk'])
+    except KeyError:
+        return None
