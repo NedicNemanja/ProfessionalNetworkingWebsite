@@ -57,8 +57,9 @@ $(document).ready(function() {
 });
 
 //make a new comment
-$(document).ready(function() {
-  $('.comment_submit').click(function(event) {
+//(this event had to be delegated all the way up to col-md-8, othervise when
+//creating a new post dynamically it would not trigger the even for its comment submit form)
+  $('.col-md-8').on('click','.comment_submit', function(event) {
     event.preventDefault();
     var element = $(this);
     var comment = $(this).siblings('[name="comment"]').val();
@@ -83,7 +84,6 @@ $(document).ready(function() {
     });
 
   });
-});
 
 /**********************notifications.html related******************************/
 //accept/reject request for notification.html

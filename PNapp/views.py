@@ -113,7 +113,7 @@ class index(View):
                 #save and redirect
                 p.save()
                 return redirect('/index/')
-        #if user posted new comment                
+        #if user posted new comment
         if request.POST.get("comment-button", False):
             post_id = request.POST["comment-button"]
             post = Post.objects.get(pk=post_id)
@@ -167,7 +167,6 @@ class profile(View):
             for skill_name in request.POST.getlist('skill'):
                 if (not skill_name.isspace()) and (skill_name):    #whitepsace only not allowed
                     skill_name = skill_name.strip().lower()  #remove leading/trailing whitespace and only lowercase
-                    print(skill_name)
                     try:
                         skill = Skill.objects.get(name=skill_name)
                     except Skill.DoesNotExist:
@@ -513,7 +512,6 @@ def new_ad(request):
     for skill in json.loads(request.POST['skills']):
         if (not skill.isspace()) and (skill):    #whitepsace only not allowed
             skill = skill.strip().lower()  #remove leading/trailing whitespace and only lowercase
-            print(skill)
             if not Skill.objects.filter(name=skill).exists():
                 Skill.objects.create(name=skill)
             ad.skills.add(skill)
@@ -552,7 +550,6 @@ def comment_submit(request):
     data = '<div class="comment"><a class="comment-avatar pull-left" href="/overview/'+str(user.id)+\
             '"><img src="'+str(user.profile_photo.url)+'"></a><div class="comment-text">'+\
             text+'</div></div>'
-    print(data)
     return HttpResponse(data)
 
 def UserSessionCheck(request):
