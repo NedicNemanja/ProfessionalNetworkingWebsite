@@ -53,6 +53,8 @@ export_xml.short_description = u"Export XML"
 class MyModelAdmin(admin.ModelAdmin):
     #add to admins action our new function
     actions = [export_xml]
+    list_display = ('id', 'email', 'email_public', 'password', 'name', 'surname', 'phone', 'phone_public', 'profile_photo', 'university', 'university_public', 'degree_subject', 'degree_subject_public',
+    'company', 'company_public', 'position', 'position_public')
 
 # Register your models here.
 admin.site.register(User, MyModelAdmin)
