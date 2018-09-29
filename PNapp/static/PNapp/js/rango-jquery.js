@@ -28,6 +28,34 @@ $(document).ready(function() {
   });
 });
 
+//submit a new post
+$(document).ready(function() {
+  $('.post_submit').click(function(event) {
+    event.preventDefault();
+    var element = $(this);
+    var status = $(this).siblings('[name="status"]').val();
+    if( status == ""){
+      alert("write something.");
+      return;
+    }
+
+    $.ajax({
+      url: '/post_submit/',
+      type: 'POST',
+      data: { status: status,},
+
+      success: function(data){
+        $(element).closest("form").closest(".panel-body").closest(".panel").after(data);
+      },
+
+      error: function(){
+        alert("error");
+      }
+    });
+
+  });
+});
+
 
 /**********************notifications.html related******************************/
 //accept/reject request for notification.html
@@ -35,7 +63,6 @@ $(document).ready(function() {
   $('.friend_request').click(function(event) {
     event.preventDefault();
     var element = $(this);
-
 
     $.ajax({
       url: '/friend_request/',
