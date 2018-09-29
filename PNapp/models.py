@@ -31,7 +31,7 @@ class User(models.Model):
 	skills_public = models.BooleanField(default=False)
 
 	def __str__(self):
-		return self.email
+		return self.name + " " + self.surname
 
 	def autheniticate(self,password):
 		return (self.password == password)
@@ -172,7 +172,7 @@ class Conversation(models.Model):
 	creation_date = models.DateTimeField(editable=False, default=timezone.now)
 
 	def __str__(self):
-		return str(self.creator)+str(self.receiver)
+		return str(self.creator)+" - "+str(self.receiver)
 
 	def get_messages(self):
 		return Message.objects.filter(conversation=self).order_by('creation_date')

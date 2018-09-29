@@ -3,8 +3,28 @@ from .models import *
 from django.template.loader import render_to_string
 from django.http import HttpResponse
 
-# class InterestAdmin(admin.ModelAdmin):
-#     list_display = ('creator', 'post', 'creation_date')
+
+
+class ConversationAdmin(admin.ModelAdmin):
+    list_display = ('creator', 'receiver', 'creation_date')
+
+class MessageAdmin(admin.ModelAdmin):
+    list_display = ('creator', 'text', 'creation_date', 'conversation')
+
+class ConnectionAdmin(admin.ModelAdmin):
+    list_display = ('creator', 'receiver', 'accepted')
+
+class PostAdmin(admin.ModelAdmin):
+    list_display = ('text', 'creator', 'creation_date')
+
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('text', 'creator', 'post_id', 'creation_date')
+
+class InterestAdmin(admin.ModelAdmin):
+    list_display = ('creator', 'post', 'creation_date')
+
+class AdvertismentAdmin(admin.ModelAdmin):
+    list_display = ('creator', 'title', 'details' ,'creation_date')
 
 # Export method
 def export_xml(modeladmin, request, queryset):
@@ -36,11 +56,11 @@ class MyModelAdmin(admin.ModelAdmin):
 
 # Register your models here.
 admin.site.register(User, MyModelAdmin)
-admin.site.register(Post)
-admin.site.register(Connection)
-admin.site.register(Comment)
-admin.site.register(Conversation)
-admin.site.register(Message)
-admin.site.register(Interest)
+admin.site.register(Post, PostAdmin)
+admin.site.register(Connection, ConnectionAdmin)
+admin.site.register(Comment, CommentAdmin)
+admin.site.register(Conversation, ConversationAdmin)
+admin.site.register(Message, MessageAdmin)
+admin.site.register(Interest, InterestAdmin)
 admin.site.register(Skill)
-admin.site.register(Advertisment)
+admin.site.register(Advertisment, AdvertismentAdmin)
