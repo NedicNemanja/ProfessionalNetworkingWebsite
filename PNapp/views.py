@@ -75,10 +75,7 @@ class index(View):
     template_name = 'PNapp/index.html'
 
     def get(self, request):
-        try:
-            user = User.objects.get(id=request.session['user_pk'])
-        except KeyError:    #user not logged in
-            return redirect('/')
+        user = UserSessionCheck(request)
         #get the [post,total_interests,if user already interested in post] for every post
         posts_filtered = CCFilterPosts(user)
         posts_list = []
@@ -86,7 +83,7 @@ class index(View):
             posts_list.append([ post,\
                                 post.total_interests(),\
                                 Interest.objects.filter(creator=user,post=post).exists()])
-        #get 9-18 connections
+        #get 9-18 connections to display a portion of the network
         connections = Connection.objects.filter(receiver=user,accepted=True) | Connection.objects.all().filter(creator=user,accepted=True)
         friends = []
         for conn in connections[:9]:
@@ -95,15 +92,11 @@ class index(View):
             else:
                 friends.append(conn.creator)
 
-        context = {'user':user,'friends':friends, 'posts_list':posts_list,'template_name':"index",}
+        context = {'user':user,'friends':friends, 'posts_list':posts_filtered,'template_name':"index",}
         return render(request, self.template_name, context=context)
 
     def post(self, request):
-        #get current user's details
-        try:
-            user = User.objects.get(id=request.session['user_pk'])
-        except KeyError:    #user not logged in
-            return redirect('/')
+        user = UserSessionCheck(request)
         context = {'user':user,}
 
         if request.POST.get("button", False):
@@ -536,6 +529,14 @@ def ad_apply(request):
             return JsonResponse({"message":"successfully applied"})
     except KeyError:
         return JsonResponse({"message":"couldnt find ad"})
+
+@csrf_exempt
+def post_submit(request):
+    user = UserSessionCheck(request)
+    status = request.POST['status']
+    print(status)
+    post = Post.objects.create(creator=user, creation_date=timezone.now(), text=status)
+    return render(request,"PNapp/post.html",context={"post":post})
 
 def UserSessionCheck(request):
     #get current user's details and check if he is logged in indeed

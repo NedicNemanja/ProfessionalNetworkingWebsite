@@ -221,6 +221,12 @@ class Post(models.Model):
 	def total_interests(self):
 		return Interest.objects.filter(post=self).count()
 
+	def users_interested(self):
+		users_interested = []
+		for interest in self.get_interests():
+			users_interested.append(interest.creator)
+		return users_interested
+
 class Interest(models.Model):
 	creator = models.ForeignKey(User, on_delete=models.CASCADE)
 	post = models.ForeignKey(Post, on_delete=models.CASCADE)

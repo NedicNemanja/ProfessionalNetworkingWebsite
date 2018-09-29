@@ -68,11 +68,9 @@
               </div>
               <div class="panel-body">
                 <form method="post">{% csrf_token %}
-                  <div class="form-group">
-                    <textarea class="form-control" name="status" placeholder="Write on the wall" required></textarea>
-                  </div>
+                  <textarea class="form-control form-group" name="status" placeholder="Write on the wall" required></textarea>
 
-                  <button type="submit" value="Submit status" name="button" class="btn btn-default">Submit</button>
+                  <button type="submit" value="Submit status" name="button" class="btn btn-default post_submit">Submit</button>
                   <div class="pull-right">
                     <div class="btn-group">
                       <button type="button" class="btn btn-default"><i class="fa fa-pencil"></i> Text</button>
@@ -83,66 +81,9 @@
                 </form>
               </div>
             </div>
-
             {% if posts_list %}
               {% for post in posts_list %}
-                <div class="panel panel-default post">
-                  <div class="panel-body">
-                    <div class="row">
-                      <div class="col-sm-2">
-                        <a class="post-avatar thumbnail" href="/overview/{{ post.0.creator.id }}">
-                          <img src="{{ post.0.creator.profile_photo.url }}" class="img-thumbnail">
-                          <div class="text-center">{{ post.0.creator.name }} {{ post.0.creator.surname }}</div>
-                        </a>
-                        <div class="likes text-center">{{ post.0.creation_date }}</div>
-                      </div><!-- col-sm-2 end -->
-                      <div class="col-sm-10">
-                        <div class="bubble">
-                          <div class="pointer">
-                            <p>{{ post.0.text }}</p>
-                          </div>
-                          <div class="pointer-border"></div>
-                        </div><!-- bubble end -->
-
-                        {% if post.2 %}
-                          {% if post.1 > 1 %}
-                            You and {{post.1|add:"-1"}} other are interested.
-                          {% else %}
-                            You are interested in this.
-                          {% endif %}
-                        {% else %}
-                          <p class="post-actions post_interested" id="interest{{post.0.id}}"  data-postid="{{post.0.id}}">
-                            <input type="submit" class="btn btn-default" value="Interest: {{post.1}}"/>
-                          </p>
-                        {% endif %}
-
-                        <div class="comment-form">
-                          <form class="form-inline" method="post">{% csrf_token %}
-                            <div class="form-group" >
-                              <input type="text" class="form-control" name="comment" placeholder="Enter Comment" required>
-                            </div>
-                            <button type="submit" value="{{post.0.id}}" name="comment-button" class="btn btn-default">Add</button>
-                          </form>
-                        </div><!-- comment form end -->
-
-                        <div class="clearfix"></div>
-                        {% if post.0.comment_set.all %}
-                          {% for comment in post.0.comment_set.all %}
-                          <div class="comments">
-                            <div class="comment">
-                              <a class="comment-avatar pull-left" href="/overview/{{comment.creator.id}}"><img src="{{ comment.creator.profile_photo.url }}"></a>
-                              <div class="comment-text">
-                                {{ comment.text }}
-                              </div>
-                            </div>
-                            <div class="clearfix"></div>
-                          </div>
-                          {% endfor %}
-                        {% endif %}
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                {% include "PNapp/post.html" %}
               {% endfor %}
             {% endif %}
           </div><!-- col-md-8 end -->
