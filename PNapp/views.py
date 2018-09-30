@@ -462,7 +462,7 @@ def new_ad(request):
             if not Skill.objects.filter(name=skill).exists():
                 Skill.objects.create(name=skill)
             ad.skills.add(skill)
-    return JsonResponse({})
+    return render(request,"PNapp/ad.html",context={"ad":ad,"user":user})
 
 def ad_apply(request):
     user = UserSessionCheck(request)

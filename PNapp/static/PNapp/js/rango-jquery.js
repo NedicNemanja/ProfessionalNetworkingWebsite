@@ -170,6 +170,7 @@ $(document).ready(function() {
 $(document).ready(function() {
   $('.ad_submit').click(function(event) {
     event.preventDefault();
+    var element = $(this);
     var skills = $(":input[name^='skill']");
     var skills_val = [];
     for(i=0; i< skills.length; i++){
@@ -182,7 +183,7 @@ $(document).ready(function() {
     }
     var details = $(this).siblings('[name="details"]').val();
     if( details == ""){
-      alert("Title cannot be empty.");
+      alert("Details cannot be empty.");
       return;
     }
 
@@ -195,8 +196,8 @@ $(document).ready(function() {
               csrfmiddlewaretoken: getCookie('csrftoken'),
             },
 
-      success: function(json){
-        alert("success");
+      success: function(data){
+        $(element).closest("form").closest(".panel-body").closest(".panel").after(data);
       },
 
       error: function(){
