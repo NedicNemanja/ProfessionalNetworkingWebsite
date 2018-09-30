@@ -76,13 +76,10 @@ class index(View):
 
     def get(self, request):
         user = UserSessionCheck(request)
-        #get the [post,total_interests,if user already interested in post] for every post
+        if not user:
+            return redirect('/')
+        #get the posts for this users newsfeed ordere by Colab.Cluster.Filter
         posts_filtered = CCFilterPosts(user)
-        posts_list = []
-        for post in posts_filtered:
-            posts_list.append([ post,\
-                                post.total_interests(),\
-                                Interest.objects.filter(creator=user,post=post).exists()])
         #get 9-18 connections to display a portion of the network
         connections = Connection.objects.filter(receiver=user,accepted=True) | Connection.objects.all().filter(creator=user,accepted=True)
         friends = []
@@ -91,12 +88,14 @@ class index(View):
                 friends.append(conn.receiver)
             else:
                 friends.append(conn.creator)
-
         context = {'user':user,'friends':friends, 'posts_list':posts_filtered,'template_name':"index",}
         return render(request, self.template_name, context=context)
 
+    #Since we user jquery/ajax this is depreciated. Only in case js is disabled.
     def post(self, request):
         user = UserSessionCheck(request)
+        if not user:
+            return redirect('/')
         context = {'user':user,}
 
         if request.POST.get("button", False):
@@ -113,7 +112,7 @@ class index(View):
                 #save and redirect
                 p.save()
                 return redirect('/index/')
-        #if user posted new comment                
+        #if user posted new comment
         if request.POST.get("comment-button", False):
             post_id = request.POST["comment-button"]
             post = Post.objects.get(pk=post_id)
@@ -139,19 +138,15 @@ class profile(View):
     template_name = 'PNapp/profile.html'
 
     def get(self, request):
-        #get current user's details
-        try:
-            user = User.objects.get(id=request.session['user_pk'])
-        except KeyError:    #user not logged in
+        user = UserSessionCheck(request)
+        if not user:
             return redirect('/')
         context = {'user':user,'template_name':"profile",}
         return render(request, self.template_name, context=context)
 
     def post(self, request):
-        #get current user's details
-        try:
-            user = User.objects.get(id=request.session['user_pk'])
-        except KeyError:    #user not logged in
+        user = UserSessionCheck(request)
+        if not user:
             return redirect('/')
         # If user pressed save his new details
         if request.POST["button"] == "Save Changes":
@@ -167,7 +162,6 @@ class profile(View):
             for skill_name in request.POST.getlist('skill'):
                 if (not skill_name.isspace()) and (skill_name):    #whitepsace only not allowed
                     skill_name = skill_name.strip().lower()  #remove leading/trailing whitespace and only lowercase
-                    print(skill_name)
                     try:
                         skill = Skill.objects.get(name=skill_name)
                     except Skill.DoesNotExist:
@@ -232,20 +226,10 @@ class profile(View):
 class network(View):
     template_name = 'PNapp/network.html'
     def get(self, request):
-        #get current user's details
-        try:
-            user = User.objects.get(id=request.session['user_pk'])
-        except KeyError:    #user not logged in
+        user = UserSessionCheck(request)
+        if not user:
             return redirect('/')
-        #get all the connections
-        connections = Connection.objects.filter(receiver=user,accepted=True) | Connection.objects.all().filter(creator=user,accepted=True)
-        friends = []
-        for conn in connections:
-            if conn.creator == user:
-                friends.append(conn.receiver)
-            else:
-                friends.append(conn.creator)
-        context = {'user':user,'friends':friends,'template_name':"network",}
+        context = {'user':user,'friends':user.get_friends(),'template_name':"network",}
         return render(request, self.template_name, context=context)
 
 
@@ -253,16 +237,14 @@ class mymessages(View):
     template_name = 'PNapp/messages.html'
 
     def get(self, request, conversation_pk=-1):
-        #get current user's details
-        try:
-            user = User.objects.get(id=request.session['user_pk'])
-        except KeyError:    #user not logged in
+        user = UserSessionCheck(request)
+        if not user:
             return redirect('/')
         #get conversations
         conversations = user.get_conversations()
         if conversations is not None:
             #get target conversation
-            if conversation_pk == -1:
+            if conversation_pk == -1: #default to first convo
                 target_conversation = conversations.first()
             else:
                 target_conversation = Conversation.objects.get(id=conversation_pk)
@@ -276,12 +258,10 @@ class mymessages(View):
         context = {'template_name':"messages",}
         return render(request, self.template_name, context=context)
 
-    #depreciated view, new messages are now send by ajax and have their own view
+    #depreciated view since we use jquery/ajax. Only in case js is disabled.
     def post(self, request, conversation_pk=-1):
-        #get current user's details
-        try:
-            user = User.objects.get(id=request.session['user_pk'])
-        except KeyError:    #user not logged in
+        user = UserSessionCheck(request)
+        if not user:
             return redirect('/')
         #new message in chat
         if 'message'in request.POST:
@@ -304,10 +284,8 @@ class search(View):
     template_name = 'PNapp/search.html'
 
     def get(self, request):
-        #test if session active
-        try:
-            session_test_pk = request.session['user_pk']
-        except KeyError:    #user not logged in
+        user = UserSessionCheck(request)
+        if not user:
             return redirect('/')
         query = request.GET["search_text"]
         #if any word of the query is either a name or a surname then add user to set (not case-sensitive)
@@ -322,28 +300,21 @@ class overview(View):
     template_name = 'PNapp/overview.html'
 
     def get(self, request, pk):
-        #get current user's details
-        try:
-            user = User.objects.get(id=request.session['user_pk'])
-        except KeyError:    #user not logged in
+        user = UserSessionCheck(request)
+        if not user:
             return redirect('/')
         target_user = User.objects.get(id=pk)
-        #get all target_user's friends
-        friends = set()
-        connections = Connection.objects.filter(creator=target_user)
-        for conn in connections:    #conns with target as creator
-            friends.add(conn.receiver)
-        connections = Connection.objects.filter(receiver=target_user)
-        for conn in connections:    #conns with target as receiver
-            friends.add(conn.creator)
-        #get status of friendship in order to decide the context of add button
+        #get status of friendship(none,connected,request_exists) in order to decide the context of add button
         connected_users = Connection.objects.filter(creator=user,receiver=target_user,accepted=True).exists() | Connection.objects.filter(creator=target_user,receiver=user,accepted=True).exists()
         request_exists = Connection.objects.filter(creator=user,receiver=target_user).exists() | Connection.objects.filter(creator=target_user,receiver=user).exists()
-        context = { 'user':user, 'target_user':target_user,
-                    'friends':friends, 'connected_users':connected_users,
+        context = { 'user':user,
+                    'target_user':target_user,
+                    'friends': target_user.get_friends(),
+                    'connected_users':connected_users,
                     'request_exists':request_exists}
         return render(request, self.template_name, context)
 
+    #depreciated because of jquery/ajax
     def post(self, request, pk):
         userid = request.POST['add user']
         receiver = User.objects.get(id=userid)
@@ -364,22 +335,18 @@ class settings(View):
     template_name = 'PNapp/settings.html'
 
     def get(self, request):
-        #get current user's details and check if he is logged in indeed
-        try:
-            user = User.objects.get(id=request.session['user_pk'])
-        except KeyError:    #user not logged in
+        user = UserSessionCheck(request)
+        if not user:
             return redirect('/')
         context = {'user':user,'template_name':"settings",}
         return render(request, self.template_name, context=context)
 
     def post(self, request):
-        #get current user's details and check if he is logged in indeed
-        try:
-            user = User.objects.get(id=request.session['user_pk'])
-        except KeyError:    #user not logged in
+        user = UserSessionCheck(request)
+        if not user:
             return redirect('/')
         context = {'user':user,'template_name':"settings",}
-        # If user pressed save his new credentials
+        # If user choose to save his new credentials
         new_email = request.POST['email']
         if request.POST["button"] == "Save Changes":
             # If the submitted email is not the one that user had until now
@@ -418,16 +385,13 @@ class advertisments(View):
     template_name = 'PNapp/advertisments.html'
 
     def get(self, request):
-        #get current user's details and check if he is logged in indeed
-        try:
-            user = User.objects.get(id=request.session['user_pk'])
-        except KeyError:    #user not logged in
+        user = UserSessionCheck(request)
+        if not user:
             return redirect('/')
-
         ads = CCFilterAds(user) #USE CCF HERE to sort ads
         context = { 'template_name':"advertisments",
-                    'ads':ads,
-                    'user':user,}
+                    'ads':  ads,
+                    'user': user,}
         return render(request, self.template_name, context=context)
 
 
@@ -435,18 +399,12 @@ class notifications(View):
     template_name ='PNapp/notifications.html'
 
     def get(self, request):
-        #get current user's details and check if he is logged in indeed
-        try:
-            user = User.objects.get(id=request.session['user_pk'])
-        except KeyError:    #user not logged in
+        user = UserSessionCheck(request)
+        if not user:
             return redirect('/')
-        #friend Requests
-        friend_requests = Connection.objects.filter(receiver=user,accepted=False)
-        #post notifications
-        notifications = user.get_notifications()
-        context = {'template_name':"notifications",
-                    'friend_requests':friend_requests,
-                    'notifications':notifications,
+        context = {'template_name': "notifications",
+                    'friend_requests':  user.get_friend_requests(),
+                    'notifications':    user.get_notifications(),
                     'user':user,
                     }
         return render(request, self.template_name, context=context)
@@ -456,12 +414,9 @@ class notifications(View):
 ##################AJAX VIEWS#############################################
 from django.views.decorators.csrf import csrf_exempt
 
-@csrf_exempt
 def interest(request):
-    #get current user's details and check if he is logged in indeed
-    try:
-        user = User.objects.get(id=request.session['user_pk'])
-    except KeyError:    #user not logged in
+    user = UserSessionCheck(request)
+    if not user:
         return redirect('/')
     #get post with pid
     postid = request.POST['postid']
@@ -473,12 +428,9 @@ def interest(request):
     else:
         return JsonResponse({"error":"User already interested."})
 
-@csrf_exempt
 def friend_request(request):
-    #get current user's details and check if he is logged in indeed
-    try:
-        user = User.objects.get(id=request.session['user_pk'])
-    except KeyError:    #user not logged in
+    user = UserSessionCheck(request)
+    if not user:
         return redirect('/')
     #got a accept/reject on a friendship requets?
     friend_request = Connection.objects.get(id=request.POST['fr_id'])
@@ -489,39 +441,33 @@ def friend_request(request):
         friend_request.delete()
     return JsonResponse({})
 
-@csrf_exempt
 def new_message(request):
-    #get current user's details and check if he is logged in indeed
-    try:
-        user = User.objects.get(id=request.session['user_pk'])
-    except KeyError:    #user not logged in
+    user = UserSessionCheck(request)
+    if not user:
         return redirect('/')
     #Create the new message
     conversation = get_object_or_404(Conversation, id=request.POST["convo_id"])
     Message.objects.create(text=request.POST["message"],creator=user,creation_date=timezone.now(),conversation=conversation)
     return JsonResponse({"user_id":user.id, "profile_photo_url":user.profile_photo.url})
 
-@csrf_exempt
 def new_ad(request):
-    #get current user's details and check if he is logged in indeed
-    try:
-        user = User.objects.get(id=request.session['user_pk'])
-    except KeyError:    #user not logged in
+    user = UserSessionCheck(request)
+    if not user:
         return redirect('/')
     #create a new ad
     ad = Advertisment.objects.create(title=request.POST['title'], creator=user, details=request.POST['details'], creation_date=timezone.now())
     for skill in json.loads(request.POST['skills']):
         if (not skill.isspace()) and (skill):    #whitepsace only not allowed
             skill = skill.strip().lower()  #remove leading/trailing whitespace and only lowercase
-            print(skill)
             if not Skill.objects.filter(name=skill).exists():
                 Skill.objects.create(name=skill)
             ad.skills.add(skill)
     return JsonResponse({})
 
-@csrf_exempt
 def ad_apply(request):
     user = UserSessionCheck(request)
+    if not user:
+        return redirect('/')
     try:
         ad = Advertisment.objects.get(id=request.POST['ad_id'])
         if user in ad.applicants.all():
@@ -532,18 +478,34 @@ def ad_apply(request):
     except KeyError:
         return JsonResponse({"message":"couldnt find ad"})
 
-@csrf_exempt
 def post_submit(request):
     user = UserSessionCheck(request)
+    if not user:
+        return redirect('/')
     status = request.POST['status']
-    print(status)
+    if status.isspace():
+        return HttpResponse("")
     post = Post.objects.create(creator=user, creation_date=timezone.now(), text=status)
     return render(request,"PNapp/post.html",context={"post":post})
 
+def comment_submit(request):
+    user = UserSessionCheck(request)
+    if not user:
+        return redirect('/')
+    post = get_object_or_404(Post,id=request.POST["post_id"])
+    text = request.POST['comment']
+    if text.isspace():
+        return HttpResponse("")
+    c = Comment.objects.create(creator=user, post_id=post, text=text, creation_date=timezone.now())
+    data = '<div class="comment"><a class="comment-avatar pull-left" href="/overview/'+str(user.id)+\
+            '"><img src="'+str(user.profile_photo.url)+'"></a><div class="comment-text">'+\
+            text+'</div></div>'
+    return HttpResponse(data)
+
+################ MICS ########################################################
 def UserSessionCheck(request):
     #get current user's details and check if he is logged in indeed
     try:
-        user = User.objects.get(id=request.session['user_pk'])
-        return user
-    except KeyError:    #user not logged in
-        return redirect('/')
+        return User.objects.get(id=request.session['user_pk'])
+    except KeyError:
+        return None

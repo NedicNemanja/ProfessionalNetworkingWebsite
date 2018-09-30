@@ -39,7 +39,7 @@ class User(models.Model):
 	#get posts users network created
 	def get_posts(self):
 		group_of_interest = [self.email]
-		users_friends = User.get_users_friends(self)
+		users_friends = self.get_friends()
 		for f in users_friends:
 			group_of_interest.append(f.email)
 		posts = Post.objects.filter(creator__email__in= group_of_interest)
@@ -64,26 +64,18 @@ class User(models.Model):
 			interacted_posts = interacted_posts | Post.objects.filter(id=post_dict['post_id'])
 		return interacted_posts
 
-	def get_users_friends(self):
-		accepted_connections = Connection.objects.filter(accepted=True)
-		users_connections = accepted_connections.filter(creator=self) | accepted_connections.filter(receiver=self)
-		users_friends = []
-		for c in users_connections:
-			if c.creator == self:
-				users_friends.append(c.receiver)
-			else:
-				users_friends.append(c.creator)
-		return users_friends
-
 	def get_friends(self):
-		friends=set()
-		connections=Connection.objects.filter(creator=self,accepted=True)
-		for conn in connections:  #conns with user as creator
-			friends.add(conn.receiver)
-		connections=Connection.objects.filter(receiver=self,accepted=True)
-		for conn in connections:  #conns with user as receiver
-			friends.add(conn.creator)
+		connections = Connection.objects.filter(receiver=self,accepted=True) | Connection.objects.all().filter(creator=self,accepted=True)
+		friends = []
+		for conn in connections:
+			if conn.creator == self:
+				friends.append(conn.receiver)
+			else:
+				friends.append(conn.creator)
 		return friends
+
+	def get_friend_requests(self):
+		return Connection.objects.filter(receiver=self,accepted=False)
 
 	def get_conversations(self):
 		return Conversation.objects.filter(creator=self).order_by('-creation_date')\
@@ -91,13 +83,13 @@ class User(models.Model):
 
 	def get_notifications(self):
 		posts = self.get_users_posts()
-		actions = []
+		actions = [] #interests and comments are actions
 		for post in posts:
 			for interest in post.get_interests():
 				actions.append(interest)
 			for comment in post.get_comments():
 				actions.append(comment)
-		actions.sort(reverse=True,key=SortNotificationsFunc)
+		actions.sort(reverse=True,key=SortNotificationsByDate)
 		return actions
 
 	#num of total interests and comments of this user
@@ -135,6 +127,8 @@ class Connection(models.Model):
 	def __str__(self):
 		return str(self.creator)+"+"+str(self.receiver)+"="+str(self.accepted)
 
+######################Ads related###############################################
+
 class Advertisment(models.Model):
 	creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="ad_creator")
 	title = models.TextField()
@@ -146,9 +140,12 @@ class Advertisment(models.Model):
 	def __str__(self):
 		return self.title
 
+
+#unused. Replaced by Advertisment.applicants, but this one is a better for real world application.
 class Applicant(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
 	advertisment = models.ForeignKey(Advertisment, on_delete=models.CASCADE)
+	creation_date = models.DateTimeField(editable=False, default=timezone.now)
 	ACCEPTED = 'ACCEPTED'
 	PENDING = 'PENDING'
 	REJECTED = 'REJECTED'
@@ -164,6 +161,8 @@ class Applicant(models.Model):
 
 	def __str__(self):
 		return self.user
+
+######################Message related##########################################
 
 class Conversation(models.Model):
 	#this could be SET_DEFAULT as well
@@ -185,6 +184,8 @@ class Message(models.Model):
 
 	def __str__(self):
 		return self.text
+
+#############################Post related#######################################
 
 class Post(models.Model):
 	creator = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -238,5 +239,5 @@ class Comment(models.Model):
 	def get_classname(self):
 		return "Comment"
 
-def SortNotificationsFunc(element):
+def SortNotificationsByDate(element):
 	return element.creation_date

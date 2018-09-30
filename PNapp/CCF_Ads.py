@@ -46,7 +46,7 @@ def querySetsIntersection(set1, set2):
 
 #return a dict of the user's friends and the how similar are they to the user based on their job applications
 def scoreUsers(user):
-    friends = user.get_users_friends()
+    friends = user.get_friends()
     friendsComApps = {}
     for friend in friends:
         usersApplicationsSimilarity = querySetsJaccardSimilarity(user.get_applications(), friend.get_applications())
