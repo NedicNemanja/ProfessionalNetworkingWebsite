@@ -52,56 +52,6 @@
         <div class="row">
         	<div class="col-md-8">
             <div class="welcomePhoto"><img src="{% static 'PNapp/img/welcome.png' %}"></div>
-            <!--<div class="panel panel-default friends">
-              <div class="panel-heading">
-                <h3 class="panel-title">My Friends</h3>
-              </div>
-              <div class="panel-body">
-                <ul>
-                  <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
-                  <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
-                  <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
-                  <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
-                  <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
-                  <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
-                  <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
-                  <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
-                  <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
-                  <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
-                  <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
-                  <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
-                </ul>
-                <div class="clearfix"></div>
-                <a class="btn btn-primary" href="#">View All Friends</a>
-              </div>
-            </div>
-
-            <div class="panel panel-default groups">
-              <div class="panel-heading">
-                <h3 class="panel-title">Latest Groups</h3>
-              </div>
-              <div class="panel-body">
-                <div class="group-item">
-                  <img src="img/group.png">
-                  <h4><a href="#">Sample Group One</a></h4>
-                  <p>This is a Dobble social network sample group</p>
-                </div>
-                <div class="clearfix"></div>
-                <div class="group-item">
-                  <img src="img/group.png">
-                  <h4><a href="#">Sample Group One</a></h4>
-                  <p>This is a Dobble social network sample group</p>
-                </div>
-                <div class="clearfix"></div>
-                <div class="group-item">
-                  <img src="img/group.png">
-                  <h4><a href="#">Sample Group One</a></h4>
-                  <p>This is a Dobble social network sample group</p>
-                </div>
-                <div class="clearfix"></div>
-                <a class="btn btn-primary" href="#">View All Groups</a>
-              </div>
-            </div>-->
           </div>
           <div class="col-md-4">
             <div class="panel panel-default">
@@ -109,26 +59,6 @@
                 <h3 class="panel-title">Sign up</h3>
               </div>
               <div class="panel-body">
-                <!--<form>
-                  <div class="form-group">
-                    <textarea class="form-control" placeholder="Write on the wall"></textarea>
-                  </div>
-
-                  <button type="submit" class="btn btn-default">Submit</button>
-                  <div class="pull-right">
-                    <div class="btn-group">
-                    <button type="button" class="btn btn-default"><i class="fa fa-pencil"></i> Text</button>
-                    <button type="button" class="btn btn-default"><i class="fa fa-file-image-o"></i> Image</button>
-                    <button type="button" class="btn btn-default"> <i class="fa fa-file-video-o"></i> Video</button>
-                  </div>
-                  </div>
-                </form>-->
-                <!--<form class="navbar-form navbar-left" role="search">
-                  <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Search">
-                  </div>
-                  <button type="submit" class="btn btn-default">Submit</button>
-                </form>-->
                 <form class="form" method="post">{% csrf_token %}
 
                   <div class="form-group">
@@ -136,7 +66,7 @@
                     <div class="cols-sm-10">
                       <div class="input-group">
                         <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-                        <input type="text" class="form-control" name="name" id="name"  placeholder="Enter your Name"/>
+                        <input type="text" class="form-control" name="name" id="name"  placeholder="Enter your Name" required/>
                       </div>
                     </div>
                   </div>
@@ -146,7 +76,7 @@
                     <div class="cols-sm-10">
                       <div class="input-group">
                         <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-                        <input type="text" class="form-control" name="surname" id="surname"  placeholder="Enter your Surname"/>
+                        <input type="text" class="form-control" name="surname" id="surname"  placeholder="Enter your Surname" required/>
                       </div>
                     </div>
                   </div>
@@ -156,7 +86,7 @@
                     <div class="cols-sm-10">
                       <div class="input-group">
                         <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
-                        <input type="text" class="form-control" name="email" id="email"  placeholder="Enter your Email"/>
+                        <input type="text" class="form-control" name="email" id="email"  placeholder="Enter your Email" required/>
                       </div>
                     </div>
                   </div>
@@ -166,7 +96,7 @@
                     <div class="cols-sm-10">
                       <div class="input-group">
                         <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-                        <input type="password" class="form-control" name="password" id="password"  placeholder="Enter your Password"/>
+                        <input type="password" class="form-control" name="password" id="password"  placeholder="Enter your Password" required/>
                       </div>
                     </div>
                   </div>
@@ -176,7 +106,7 @@
                     <div class="cols-sm-10">
                       <div class="input-group">
                         <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-                        <input type="password" class="form-control" name="confirm" id="confirm"  placeholder="Confirm your Password"/>
+                        <input type="password" class="form-control" name="confirm" id="confirm"  placeholder="Confirm your Password" required/>
                       </div>
                     </div>
                   </div>

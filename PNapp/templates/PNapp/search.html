@@ -22,15 +22,8 @@
                   <div class="search-name"><h3>{{user.name}} {{user.surname}}</h3></div>
                 </div>
                 <div class="col-md-3">
-                  <!-- <form method="post">{% csrf_token %}
-                    <button type="submit" value="{{user.id}}" class="btn btn-success btn-block" name="add user"><i class="fa fa-users"></i> Add Friend</a>
-                  </form> -->
                 </div>
                 <div class="col-md-3">
-                  <!-- <p><form method="post" action="/messages/">{% csrf_token %}
-                    <button type="submit" value="{{user.id}}" class="btn btn-default btn-block" name="send message"><i class="fa fa-envelope"></i> Send Message</button>
-                  </form></p> -->
-                  <!-- <button class="btn btn-primary btn-block" onclick="location.href='/overview/{{user.id}}'" type="button"><i class="fa fa-edit"></i> View Profile</button> -->
                   <div class="search-action-buttons">
                     <form method="post" action="/messages/">{% csrf_token %}
                       <button type="submit" value="{{user.id}}" class="btn btn-default btn-block" name="send message"><i class="fa fa-envelope"></i> Send Message</button>
@@ -39,8 +32,6 @@
 
                 </div>
                 <div class="col-md-3">
-                  <!-- <p><a href="/overview/{{user.id}}" class="btn btn-primary btn-block"><i class="fa fa-edit"></i> View Profile</a></p> -->
-                  <!-- <p><button class="btn btn-primary btn-block" onclick="location.href='/overview/{{user.id}}'" type="button"><i class="fa fa-edit"></i> View Profile</button></p> -->
                   <div class="search-action-buttons">
                     <button class="btn btn-primary btn-block" onclick="location.href='/overview/{{user.id}}'" type="button"><i class="fa fa-edit"></i> View Profile</button>
                   </div>
