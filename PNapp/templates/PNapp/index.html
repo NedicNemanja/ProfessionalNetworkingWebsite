@@ -13,22 +13,22 @@
               </div>
               <div class="panel-body">
                 <div><img src="{{ user.profile_photo.url }}" alt="User Profile Picture" class="personal-details-avatar"></div>
-                <div><label>Name: </label>{{ user.name }} {{user.surname}}</div>
-                <div><label>Email: </label>{{ user.email }}</div>
+                <div><label>Name:</label> {{ user.name }} {{user.surname}}</div>
+                <div><label>Email:</label> {{ user.email }}</div>
                 {% if user.university %}
-                  <div><label>Education: </label>{{ user.university }}</div>
+                  <div><label>Education:</label> {{ user.university }}</div>
                 {% endif %}
                 {% if user.degree_subject %}
-                  <div><label>Subject: </label>{{ user.degree_subject }}</div>
+                  <div><label>Subject:</label> {{ user.degree_subject }}</div>
                 {% endif %}
                 {% if user.company %}
-                  <div><label>Company: </label>{{ user.company }}</div>
+                  <div><label>Company:</label> {{ user.company }}</div>
                 {% endif %}
                 {% if user.position %}
-                  <div><label>Position: </label>{{ user.position }}</div>
+                  <div><label>Position:</label> {{ user.position }}</div>
                 {% endif %}
                 {% if user.phone %}
-                  <div><label>Phone: </label>{{ user.phone }}</div>
+                  <div><label>Phone:</label> {{ user.phone }}</div>
                 {% endif %}
                 <div><button class="btn btn-default" onclick="location.href='/profile/'" type="button">Edit details</button></div>
               </div>
