@@ -9,8 +9,8 @@ def CCFilterPosts(user):
     similarity_scores_dict = ScoreUsers(interacted_posts)
     if user in similarity_scores_dict:
         del similarity_scores_dict[user]    #don't need score for himself
-    #calculate jackard distance between user and his cluster
-    user_jackard_distances = JackardDistance(user,similarity_scores_dict)
+    #calculate jaccard distance between user and his cluster
+    user_jackard_distances = JaccardDistance(user,similarity_scores_dict)
     #score all available posts
     post_scores_dict = PostScores(user.get_posts(),user_jackard_distances)
     #maybe boost fresh posts?
@@ -34,10 +34,11 @@ def ScoreUsers(posts):
             score_dict[comment.creator] = score_dict.get(comment.creator, 0) + 1
     return score_dict
 
-def JackardDistance(target_user,score_dict):
+def JaccardDistance(target_user,score_dict):
     user_shill_score = target_user.shill_score()
     for user in score_dict:
-        score_dict[user] = (score_dict[user]/(user_shill_score+user.shill_score()-score_dict[user]))
+        if( score_dict[user] != 0 ):
+            score_dict[user] = (score_dict[user]/(user_shill_score+user.shill_score()-score_dict[user]))
     return score_dict
 
 def PostScores(posts,user_jackard_distances):

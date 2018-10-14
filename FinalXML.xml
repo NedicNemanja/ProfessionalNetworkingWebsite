@@ -4,10 +4,50 @@
 	<user>
 		<personalDetails>
 			<id>4</id>
-			<email>kl@gmail.com</email>
-			<password>ka</password>
-			<name>Korina</name>
-			<surname>Al</surname>
+			<email>donald@asd.asd</email>
+			<password>asd</password>
+			<name>Donald</name>
+			<surname>Trump</surname>
+			<phone></phone>
+			<university>Wharton School of the University of Pennsylvania</university>
+			<degree_subject></degree_subject>
+			<company></company>
+			<position></position>
+		</personalDetails>
+		<posts>
+			
+				<post>
+					<id>4</id>
+					<text>Despite the constant negative press covfefe.</text>
+				</post>
+			
+				<post>
+					<id>5</id>
+					<text>Russia will have much greater respect for our country when i am leading it than when other people have led it.</text>
+				</post>
+			
+		</posts>
+		<comments>
+			
+		</comments>
+		<interests>
+			
+		</interests>
+		<advertisments>
+			
+		</advertisments>
+		<network>
+							
+		</network>
+	</user>
+	
+	<user>
+		<personalDetails>
+			<id>3</id>
+			<email>anon@asd.asd</email>
+			<password>asd</password>
+			<name>Anon</name>
+			<surname>User</surname>
 			<phone></phone>
 			<university></university>
 			<degree_subject></degree_subject>
@@ -22,23 +62,11 @@
 		</comments>
 		<interests>
 			
-				<interest postId="NB1">
-					<id>6</id>
-				</interest>
-			
-				<interest postId="Kai apo nemo postaki twra">
-					<id>7</id>
-				</interest>
-			
 		</interests>
 		<advertisments>
 			
 		</advertisments>
 		<network>
-			
-				<connection>tf@gmail.com</connection>
-			
-				<connection>nn@gmail.com</connection>
 							
 		</network>
 	</user>
@@ -46,80 +74,190 @@
 	<user>
 		<personalDetails>
 			<id>2</id>
-			<email>nn@gmail.com</email>
-			<password>nn</password>
-			<name>Nemo</name>
-			<surname>Nemania</surname>
-			<phone>123</phone>
-			<university></university>
+			<email>ihamod@di.uoa.gr</email>
+			<password>asd</password>
+			<name>Dr. Ioannis</name>
+			<surname>Chamodrakas</surname>
+			<phone></phone>
+			<university>2009: Ph.D. in Computer Science, Department of Informatics and Telecommunications, NKUA</university>
 			<degree_subject></degree_subject>
-			<company>Delloit</company>
-			<position>Junior Data Analyst</position>
+			<company>NKUA</company>
+			<position></position>
 		</personalDetails>
 		<posts>
 			
 				<post>
-					<id>3</id>
-					<text>Kai apo nemo postaki twra</text>
-				</post>
-			
-				<post>
 					<id>6</id>
-					<text>kialo nemo</text>
+					<text>This is my first post!</text>
 				</post>
 			
 				<post>
-					<id>9</id>
-					<text>NB1</text>
+					<id>7</id>
+					<text>New Post</text>
 				</post>
 			
 		</posts>
 		<comments>
 			
-				<comment postId="kialo thanasara">
-					<id>4</id>
-					<text>nemo mono</text>
-				</comment>
-			
-				<comment postId="kialo thanasara">
-					<id>5</id>
-					<text>nemooo leewwww</text>
-				</comment>
-			
-				<comment postId="postaki">
-					<id>11</id>
-					<text>heheB</text>
+				<comment postId="When something is important enough, you do it even if the odds are not in your favor.">
+					<id>1</id>
+					<text>I agree!</text>
 				</comment>
 			
 		</comments>
 		<interests>
 			
-				<interest postId="1Bonus">
+				<interest postId="This is my first post!">
+					<id>1</id>
+				</interest>
+			
+				<interest postId="Russia will have much greater respect for our country when i am leading it than when other people have led it.">
+					<id>2</id>
+				</interest>
+			
+				<interest postId="Despite the constant negative press covfefe.">
+					<id>3</id>
+				</interest>
+			
+				<interest postId="When something is important enough, you do it even if the odds are not in your favor.">
+					<id>4</id>
+				</interest>
+			
+				<interest postId="If you get up in the morning and think the future is going to be better, it is a bright day.">
 					<id>5</id>
+				</interest>
+			
+				<interest postId="There have to be reasons that you get up in the morning and you want to live. Why do you want to live? What&#39;s the point? What inspires you? What do you love about the future? If the future does not include being out there among the stars and being a multi-planet species, I find that incredibly depressing.">
+					<id>6</id>
+				</interest>
+			
+				<interest postId="asd">
+					<id>7</id>
 				</interest>
 			
 		</interests>
 		<advertisments>
 			
 				<advertisment>
-					<id>6</id>
-					<title>Css Html</title>
-					<details>css html</details>
+					<id>3</id>
+					<title> Lab Assistant </title>
+					<details>details</details>
 					<skills>
 						
-						<skills></skills>
+						<skills>java</skills>
 						
 					</skills>
 				</advertisment>
 			
 		</advertisments>
 		<network>
+							
+		</network>
+	</user>
+	
+	<user>
+		<personalDetails>
+			<id>1</id>
+			<email>elon@asd.asd</email>
+			<password>asd</password>
+			<name>Elon</name>
+			<surname>Musk</surname>
+			<phone></phone>
+			<university>University of Pennsylvania (1997)</university>
+			<degree_subject>Undergrad. Economics &amp; Bachelors Degree in Physics</degree_subject>
+			<company>Tesla</company>
+			<position>CEO</position>
+		</personalDetails>
+		<posts>
 			
-				<connection>af@gmail.com</connection>
+				<post>
+					<id>1</id>
+					<text>When something is important enough, you do it even if the odds are not in your favor.</text>
+				</post>
 			
-				<connection>tf@gmail.com</connection>
+				<post>
+					<id>2</id>
+					<text>If you get up in the morning and think the future is going to be better, it is a bright day.</text>
+				</post>
 			
-				<connection>kl@gmail.com</connection>
+				<post>
+					<id>3</id>
+					<text>There have to be reasons that you get up in the morning and you want to live. Why do you want to live? What&#39;s the point? What inspires you? What do you love about the future? If the future does not include being out there among the stars and being a multi-planet species, I find that incredibly depressing.</text>
+				</post>
+			
+				<post>
+					<id>8</id>
+					<text>asd</text>
+				</post>
+			
+		</posts>
+		<comments>
+			
+		</comments>
+		<interests>
+			
+				<interest postId="This is my first post!">
+					<id>8</id>
+				</interest>
+			
+				<interest postId="When something is important enough, you do it even if the odds are not in your favor.">
+					<id>9</id>
+				</interest>
+			
+				<interest postId="If you get up in the morning and think the future is going to be better, it is a bright day.">
+					<id>10</id>
+				</interest>
+			
+				<interest postId="There have to be reasons that you get up in the morning and you want to live. Why do you want to live? What&#39;s the point? What inspires you? What do you love about the future? If the future does not include being out there among the stars and being a multi-planet species, I find that incredibly depressing.">
+					<id>11</id>
+				</interest>
+			
+				<interest postId="New Post">
+					<id>12</id>
+				</interest>
+			
+		</interests>
+		<advertisments>
+			
+				<advertisment>
+					<id>25</id>
+					<title>qwe</title>
+					<details>qwe</details>
+					<skills>
+						
+						<skills>qwe</skills>
+						
+					</skills>
+				</advertisment>
+			
+				<advertisment>
+					<id>24</id>
+					<title>asd</title>
+					<details>asd</details>
+					<skills>
+						
+						<skills>asd</skills>
+						
+					</skills>
+				</advertisment>
+			
+				<advertisment>
+					<id>1</id>
+					<title>CTO</title>
+					<details>CTO at Tesla</details>
+					<skills>
+						
+						<skills>c++</skills>
+						
+						<skills>java</skills>
+						
+						<skills>python</skills>
+						
+					</skills>
+				</advertisment>
+			
+		</advertisments>
+		<network>
 							
 		</network>
 	</user>
